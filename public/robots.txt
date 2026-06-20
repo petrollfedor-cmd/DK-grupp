@@ -1,0 +1,8 @@
+# Пока сайт в разработке - запрет индексации
+User-agent: *
+Disallow: /
+
+# Когда сайт будет готов, замени на:
+# User-agent: *
+# Allow: /
+# Sitemap: https://твой-домен.ru/sitemap.xml

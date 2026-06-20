@@ -1,0 +1,553 @@
+{
+  "nodeId": "265:297",
+  "name": "Страница 1.3 ",
+  "type": "FRAME",
+  "dimensions": {
+    "width": 1920,
+    "height": 1080
+  },
+  "position": {
+    "x": 2355,
+    "y": -2070
+  },
+  "children": [
+    {
+      "id": "265:299",
+      "name": "Получить расчёт вашего объекта:",
+      "type": "TEXT",
+      "dimensions": {
+        "width": 539,
+        "height": 154
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#23365e"
+          }
+        ],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      },
+      "text": "Получить расчёт вашего объекта:  "
+    },
+    {
+      "id": "265:303",
+      "name": "ФИО:",
+      "type": "TEXT",
+      "dimensions": {
+        "width": 91,
+        "height": 38
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#000000"
+          }
+        ],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      },
+      "text": "ФИО: "
+    },
+    {
+      "id": "265:305",
+      "name": "Контакты:",
+      "type": "TEXT",
+      "dimensions": {
+        "width": 197,
+        "height": 48
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#000000"
+          }
+        ],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      },
+      "text": "Контакты:"
+    },
+    {
+      "id": "265:307",
+      "name": "Ваш запрос:",
+      "type": "TEXT",
+      "dimensions": {
+        "width": 235,
+        "height": 48
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#000000"
+          }
+        ],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      },
+      "text": "Ваш запрос:"
+    },
+    {
+      "id": "344:151",
+      "name": "Rectangle 51",
+      "type": "RECTANGLE",
+      "dimensions": {
+        "width": 1013,
+        "height": 80
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#d9d9d900",
+            "opacity": 0
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#23365e",
+            "weight": 3
+          }
+        ]
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "344:152",
+      "name": "Rectangle 52",
+      "type": "RECTANGLE",
+      "dimensions": {
+        "width": 1013,
+        "height": 80
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#d9d9d900",
+            "opacity": 0
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#23365e",
+            "weight": 3
+          }
+        ]
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "344:153",
+      "name": "Rectangle 53",
+      "type": "RECTANGLE",
+      "dimensions": {
+        "width": 1013,
+        "height": 231
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#d9d9d900",
+            "opacity": 0
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#23365e",
+            "weight": 3
+          }
+        ]
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "346:162",
+      "name": "2026-04-18_16-33-11 1",
+      "type": "RECTANGLE",
+      "dimensions": {
+        "width": 485,
+        "height": 418
+      },
+      "styles": {
+        "fills": [],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "265:300",
+      "name": "Опросный лист для расчёта",
+      "type": "TEXT",
+      "dimensions": {
+        "width": 429,
+        "height": 43
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#23365e"
+          }
+        ],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      },
+      "text": "Опросный лист для расчёта "
+    },
+    {
+      "id": "265:312",
+      "name": "Line 18",
+      "type": "LINE",
+      "dimensions": {
+        "width": 434,
+        "height": 1
+      },
+      "styles": {
+        "fills": [],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#23365e",
+            "weight": 1
+          }
+        ]
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "265:309",
+      "name": "Типовые узлы",
+      "type": "TEXT",
+      "dimensions": {
+        "width": 209,
+        "height": 38
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#23365e"
+          }
+        ],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      },
+      "text": "Типовые узлы"
+    },
+    {
+      "id": "265:310",
+      "name": "Line 17",
+      "type": "LINE",
+      "dimensions": {
+        "width": 424,
+        "height": 0
+      },
+      "styles": {
+        "fills": [],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#23365e",
+            "weight": 1
+          }
+        ]
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "347:163",
+      "name": "Line 19",
+      "type": "LINE",
+      "dimensions": {
+        "width": 424,
+        "height": 0
+      },
+      "styles": {
+        "fills": [],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#23365e",
+            "weight": 1
+          }
+        ]
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "265:298",
+      "name": "Скачать сертификаты",
+      "type": "TEXT",
+      "dimensions": {
+        "width": 326,
+        "height": 38
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#23365e"
+          }
+        ],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      },
+      "text": "Скачать сертификаты"
+    },
+    {
+      "id": "347:164",
+      "name": "Rectangle 55",
+      "type": "RECTANGLE",
+      "dimensions": {
+        "width": 430,
+        "height": 310
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#d9d9d9"
+          }
+        ],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "345:155",
+      "name": "2026-04-18_16-22-09 1",
+      "type": "RECTANGLE",
+      "dimensions": {
+        "width": 430,
+        "height": 310
+      },
+      "styles": {
+        "fills": [],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "383:6",
+      "name": "Rectangle 56",
+      "type": "RECTANGLE",
+      "dimensions": {
+        "width": 390,
+        "height": 70
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#d9d9d9"
+          }
+        ],
+        "strokes": [
+          {
+            "type": "SOLID",
+            "color": "#ffffff",
+            "weight": 2
+          }
+        ]
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      }
+    },
+    {
+      "id": "383:5",
+      "name": "Отправить заявку",
+      "type": "TEXT",
+      "dimensions": {
+        "width": 266,
+        "height": 37
+      },
+      "styles": {
+        "fills": [
+          {
+            "type": "SOLID",
+            "color": "#23365e"
+          }
+        ],
+        "strokes": []
+      },
+      "layout": {
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        }
+      },
+      "text": "Отправить заявку"
+    }
+  ],
+  "layoutInfo": {
+    "padding": {}
+  },
+  "styles": {
+    "colors": [
+      {
+        "id": "local_265:297",
+        "hex": "#ffffff",
+        "name": "color_local_265_297"
+      },
+      {
+        "id": "local_265:299",
+        "hex": "#23365e",
+        "name": "color_local_265_299"
+      },
+      {
+        "id": "local_265:303",
+        "hex": "#000000",
+        "name": "color_local_265_303"
+      },
+      {
+        "id": "local_265:305",
+        "hex": "#000000",
+        "name": "color_local_265_305"
+      },
+      {
+        "id": "local_265:307",
+        "hex": "#000000",
+        "name": "color_local_265_307"
+      },
+      {
+        "id": "local_344:151",
+        "hex": "#d9d9d900",
+        "name": "color_local_344_151"
+      },
+      {
+        "id": "local_344:152",
+        "hex": "#d9d9d900",
+        "name": "color_local_344_152"
+      },
+      {
+        "id": "local_344:153",
+        "hex": "#d9d9d900",
+        "name": "color_local_344_153"
+      },
+      {
+        "id": "local_265:300",
+        "hex": "#23365e",
+        "name": "color_local_265_300"
+      },
+      {
+        "id": "local_265:309",
+        "hex": "#23365e",
+        "name": "color_local_265_309"
+      },
+      {
+        "id": "local_265:298",
+        "hex": "#23365e",
+        "name": "color_local_265_298"
+      },
+      {
+        "id": "local_347:164",
+        "hex": "#d9d9d9",
+        "name": "color_local_347_164"
+      },
+      {
+        "id": "local_383:6",
+        "hex": "#d9d9d9",
+        "name": "color_local_383_6"
+      },
+      {
+        "id": "local_383:5",
+        "hex": "#23365e",
+        "name": "color_local_383_5"
+      }
+    ],
+    "fonts": []
+  }
+}

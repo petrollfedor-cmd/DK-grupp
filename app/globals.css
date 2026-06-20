@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@500;600;700&display=swap&family=Roboto+Flex:wght@300;400;500;600;700&display=swap');
+ 
+ html, body {
+   padding: 0;
+   margin: 0;
+   font-family: 'Roboto Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   background: #fff;
+   color: #0f1c34;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: #1677ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+:root {
+  --brand-color: #1e3a5f;
+  --accent-color: #ff5722;
+  --container-width: 1200px;
+}
+
+/* Ant Design Customization */
+.ant-btn-primary {
+  background-color: #1e3a5f;
+}
+
+.ant-btn-primary:hover {
+  background-color: #152847;
+}
+
+.ant-menu-dark {
+  background: transparent !important;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+  background-color: transparent !important;
+  color: #fff !important;
+}
+
+/* Breadcrumb - убрать нумерацию и зафиксировать */
+.ant-breadcrumb {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 20px !important;
+  font-size: 14px !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+.ant-breadcrumb ol {
+  counter-reset: none !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ant-breadcrumb li {
+  counter-increment: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+.ant-breadcrumb li::before {
+  content: '' !important;
+  display: none !important;
+}
+
+.ant-breadcrumb a {
+  text-decoration: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+.ant-breadcrumb-separator {
+  margin: 0 8px !important;
+  padding: 0 !important;
+  height: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Section spacing */
+section {
+  position: relative;
+}
+
+/* Header - базовые стили (основное в инлайн-стилях Header.tsx) */
+.site-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: 16px;
+  height: 36px;
+}
+
+.site-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: url('/figma/avatar.png') center/cover;
+  flex-shrink: 0;
+}
+
+.site-logo-container {
+  position: absolute;
+  top: 80px;
+  left: 142px;
+  z-index: 99;
+}
+
+.site-logo-link {
+  display: block;
+  line-height: 0;
+}
+
+.site-logo-full {
+  display: block;
+  width: 75px;
+  height: auto;
+}
+
+.site-contacts-bar {
+  position: absolute;
+  top: 85px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.site-contact-email,
+.site-contact-phone {
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  text-decoration: none;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.site-contact-email:hover,
+.site-contact-phone:hover {
+  color: #ffd388;
+}
+
+/* Hero */
+.hero-title {
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.hero-description-box {
+  backdrop-filter: blur(4px);
+}
+
+.hero-main-title-wrapper {
+  background: #fff;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.hero-main-title {
+  color: #23365E;
+  font-family: 'Lato', sans-serif;
+  font-weight: 600;
+  font-size: 54px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+
+
