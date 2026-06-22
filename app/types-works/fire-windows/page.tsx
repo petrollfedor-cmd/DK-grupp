@@ -1,4 +1,4 @@
-у'use client';
+'use client';
 
 import { Typography } from 'antd';
 import NextImage from 'next/image';
