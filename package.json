@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "figma-fetch": "ts-node ./scripts/figma-fetch.ts",
-    "figma-analyze": "ts-node ./scripts/figma-analyze.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "antd": "^5.0.0",
@@ -23,8 +21,6 @@
     "dotenv": "^17.4.2",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.0.0",
-    "node-fetch": "^3.3.2",
-    "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "yarn": "^1.22.22"
   }
