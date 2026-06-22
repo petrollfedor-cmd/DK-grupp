@@ -20,6 +20,7 @@ const workTypes = [
   {
     image: '/figma/12:27.png',
     title: 'Остекление лифтовых шахт',
+    link: '/types-works/elevator-shafts',
   },
   {
     image: '/figma/12:77.png',

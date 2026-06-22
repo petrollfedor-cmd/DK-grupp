@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import NextImage from 'next/image';
 
 interface CalculationModalProps {
   isOpen: boolean;
@@ -194,16 +195,15 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
                 backgroundColor: '#e0e0e0',
               }}
             >
-              <img
+              <NextImage
                 src="/figma/346:162.png"
                 alt="Каска на чертежах"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
+                fill
+                style={{ objectFit: 'cover' }}
+                loading="lazy"
+                quality={80}
                 onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
+                  e.currentTarget.style.display = 'none';
                   e.currentTarget.parentElement!.style.display = 'flex';
                   e.currentTarget.parentElement!.style.alignItems = 'center';
                   e.currentTarget.parentElement!.style.justifyContent = 'center';

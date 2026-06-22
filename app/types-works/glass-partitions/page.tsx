@@ -34,7 +34,7 @@ export default function GlassPartitionsPage() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      handleNext();
+      setCurrent((prev) => (prev + 2) % images.length);
     }, 4000);
     return () => clearInterval(timer);
   }, []);
@@ -172,14 +172,10 @@ export default function GlassPartitionsPage() {
             boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
           }}>
             <img
-              key="left"
+              key={`left-${current}`}
               src={visible[0]}
               alt={`Цельностеклянные перегородки ${current + 1}`}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
           {/* Правое фото */}
@@ -191,14 +187,11 @@ export default function GlassPartitionsPage() {
             boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
           }}>
             <img
-              key="right"
+              key={`right-${current}`}
               src={visible[1]}
               alt={`Цельностеклянные перегородки ${current + 2}`}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              loading="lazy"
             />
           </div>
         </div>

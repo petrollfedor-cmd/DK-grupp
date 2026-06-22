@@ -2,6 +2,7 @@
 
 import { Layout, Menu } from 'antd';
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { usePathname } from 'next/navigation';
 
 const { Header } = Layout;
@@ -108,6 +109,16 @@ export default function AppHeader({ onOpenModal }: AppHeaderProps) {
 
   return (
     <>
+      <style>{`
+        .nav-menu-item:hover {
+          background: rgba(255, 255, 255, 0.15) !important;
+          border-radius: 4px;
+          transition: background 0.2s ease;
+        }
+        .nav-menu-item:hover a {
+          color: #ffffff !important;
+        }
+      `}</style>
       <Header style={headerStyle}>
         <div style={headerLeftStyle}>
           <div className="site-avatar" />
@@ -119,6 +130,7 @@ export default function AppHeader({ onOpenModal }: AppHeaderProps) {
           items={headerMenuItems.map((item) => ({
             key: item.key,
             style: menuItemInlineStyle,
+            className: 'nav-menu-item',
             label: (
               <a href={item.href} style={{ color: '#fff', textDecoration: 'none', lineHeight: '1', display: 'flex', alignItems: 'center' }}>
                 {item.label}
@@ -139,10 +151,14 @@ export default function AppHeader({ onOpenModal }: AppHeaderProps) {
         <>
           <div className="site-logo-container">
             <Link href="/" className="site-logo-link">
-              <img
+              <NextImage
                 className="site-logo-full"
                 src="/figma/2:5.png"
                 alt="Логотип"
+                width={200}
+                height={80}
+                priority
+                style={{ width: 'auto', height: 'auto' }}
               />
             </Link>
           </div>

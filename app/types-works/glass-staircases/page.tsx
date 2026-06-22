@@ -47,7 +47,7 @@ function Carousel({ images }: { images: string[] }) {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      handleNext();
+      setCurrent((prev) => (prev + 2) % images.length);
     }, 4000);
     return () => clearInterval(timer);
   }, []);
@@ -96,14 +96,11 @@ function Carousel({ images }: { images: string[] }) {
           boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
         }}>
           <img
-            key="left"
+            key={`left-${current}`}
             src={visible[0]}
             alt={`Фото 1`}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            loading="lazy"
           />
         </div>
         {/* Правое фото */}
@@ -115,14 +112,11 @@ function Carousel({ images }: { images: string[] }) {
           boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
         }}>
           <img
-            key="right"
+            key={`right-${current}`}
             src={visible[1]}
             alt={`Фото 2`}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            loading="lazy"
           />
         </div>
       </div>

@@ -31,7 +31,7 @@ export default function RadiusElementsPage() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (!animating) handleNext();
+      if (!animating) setCurrent((prev) => (prev + 1) % images.length);
     }, 4000);
     return () => clearInterval(timer);
   }, [animating]);
@@ -138,13 +138,11 @@ export default function RadiusElementsPage() {
           boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
         }}>
           <img
+            key={`radius-${current}`}
             src={images[current]}
             alt={`Радиусные элементы ${current + 1}`}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            loading="lazy"
           />
         </div>
 

@@ -1,6 +1,7 @@
-'use client';
+у'use client';
 
 import { Typography } from 'antd';
+import NextImage from 'next/image';
 
 const { Title, Paragraph } = Typography;
 
@@ -87,6 +88,7 @@ export default function FireWindowsPage() {
               height: '100%',
               objectFit: 'cover',
             }}
+            loading="lazy"
           />
         </div>
       </div>

@@ -1,22 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
 import { Layout } from 'antd';
 import AppHeader from '@/components/Header';
 import AppFooter from '@/components/Footer';
 import CalculationModal from '@/components/CalculationModal';
+import RequisitesModal from '@/components/RequisitesModal';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRequisitesOpen, setIsRequisitesOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (window.location.hash) {
-      // Browser handles hash scroll automatically
-      return;
-    }
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 0);
@@ -28,8 +25,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <Layout.Content style={{ flex: 1 }}>
         {children}
       </Layout.Content>
-      <AppFooter />
+      <AppFooter onOpenRequisites={() => setIsRequisitesOpen(true)} />
       <CalculationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <RequisitesModal isOpen={isRequisitesOpen} onClose={() => setIsRequisitesOpen(false)} />
     </Layout>
   );
 }
