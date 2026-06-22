@@ -1,9 +1,14 @@
 'use client';
 
 import { Typography } from 'antd';
-import NextImage from 'next/image';
+import type { Metadata } from 'next';
 
 const { Title, Paragraph } = Typography;
+
+export const metadata: Metadata = {
+  title: 'Противопожарные окна и витражи EI9 90 | ООО ДК ГРУПП',
+  description: 'Противопожарные светопрозрачные конструкции: окна, витражи, двери, перегородки, фасады с огнестойкостью до EI9 90.',
+};
 
 export default function FireWindowsPage() {
   return (

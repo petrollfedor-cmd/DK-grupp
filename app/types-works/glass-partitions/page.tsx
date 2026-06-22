@@ -1,6 +1,7 @@
 'use client';
 
 import { Typography, Row, Col } from 'antd';
+import type { Metadata } from 'next';
 import { useState, useEffect } from 'react';
 
 const { Title, Paragraph } = Typography;
@@ -12,6 +13,11 @@ const images = [
   '/figma/photo3.jpg',
   '/figma/photo4.jpg',
 ];
+
+export const metadata: Metadata = {
+  title: 'Цельностеклянные перегородки для офиса | ООО ДК ГРУПП',
+  description: 'Заказ цельностеклянных перегородок для офиса и бизнес-центра. Закалённое стекло 10-12 мм, установка под ключ. Зонирование офисов, банков, салонов красоты.',
+};
 
 export default function GlassPartitionsPage() {
   const [current, setCurrent] = useState(0);

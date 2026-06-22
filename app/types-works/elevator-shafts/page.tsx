@@ -1,6 +1,7 @@
 'use client';
 
 import { Typography, Row, Col } from 'antd';
+import type { Metadata } from 'next';
 import { useState, useEffect } from 'react';
 
 const { Title, Paragraph } = Typography;
@@ -11,6 +12,11 @@ const images = [
   '/figma/lift1.png',
   '/figma/lift2.jpg',
 ];
+
+export const metadata: Metadata = {
+  title: 'Остекление лифтовых шахт панорамными лифтами | ООО ДК ГРУПП',
+  description: 'Панорамные лифты и остекление лифтовых шахт. Безрамные и каркасные системы, стеклянные шахты лифтов для ТЦ, бизнес-центров.',
+};
 
 export default function ElevatorShaftsPage() {
   const [current, setCurrent] = useState(0);

@@ -1,6 +1,7 @@
 'use client';
 
 import { Typography } from 'antd';
+import type { Metadata } from 'next';
 import { useState, useEffect } from 'react';
 
 const { Title, Paragraph } = Typography;
@@ -10,6 +11,11 @@ const images = [
   '/figma/261:40.png',
   '/figma/261:43.png',
 ];
+
+export const metadata: Metadata = {
+  title: 'Радиусные элементы для колонн и фасадов | ООО ДК ГРУПП',
+  description: 'Радиусные элементы из АКП, алюминия, нержавеющей и оцинкованной стали для облицовки колонн, фасадов и декорирования.',
+};
 
 export default function RadiusElementsPage() {
   const [current, setCurrent] = useState(0);

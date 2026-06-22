@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
 const workTypes = [
   {
@@ -44,7 +45,10 @@ const workTypes = [
   },
 ];
 
-export default function TypesWorksPage() {
+export const metadata: Metadata = {
+  title: 'Типы работ — перегородки, лестницы, лифты | ООО ДК ГРУПП',
+  description: 'Портфолио типовых работ: цельностеклянные перегородки, лестничные ограждения, остекление лифтовых шахт, радиусные элементы, противопожарные конструкции.',
+};
   return (
     <main style={{ padding: '40px 142px', maxWidth: '1920px', margin: '0 auto' }}>
       {/* Хлебные крошки */}

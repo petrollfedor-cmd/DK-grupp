@@ -1,8 +1,5 @@
-# Пока сайт в разработке - запрет индексации
 User-agent: *
-Disallow: /
+Allow: /
 
-# Когда сайт будет готов, замени на:
-# User-agent: *
-# Allow: /
-# Sitemap: https://твой-домен.ru/sitemap.xml
+# Сitemap
+Sitemap: https://dk-grupp.ru/sitemap.xml

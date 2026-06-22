@@ -1,6 +1,7 @@
 'use client';
 
 import { Typography, Row, Col } from 'antd';
+import type { Metadata } from 'next';
 import { useState, useEffect } from 'react';
 
 const { Title, Paragraph } = Typography;
@@ -8,9 +9,30 @@ const { Title, Paragraph } = Typography;
 const images1 = [
   '/figma/12:26.png',
   '/figma/251:99.png',
-  '/figma/251:102.png',
-  '/figma/tochki1.jpg',
+  '/figma/432:307.png',
+  '/figma/255:5.png',
+  '/figma/432:322.png',
+  '/figma/stoiki1.jpg',
+  '/figma/stoiki2.jpg',
+  '/figma/stoiki3.png',
 ];
+
+const images2 = [
+  '/figma/12:26.png',
+  '/figma/251:99.png',
+  '/figma/432:307.png',
+];
+
+const images3 = [
+  '/figma/12:26.png',
+  '/figma/251:99.png',
+  '/figma/432:307.png',
+];
+
+export const metadata: Metadata = {
+  title: 'Стеклянные лестничные ограждения | ООО ДК ГРУПП',
+  description: 'Стеклянные лестничные ограждения на точках, алюминиевом профиле и министойках. Закалённый триплекс 10/12 мм. Высота 950-1200 мм.',
+};
 
 const images2 = [
   '/figma/432:307.png',

@@ -1,7 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import Contacts from '@/components/Contacts';
+
+export const metadata: Metadata = {
+  title: 'Контакты — ООО ДК ГРУПП',
+  description: 'Свяжитесь с нами для расчёта и заказа перегородок, лестничных ограждений и других светопрозрачных конструкций.',
+};
 
 export default function ContactsPage() {
   return (
