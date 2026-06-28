@@ -37,7 +37,30 @@ export default function RadiusElementsPage() {
   }, [animating]);
 
   return (
-    <main style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+    <main className="radius-main" style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .radius-main {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          .radius-carousel {
+            flex-direction: column !important;
+            gap: 12px !important;
+          }
+          .radius-carousel-nav {
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 16px !important;
+          }
+          .radius-carousel-img {
+            width: 100% !important;
+            height: auto !important;
+            max-height: 300px !important;
+            aspect-ratio: 4/3 !important;
+          }
+        }
+      `}</style>
       {/* Хлебные крошки */}
       <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <a
@@ -106,7 +129,7 @@ export default function RadiusElementsPage() {
       </Paragraph>
 
       {/* Карусель */}
-      <div style={{
+      <div className="radius-carousel" style={{
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
@@ -114,7 +137,7 @@ export default function RadiusElementsPage() {
         gap: '20px',
         marginBottom: '40px',
       }}>
-        <div style={{
+        <div className="radius-carousel-nav" style={{
           width: '40px',
           height: '40px',
           borderRadius: '50%',
@@ -130,7 +153,7 @@ export default function RadiusElementsPage() {
           ←
         </div>
 
-        <div style={{
+        <div className="radius-carousel-img" style={{
           width: '1000px',
           height: '350px',
           borderRadius: '8px',
@@ -146,7 +169,7 @@ export default function RadiusElementsPage() {
           />
         </div>
 
-        <div style={{
+        <div className="radius-carousel-nav" style={{
           width: '40px',
           height: '40px',
           borderRadius: '50%',

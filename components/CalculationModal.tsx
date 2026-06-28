@@ -133,27 +133,38 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 9999,
-        padding: '20px',
-      }}
-      onClick={onClose}
-    >
+    <>
+      <style>{`
+        @media (max-width: 768px) {
+          .calc-modal-content {
+            grid-template-columns: 1fr !important;
+          }
+          .calc-modal-image {
+            display: none !important;
+          }
+        }
+      `}</style>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          padding: '8px',
+        }}
+        onClick={onClose}
+      >
       <div
         style={{
           backgroundColor: '#fff',
           borderRadius: '8px',
-          padding: '40px',
+          padding: '20px',
           maxWidth: '800px',
           width: '100%',
           maxHeight: '90vh',
@@ -162,9 +173,11 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
         }}
         onClick={(e) => e.stopPropagation()}
       >
+
         {/* Кнопка закрытия */}
         <button
           onClick={onClose}
+          className="calc-modal-close"
           style={{
             position: 'absolute',
             top: '16px',
@@ -182,9 +195,9 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
           ×
         </button>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '32px', marginBottom: '32px' }}>
+        <div className="calc-modal-content" style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '32px', marginBottom: '32px' }}>
           {/* Левая колонка - Фото */}
-          <div>
+          <div className="calc-modal-image">
             <div
               style={{
                 position: 'relative',
@@ -217,6 +230,7 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
           {/* Правая колонка - Заголовок и форма */}
           <div>
             <h2
+              className="calc-modal-title"
               style={{
                 margin: '0 0 24px 0',
                 fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -229,7 +243,7 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
               Получить расчёт вашего объекта:
             </h2>
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <form className="calc-modal-form" onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {/* Поле ФИО */}
               <div>
                 <input
@@ -311,6 +325,7 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
               {/* Загрузка файлов */}
               <div>
                 <div
+                  className="calc-modal-file-label"
                   style={{
                     marginBottom: '12px',
                     fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -387,6 +402,7 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
               <div style={{ textAlign: 'right', marginTop: '8px' }}>
                 <button
                   type="submit"
+                  className="calc-modal-submit"
                   style={{
                     padding: '14px 40px',
                     fontSize: '16px',
@@ -414,5 +430,6 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
         </div>
       </div>
     </div>
+    </>
   );
 }

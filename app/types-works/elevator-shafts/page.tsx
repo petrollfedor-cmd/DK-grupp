@@ -1,7 +1,7 @@
 'use client';
 
 import { Typography, Row, Col } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 
 const { Title, Paragraph } = Typography;
 
@@ -39,13 +39,37 @@ export default function ElevatorShaftsPage() {
   }, []);
 
   // Показываем одно фото
-  const getVisible = () => {
-    return [images[current]];
-  };
-  const visible = getVisible();
+  const visible = useMemo(() => [images[current]], [current]);
 
   return (
-    <main style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+    <main className="elevator-shafts-main" style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .elevator-shafts-main {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          .es-carousel {
+            flex-direction: column !important;
+            gap: 12px !important;
+          }
+          .es-carousel-nav {
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 16px !important;
+          }
+          .es-carousel-photos > div {
+            height: auto !important;
+            aspect-ratio: 4/3 !important;
+          }
+          .es-views-title {
+            margin-top: 24px !important;
+          }
+          .es-views-content {
+            padding-top: 20px !important;
+          }
+        }
+      `}</style>
       {/* Хлебные крошки */}
       <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <a
@@ -104,8 +128,8 @@ export default function ElevatorShaftsPage() {
         Преимущества панорамных лифтов
       </Title>
 
-      <Row gutter={[24, 24]} style={{ marginBottom: '48px' }}>
-        <Col span={12}>
+      <Row gutter={[24, 24]} className="es-row" style={{ marginBottom: '48px' }}>
+        <Col xs={24} md={12}>
           <div style={{
             border: '2px solid #23365E',
             borderRadius: '8px',
@@ -132,7 +156,7 @@ export default function ElevatorShaftsPage() {
             </Paragraph>
           </div>
         </Col>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <div style={{
             border: '2px solid #23365E',
             borderRadius: '8px',
@@ -162,7 +186,7 @@ export default function ElevatorShaftsPage() {
       </Row>
 
       {/* Карусель */}
-      <div style={{
+      <div className="es-carousel" style={{
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
@@ -186,7 +210,7 @@ export default function ElevatorShaftsPage() {
           ←
         </div>
 
-        <div style={{
+        <div className="es-carousel-photos" style={{
           display: 'flex',
           gap: '20px',
           maxWidth: '1000px',
@@ -196,16 +220,20 @@ export default function ElevatorShaftsPage() {
           <div style={{
             width: '100%',
             maxWidth: '500px',
-            height: '400px',
+            aspectRatio: '4/3',
             borderRadius: '8px',
             overflow: 'hidden',
             boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
           }}>
             <img
-              key={`single-${current}`}
               src={visible[0]}
               alt={`Остекление лифтовых шахт ${current + 1}`}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                transition: 'opacity 0.3s ease',
+              }}
               loading="lazy"
             />
           </div>
@@ -239,8 +267,8 @@ export default function ElevatorShaftsPage() {
         Сферы применения панорамных лифтов:
       </Title>
 
-      <Row gutter={[32, 32]} style={{ marginBottom: '64px' }}>
-        <Col span={8}>
+      <Row gutter={[32, 32]} className="es-row" style={{ marginBottom: '64px' }}>
+        <Col xs={24} md={8}>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
             <div style={{
               flexShrink: 0,
@@ -265,7 +293,7 @@ export default function ElevatorShaftsPage() {
             </div>
           </div>
         </Col>
-        <Col span={8}>
+        <Col xs={24} md={8}>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
             <div style={{
               flexShrink: 0,
@@ -290,7 +318,7 @@ export default function ElevatorShaftsPage() {
             </div>
           </div>
         </Col>
-        <Col span={8}>
+        <Col xs={24} md={8}>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
             <div style={{
               flexShrink: 0,
@@ -361,8 +389,8 @@ export default function ElevatorShaftsPage() {
         Важные качества:
       </Title>
 
-      <Row gutter={[24, 24]}>
-        <Col span={12}>
+      <Row gutter={[24, 24]} className="es-row">
+        <Col xs={24} md={12}>
           <div style={{
             border: '2px solid #23365E',
             borderRadius: '8px',
@@ -389,7 +417,7 @@ export default function ElevatorShaftsPage() {
             </Paragraph>
           </div>
         </Col>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <div style={{
             border: '2px solid #23365E',
             borderRadius: '8px',
@@ -419,7 +447,7 @@ export default function ElevatorShaftsPage() {
       </Row>
 
       {/* Виды систем остекления */}
-      <Title level={3} style={{
+      <Title level={3} className="es-views-title" style={{
         fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
         fontSize: '22px',
         fontWeight: 600,
@@ -429,7 +457,7 @@ export default function ElevatorShaftsPage() {
         Виды систем остекления лифтовых шахт:
       </Title>
 
-      <div style={{ marginBottom: '48px' }}>
+      <div className="es-views-content" style={{ marginBottom: '48px' }}>
         <div style={{ marginBottom: '20px' }}>
           <Paragraph style={{
             fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',

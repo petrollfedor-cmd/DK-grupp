@@ -58,7 +58,7 @@ function Carousel({ images }: { images: string[] }) {
   ];
 
   return (
-    <div style={{
+    <div className="gs-carousel" style={{
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
@@ -66,7 +66,7 @@ function Carousel({ images }: { images: string[] }) {
       gap: '20px',
       marginBottom: '40px',
     }}>
-      <div style={{
+      <div className="gs-carousel-nav" style={{
         width: '40px',
         height: '40px',
         borderRadius: '50%',
@@ -82,7 +82,7 @@ function Carousel({ images }: { images: string[] }) {
         ←
       </div>
 
-      <div style={{
+      <div className="gs-carousel-photos" style={{
         display: 'flex',
         gap: '20px',
         maxWidth: '1000px',
@@ -90,38 +90,46 @@ function Carousel({ images }: { images: string[] }) {
         {/* Левое фото */}
         <div style={{
           flex: 1,
-          height: '400px',
+          aspectRatio: '4/3',
           borderRadius: '8px',
           overflow: 'hidden',
           boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
         }}>
           <img
-            key={`left-${current}`}
             src={visible[0]}
             alt={`Фото 1`}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              transition: 'opacity 0.3s ease',
+            }}
             loading="lazy"
           />
         </div>
         {/* Правое фото */}
         <div style={{
           flex: 1,
-          height: '400px',
+          aspectRatio: '4/3',
           borderRadius: '8px',
           overflow: 'hidden',
           boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
         }}>
           <img
-            key={`right-${current}`}
             src={visible[1]}
             alt={`Фото 2`}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              transition: 'opacity 0.3s ease',
+            }}
             loading="lazy"
           />
         </div>
       </div>
 
-      <div style={{
+      <div className="gs-carousel-nav" style={{
         width: '40px',
         height: '40px',
         borderRadius: '50%',
@@ -142,7 +150,28 @@ function Carousel({ images }: { images: string[] }) {
 
 export default function GlassStaircasesPage() {
   return (
-    <main style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+    <main className="gs-main" style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .gs-main {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          .gs-carousel {
+            flex-direction: column !important;
+            gap: 12px !important;
+          }
+          .gs-carousel-nav {
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 16px !important;
+          }
+          .gs-carousel-photos {
+            flex-direction: column !important;
+            gap: 12px !important;
+          }
+        }
+      `}</style>
       {/* Хлебные крошки */}
       <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <a

@@ -50,7 +50,43 @@ export default function GlassPartitionsPage() {
   const visible = getVisible();
 
   return (
-    <main style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+    <main className="glass-partitions-main" style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .glass-partitions-main {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          .gp-carousel {
+            flex-direction: column !important;
+            gap: 12px !important;
+          }
+          .gp-carousel-nav {
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 16px !important;
+          }
+          .gp-carousel-photos {
+            flex-direction: column !important;
+            gap: 12px !important;
+          }
+          .gp-carousel-photos > div {
+            height: auto !important;
+            aspect-ratio: 4/3 !important;
+          }
+          .gp-features-row .ant-col,
+          .gp-options-row .ant-col {
+            display: block !important;
+            width: 100% !important;
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+          }
+          .gp-features-row .ant-col > div,
+          .gp-options-row .ant-col > div {
+            margin-bottom: 16px !important;
+          }
+        }
+      `}</style>
       {/* Хлебные крошки */}
       <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <a
@@ -134,7 +170,7 @@ export default function GlassPartitionsPage() {
       </Title>
 
       {/* Карусель */}
-      <div style={{
+      <div className="gp-carousel" style={{
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
@@ -142,7 +178,7 @@ export default function GlassPartitionsPage() {
         gap: '20px',
         marginBottom: '64px',
       }}>
-        <div style={{
+        <div className="gp-carousel-nav" style={{
           width: '40px',
           height: '40px',
           borderRadius: '50%',
@@ -158,7 +194,7 @@ export default function GlassPartitionsPage() {
           ←
         </div>
 
-        <div style={{
+        <div className="gp-carousel-photos" style={{
           display: 'flex',
           gap: '20px',
           maxWidth: '1000px',
@@ -166,7 +202,7 @@ export default function GlassPartitionsPage() {
           {/* Левое фото */}
           <div style={{
             flex: 1,
-            height: '400px',
+            aspectRatio: '4/3',
             borderRadius: '8px',
             overflow: 'hidden',
             boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
@@ -181,7 +217,7 @@ export default function GlassPartitionsPage() {
           {/* Правое фото */}
           <div style={{
             flex: 1,
-            height: '400px',
+            aspectRatio: '4/3',
             borderRadius: '8px',
             overflow: 'hidden',
             boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
@@ -196,7 +232,7 @@ export default function GlassPartitionsPage() {
           </div>
         </div>
 
-        <div style={{
+        <div className="gp-carousel-nav" style={{
           width: '40px',
           height: '40px',
           borderRadius: '50%',
@@ -223,7 +259,7 @@ export default function GlassPartitionsPage() {
       }}>
         Особенности конструкций:
       </Title>
-      <Row gutter={[32, 32]} style={{ marginBottom: '64px' }}>
+      <Row gutter={[32, 32]} className="gp-features-row" style={{ marginBottom: '64px' }}>
         <Col span={8}>
           <div style={{
             border: '2px solid #23365E',
@@ -451,7 +487,7 @@ export default function GlassPartitionsPage() {
       }}>
         Мы изготавливаем все возможные варианты перегородок из стеклянных панелей:
       </Title>
-      <Row gutter={[24, 24]} style={{ marginBottom: '32px' }}>
+      <Row gutter={[24, 24]} className="gp-options-row" style={{ marginBottom: '32px' }}>
         <Col span={8}>
           <div style={{
             border: '2px solid #23365E',

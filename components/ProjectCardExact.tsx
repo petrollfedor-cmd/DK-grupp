@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ProjectCardExactProps {
   image: string;
@@ -19,83 +19,71 @@ export default function ProjectCardExact({
   maxHeight = 280,
 }: ProjectCardExactProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100%',
-        aspectRatio: '790 / 450',
-        minHeight: '200px',
-        maxHeight: `${maxHeight}px`,
-        overflow: 'hidden',
-        borderRadius: '8px',
-        cursor: 'pointer',
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Изображение проекта */}
-      <Image
-        src={image}
-        alt={title}
-        fill
+    <div className="project-card-wrapper">
+      <div
+        onClick={isMobile ? (e) => {
+          if ((e.target as HTMLElement).closest('.project-card-arrow-btn')) return;
+          setIsOpen(!isOpen);
+        } : undefined}
         style={{
-          objectFit: 'cover',
-          transition: 'transform 0.3s ease',
-          transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+          position: 'relative',
+          width: '100%',
+          aspectRatio: '790 / 450',
+          minHeight: '200px',
+          maxHeight: `${maxHeight}px`,
+          overflow: 'hidden',
+          borderRadius: '8px',
+          cursor: 'pointer',
         }}
-        quality={90}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-      />
+        onMouseEnter={!isMobile ? () => setIsHovered(true) : undefined}
+        onMouseLeave={!isMobile ? () => setIsHovered(false) : undefined}
+      >
+        <Image
+          src={image}
+          alt={title}
+          fill
+          style={{
+            objectFit: 'cover',
+            transition: 'transform 0.3s ease',
+            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+          }}
+          quality={90}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+        />
 
-      {/* Иконка в левом верхнем углу (круглая) */}
-      {icon && (
         <div
           style={{
             position: 'absolute',
-            top: 'clamp(12px, 2vw, 20px)',
-            left: 'clamp(12px, 2vw, 20px)',
-            width: 'clamp(32px, 5vw, 48px)',
-            height: 'clamp(32px, 5vw, 48px)',
-            borderRadius: '50%',
-            overflow: 'hidden',
-            zIndex: 2,
+            bottom: '10px',
+            left: '0',
+            right: '0',
+            width: '100%',
+            minHeight: 'clamp(70px, 12vw, 110px)',
+            background: isHovered
+              ? 'linear-gradient(135deg, rgba(62, 77, 109, 0.85) 0%, rgba(35, 54, 94, 0.9) 50%, rgba(3, 17, 48, 0.95) 100%)'
+              : 'linear-gradient(135deg, rgba(62, 77, 109, 0.3) 0%, rgba(35, 54, 94, 0.35) 50%, rgba(3, 17, 48, 0.4) 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '4px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 'clamp(12px, 2vw, 20px) clamp(20px, 3vw, 28px)',
+            boxSizing: 'border-box',
+            backdropFilter: 'blur(4px)',
+            transition: 'max-height 0.3s ease',
+            maxHeight: isHovered ? 'none' : 'clamp(70px, 12vw, 110px)',
           }}
         >
-          <Image
-            src={icon}
-            alt=""
-            fill
-            style={{ objectFit: 'cover' }}
-          />
-        </div>
-      )}
-
-      {/* Тёмная плашка с названием - видима всегда */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '10px',
-          right: '10px',
-          left: 'auto',
-          width: 'clamp(280px, 40vw, 550px)',
-          minHeight: 'clamp(70px, 12vw, 110px)',
-          background: isHovered 
-            ? 'linear-gradient(135deg, rgba(62, 77, 109, 0.85) 0%, rgba(35, 54, 94, 0.9) 50%, rgba(3, 17, 48, 0.95) 100%)'
-            : 'linear-gradient(135deg, rgba(62, 77, 109, 0.3) 0%, rgba(35, 54, 94, 0.35) 50%, rgba(3, 17, 48, 0.4) 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.15)',
-          borderRadius: '4px',
-          display: 'flex',
-          alignItems: 'center',
-          padding: 'clamp(12px, 2vw, 20px) clamp(20px, 3vw, 28px)',
-          boxSizing: 'border-box',
-          transition: 'all 0.3s ease',
-          backdropFilter: 'blur(4px)',
-        }}
-      >
-        <div style={{ width: '100%' }}>
-          {/* Название проекта */}
           <h3
             style={{
               margin: 0,
@@ -106,13 +94,14 @@ export default function ProjectCardExact({
               lineHeight: '100%',
               letterSpacing: '0%',
               textShadow: '0 4px 4px rgba(0, 0, 0, 0.5)',
+              width: '100%',
+              textAlign: 'left',
             }}
           >
             {title}
           </h3>
 
-          {/* Описание - появляется только при ховере */}
-          {description && (
+          {!isMobile && description && (
             <div
               style={{
                 marginTop: '12px',
@@ -124,8 +113,10 @@ export default function ProjectCardExact({
                 opacity: isHovered ? 1 : 0,
                 transform: isHovered ? 'translateY(0)' : 'translateY(10px)',
                 transition: 'all 0.3s ease',
-                maxHeight: isHovered ? '200px' : '0',
-                overflow: 'hidden',
+                maxHeight: '300px',
+                overflow: 'auto',
+                width: '100%',
+                textAlign: 'left',
               }}
             >
               {description}
@@ -133,6 +124,70 @@ export default function ProjectCardExact({
           )}
         </div>
       </div>
+
+      {isOpen && description && (
+        <div
+          className="project-card-below"
+          style={{
+            display: 'block',
+            padding: '16px',
+            paddingTop: '40px',
+            background: 'linear-gradient(135deg, rgba(62, 77, 109, 0.85) 0%, rgba(35, 54, 94, 0.9) 50%, rgba(3, 17, 48, 0.95) 100%)',
+            borderRadius: '8px',
+            marginTop: '4px',
+            position: 'relative',
+            maxHeight: '60vh',
+            overflowY: 'auto',
+          }}
+        >
+          <div
+            onClick={() => setIsOpen(false)}
+            style={{
+              position: 'absolute',
+              top: '12px',
+              right: '12px',
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'background 0.2s',
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)')}
+            onMouseOut={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)')}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 1L13 13M1 13L13 1" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <h3
+            style={{
+              margin: '0 0 12px 0',
+              fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
+              fontSize: '18px',
+              fontWeight: 600,
+              color: '#ffffff',
+              lineHeight: '1.2',
+            }}
+          >
+            {title}
+          </h3>
+          <div
+            style={{
+              fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: '#ffffff',
+              lineHeight: 1.6,
+            }}
+          >
+            {description}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -46,7 +46,7 @@ const workTypes = [
 
 export default function TypesWorksPage() {
   return (
-    <main style={{ padding: '40px 142px', maxWidth: '1920px', margin: '0 auto' }}>
+    <main className="types-works-main" style={{ padding: '40px 142px', maxWidth: '1920px', margin: '0 auto' }}>
       {/* Хлебные крошки */}
       <div style={{ marginBottom: '32px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <Link
@@ -90,8 +90,25 @@ export default function TypesWorksPage() {
         Типы работ:
       </h2>
 
+      <style>{`
+        @media (max-width: 768px) {
+          .types-works-main {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          .types-works-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
+          }
+          .types-works-grid > a > div > div:first-child {
+            aspect-ratio: 4/3 !important;
+            height: auto !important;
+          }
+        }
+      `}</style>
+
       {/* Сетка карточек 4x2 */}
-      <div style={{
+      <div className="types-works-grid" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(4, 1fr)',
         gap: '20px',

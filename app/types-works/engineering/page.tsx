@@ -25,7 +25,18 @@ const advantages = [
 
 export default function EngineeringPage() {
   return (
-    <main style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+    <main className="engineering-main" style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .engineering-main {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          .engineering-cards {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
       {/* Хлебные крошки */}
       <div style={{ marginBottom: '32px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <a
@@ -96,7 +107,7 @@ export default function EngineeringPage() {
       </Paragraph>
 
       {/* Карточки направлений */}
-      <div style={{
+      <div className="engineering-cards" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
         gap: '24px',

@@ -7,7 +7,24 @@ const { Title, Paragraph } = Typography;
 
 export default function FireWindowsPage() {
   return (
-    <main style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+    <main className="fire-windows-main" style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .fire-windows-main {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          .fw-header {
+            flex-direction: column !important;
+            gap: 16px !important;
+          }
+          .fw-header-image {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 4/3 !important;
+          }
+        }
+      `}</style>
       {/* Хлебные крошки */}
       <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <a
@@ -56,7 +73,7 @@ export default function FireWindowsPage() {
       </h2>
 
       {/* Описание */}
-      <div style={{ display: 'flex', gap: '32px', marginBottom: '40px', alignItems: 'flex-start' }}>
+      <div className="fw-header" style={{ display: 'flex', gap: '32px', marginBottom: '40px', alignItems: 'flex-start' }}>
         <div style={{ flex: 1 }}>
           <Paragraph style={{
             fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -72,7 +89,7 @@ export default function FireWindowsPage() {
             дополнительную функциональность и удобство эксплуатации.
           </Paragraph>
         </div>
-        <div style={{
+        <div className="fw-header-image" style={{
           width: '380px',
           height: '260px',
           borderRadius: '8px',

@@ -56,7 +56,46 @@ export default function GlassShowersPage() {
   const current = configurations[active];
 
   return (
-    <main style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+    <main className="showers-main" style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .showers-main {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          .showers-configs {
+            flex-direction: column !important;
+            gap: 8px !important;
+          }
+          .showers-configs button {
+            width: 100% !important;
+            padding: 10px 16px !important;
+            font-size: 14px !important;
+            border-radius: 6px !important;
+          }
+          .showers-demo {
+            height: 400px !important;
+          }
+          .showers-demo .chameleon-scene {
+            padding: 0 10px !important;
+            box-sizing: border-box !important;
+          }
+          .showers-demo .chameleon-scene > div {
+            padding-top: 0 !important;
+          }
+          .showers-nav-btn {
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 16px !important;
+          }
+          .showers-nav-left {
+            left: 10px !important;
+          }
+          .showers-nav-right {
+            right: 10px !important;
+          }
+        }
+      `}</style>
       {/* Хлебные крошки */}
       <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <a
@@ -126,7 +165,7 @@ export default function GlassShowersPage() {
       </Paragraph>
 
       {/* Карточки конфигураций */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '32px', justifyContent: 'center' }}>
+      <div className="showers-configs" style={{ display: 'flex', gap: '12px', marginBottom: '32px', justifyContent: 'center' }}>
         {configurations.map((cfg, idx) => (
           <button
             key={cfg.id}
@@ -154,7 +193,7 @@ export default function GlassShowersPage() {
       </div>
 
       {/* Анимированная демонстрация */}
-      <div style={{
+      <div className="showers-demo" style={{
         position: 'relative',
         height: '500px',
         marginBottom: '20px',
@@ -263,7 +302,7 @@ export default function GlassShowersPage() {
 
         {/* Хамелеон — один человек, затемняемое стекло */}
         {active === 2 && (
-          <div style={{
+          <div className="chameleon-scene" style={{
             position: 'absolute',
             inset: 0,
             background: 'linear-gradient(180deg, #d4e8f0 0%, #b8d4e3 100%)',
@@ -275,8 +314,10 @@ export default function GlassShowersPage() {
             {/* Ванная комната */}
             <div style={{
               position: 'relative',
-              width: '500px',
+              width: '100%',
+              maxWidth: '500px',
               height: '420px',
+              margin: '0 auto',
             }}>
               {/* Задняя стена */}
               <div style={{
@@ -299,9 +340,9 @@ export default function GlassShowersPage() {
               {/* Душевая кабина — одна рама */}
               <div style={{
                 position: 'absolute',
-                left: '40px',
+                left: '10px',
+                right: '10px',
                 top: '60px',
-                width: '420px',
                 height: '340px',
                 border: '6px solid #23365E',
                 borderRadius: '4px',
@@ -477,7 +518,7 @@ export default function GlassShowersPage() {
         )}
 
         {/* Навигация */}
-        <div style={{
+        <div className="showers-nav-btn showers-nav-left" style={{
           position: 'absolute',
           top: '50%',
           left: '20px',
@@ -497,7 +538,7 @@ export default function GlassShowersPage() {
         }} onClick={handlePrev}>
           ←
         </div>
-        <div style={{
+        <div className="showers-nav-btn showers-nav-right" style={{
           position: 'absolute',
           top: '50%',
           right: '20px',
