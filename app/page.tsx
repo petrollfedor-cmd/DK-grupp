@@ -88,6 +88,7 @@ export default function HomePage() {
 
         {/* Сетка проектов 2x2 - компактная */}
         <div
+          className={`projects-grid${showAllProjects ? ' show-more' : ''}`}
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',

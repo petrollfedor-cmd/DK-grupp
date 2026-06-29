@@ -341,9 +341,8 @@ section {
     gap: 16px !important;
   }
 
-  /* Скрыть карточки 3-4 на мобильном по умолчанию */
-  .projects-grid > div:nth-child(3),
-  .projects-grid > div:nth-child(4) {
+  /* Скрыть карточки 3+ на мобильном по умолчанию */
+  .projects-grid > div:nth-child(n+3) {
     display: none !important;
   }
 
