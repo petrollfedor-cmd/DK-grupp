@@ -1,0 +1,52 @@
+{
+  "logo": "/figma/15:462.png",
+  "contacts": {
+    "phone": "+7 (911) 999-49-95",
+    "email": "DK-Group1@yandex.ru",
+    "phoneHref": "tel:+79119994995",
+    "emailHref": "mailto:DK-Group1@yandex.ru"
+  },
+  "social": {
+    "telegram": "https://t.me",
+    "whatsapp": "https://whatsapp.com",
+    "telegramIcon": "/figma/telegram_icon.png",
+    "whatsappIcon": "/figma/whatsapp_icon.png"
+  },
+  "partners": [
+    { "name": "Express", "image": "/figma/370:119.png" },
+    { "name": "Book Store", "image": "/figma/370:121.png" },
+    { "name": "Color Lab", "image": "/figma/370:122.png" },
+    { "name": "Glow", "image": "/figma/370:123.png" },
+    { "name": "X-Trade", "image": "/figma/370:124.png" },
+    { "name": "Touch", "image": "/figma/370:125.png" }
+  ],
+  "documents": [
+    {
+      "name": "Скачать сертификаты",
+      "href": "/documents/certificates.pdf",
+      "type": "link"
+    },
+    {
+      "name": "Ассоциация «СРО «СВС»",
+      "href": "/documents/СРО.pdf",
+      "type": "open"
+    },
+    {
+      "name": "Опросный лист для расчета",
+      "href": "/documents/Опросный-лист.docx",
+      "type": "open"
+    },
+    {
+      "name": "Реквизиты ДК-Групп",
+      "type": "action",
+      "action": "open_requisites"
+    }
+  ],
+  "calculationSection": {
+    "title": "Нужно рассчитать стоимость объекта?",
+    "description": "Заполните форму и прикрепите файлы (фото, чертежи, спецификации) — мы подготовим расчёт",
+    "getCalcButton": "Получить расчёт",
+    "contactsButton": "Контакты",
+    "contactsHref": "/contacts"
+  }
+}

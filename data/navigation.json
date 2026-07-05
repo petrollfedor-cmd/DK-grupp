@@ -1,0 +1,32 @@
+[
+  {
+    "key": "main",
+    "label": "Главная",
+    "href": "/#hero"
+  },
+  {
+    "key": "projects",
+    "label": "Проекты",
+    "href": "/#projects"
+  },
+  {
+    "key": "types",
+    "label": "Типы работ",
+    "href": "/types-works"
+  },
+  {
+    "key": "about",
+    "label": "О компании",
+    "href": "/about"
+  },
+  {
+    "key": "presentation",
+    "label": "Скачать презентацию",
+    "href": "/contacts"
+  },
+  {
+    "key": "contacts",
+    "label": "Контакты",
+    "href": "/contacts"
+  }
+]
