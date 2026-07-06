@@ -9,7 +9,7 @@ const workTypes = [
   },
   {
     image: '/figma/12:23.png',
-    title: 'Цельностеклянные перегородки для офиса',
+    title: 'Внутренние стеклянные светопрозрачные перегородки',
     link: '/types-works/glass-partitions',
   },
   {
@@ -24,7 +24,7 @@ const workTypes = [
   },
   {
     image: '/figma/12:77.png',
-    title: 'Противопожарные окна и витражи',
+    title: 'Противопожарные алюминиевые витражи и стальные конструкции',
     link: '/types-works/fire-windows',
   },
   {

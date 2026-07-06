@@ -8,9 +8,9 @@
   },
   "social": {
     "telegram": "https://t.me",
-    "whatsapp": "https://whatsapp.com",
+    "max": "https://max.ru",
     "telegramIcon": "/figma/telegram_icon.png",
-    "whatsappIcon": "/figma/whatsapp_icon.png"
+    "maxIcon": "/figma/MAX-32x32.png"
   },
   "partners": [
     { "name": "Express", "image": "/figma/370:119.png" },
@@ -18,7 +18,10 @@
     { "name": "Color Lab", "image": "/figma/370:122.png" },
     { "name": "Glow", "image": "/figma/370:123.png" },
     { "name": "X-Trade", "image": "/figma/370:124.png" },
-    { "name": "Touch", "image": "/figma/370:125.png" }
+    { "name": "Touch", "image": "/figma/370:125.png" },
+    { "name": "Private Glass", "image": "/figma/private-glass.svg" },
+    { "name": "АО ЦСИ", "image": "/figma/tsi-logo.svg" },
+    { "name": "Рубеж", "image": "/figma/rubez-logo.png" }
   ],
   "documents": [
     {

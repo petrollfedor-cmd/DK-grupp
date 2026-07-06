@@ -1,58 +1,142 @@
 'use client';
 
 import { Typography, Row, Col } from 'antd';
-import {
-  BulbOutlined,
-  BarChartOutlined,
-  FileTextOutlined,
-  SafetyOutlined,
-} from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
 
 const benefits = [
   {
-    icon: <BulbOutlined style={{ fontSize: '32px', color: '#1e3a5f' }} />,
-    title: 'Разработка концепций',
-    description: 'Разработка идей и концепций для новых строительных проектов.',
+    icon: '/figma/Group.png',
+    title: 'Выбор лидеров рынка',
+    description:
+      'Мы интегрируем лучшие профильные системы, чтобы предложить вам идеальное решение для любой задачи. Работаем с эталонной Немецкой маркой - Schüco, энергоэффективными системами - Alutech и инновационными Российскими профилями - Mastech.',
   },
   {
-    icon: <BarChartOutlined style={{ fontSize: '32px', color: '#1e3a5f' }} />,
-    title: 'Маркетинговое обоснование',
-    description: 'Исследование рынка и технико-экономическое обоснование.',
+    icon: '/figma/Group (1).png',
+    title: 'Прозрачность и честность',
+    description:
+      'Итоговая стоимость в 90% случаев совпадает с предварительной сметой. Мы подбираем оптимальные решения без маркетинговых уловок, чтобы реальность превзошла ваши ожидания.',
   },
   {
-    icon: <FileTextOutlined style={{ fontSize: '32px', color: '#1e3a5f' }} />,
-    title: 'Проектная документация',
-    description: 'Подготовка проектной документации и получение разрешений.',
+    icon: '/figma/Group (2).png',
+    title: 'Гарантия результата "под ключ"',
+    description:
+      'Полный цикл работ: проектирование, производство, монтаж и сервис. Ваш объект в Москве, Крыму, Сочи или на Камчатке — мы обеспечим своевременные поставки и безупречное качество исполнения.',
   },
   {
-    icon: <SafetyOutlined style={{ fontSize: '32px', color: '#1e3a5f' }} />,
-    title: 'Контроль качества',
-    description: 'Технический контроль и управление проектом до сдачи.',
+    icon: '/figma/Group (3).png',
+    title: 'Техническая поддержка и расширенная гарантия',
+    description:
+      'Мы не просто поставляем конструкции, мы несем за них ответственность. Наши инженеры сопровождают проект на всех этапах, а вы получаете уверенность в долговечности каждого элемента.',
+  },
+];
+
+const services = [
+  {
+    icon: '/figma/Group (4).png',
+    title: 'Разработку идей и концепций',
+    description: '',
+  },
+  {
+    icon: '/figma/Group (5).png',
+    title: 'Выполнение строительных работ',
+    description: 'Выполнение строительных работ различных типов: внешние, электрические, механические, противопожарные, низковольтные, автоматические, ландшафтные и др.',
+  },
+  {
+    icon: '/figma/Group (7).png',
+    title: 'Исследование рынка и технико-экономическое обоснование',
+    description: '',
+  },
+  {
+    icon: '/figma/Group (8).png',
+    title: 'Технический контроль и управление проектом',
+    description: '',
+  },
+  {
+    icon: '/figma/Group (9).png',
+    title: 'Подготовку проектной документации и получение разрешений',
+    description: '',
+  },
+  {
+    icon: '/figma/Group (10).png',
+    title: 'Тестирование, ввод в эксплуатацию и сдачу объектов',
+    description: '',
   },
 ];
 
 export default function About() {
   return (
     <section style={{ padding: '60px 24px', maxWidth: '1200px', margin: '0 auto' }}>
-      <Title level={2} style={{ textAlign: 'center', marginBottom: '48px' }}>
-        О компании
+      {/* Breadcrumbs */}
+      <div style={{ marginBottom: '24px', fontSize: '14px', color: '#999' }}>
+        <span style={{ color: '#1e3a5f', fontWeight: 500 }}>Главная</span>
+        <span style={{ margin: '0 8px' }}>/</span>
+        <span style={{ borderBottom: '2px solid #1e3a5f', paddingBottom: '2px' }}>О компании</span>
+      </div>
+
+      {/* Title */}
+      <Title level={2} style={{ marginBottom: '24px', color: '#1e3a5f' }}>
+        О компании:
       </Title>
-      <Paragraph style={{ fontSize: '16px', marginBottom: '48px', textAlign: 'center', maxWidth: '800px', margin: '0 auto 48px' }}>
-        «ДК ГРУПП» — строительная компания, выступающая в роли генерального подрядчика и проектировщика на российском рынке. Мы предоставляем комплексные услуги на всех этапах строительного процесса.
+
+      {/* Mission */}
+      <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', marginBottom: '48px', color: '#333' }}>
+        «ДК ГРУПП» — строительная компания, выступающая в роли генерального подрядчика и проектировщика на российском рынке. Мы предоставляем комплексные услуги на всех этапах строительного процесса:
       </Paragraph>
-      <Row gutter={[24, 24]}>
+
+      {/* Services Grid */}
+      <Row gutter={[32, 32]}>
+        {services.map((service, idx) => (
+          <Col xs={24} md={12} key={idx}>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+              <img
+                src={service.icon}
+                alt={service.title}
+                style={{ width: '48px', height: '48px', objectFit: 'contain', flexShrink: 0 }}
+              />
+              <div>
+                <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', color: '#333', marginBottom: 0 }}>
+                  {service.title}
+                  {service.description && (
+                    <>
+                      {' — '}{service.description}
+                    </>
+                  )}
+                </Paragraph>
+              </div>
+            </div>
+          </Col>
+        ))}
+      </Row>
+
+      {/* Final paragraph */}
+      <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', marginTop: '48px', color: '#333' }}>
+        Наш подход обеспечивает надежное выполнение всех задач, связанных со строительством, от начального планирования до окончательной реализации и гарантийного обслуживания.
+      </Paragraph>
+
+      {/* Benefits Title */}
+      <Title level={3} style={{ marginBottom: '32px', color: '#1e3a5f', marginTop: '64px' }}>
+        Ваша выгода от работы с нами:
+      </Title>
+
+      {/* Benefits Grid */}
+      <Row gutter={[32, 32]}>
         {benefits.map((benefit, idx) => (
-          <Col xs={24} sm={12} md={6} key={idx}>
-            <div style={{ textAlign: 'center' }}>
-              {benefit.icon}
-              <Title level={4} style={{ marginTop: '16px' }}>
-                {benefit.title}
-              </Title>
-              <Paragraph style={{ fontSize: '14px', color: '#666' }}>
-                {benefit.description}
-              </Paragraph>
+          <Col xs={24} md={12} key={idx}>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+              <img
+                src={benefit.icon}
+                alt={benefit.title}
+                style={{ width: '48px', height: '48px', objectFit: 'contain', flexShrink: 0 }}
+              />
+              <div>
+                <Title level={4} style={{ marginBottom: '12px', color: '#1e3a5f', marginTop: 0 }}>
+                  {benefit.title}
+                </Title>
+                <Paragraph style={{ fontSize: '14px', lineHeight: '1.6', color: '#555', marginBottom: 0 }}>
+                  {benefit.description}
+                </Paragraph>
+              </div>
             </div>
           </Col>
         ))}
