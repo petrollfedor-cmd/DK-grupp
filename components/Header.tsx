@@ -8,11 +8,14 @@ import { usePathname } from 'next/navigation';
 
 const { Header } = Layout;
 
-interface MenuItem {
-  key: string;
-  label: string;
-  href: string;
-}
+const headerMenuItems = [
+  { label: 'Главная', key: 'main', href: '/#hero' },
+  { label: 'Проекты', key: 'projects', href: '/#projects' },
+  { label: 'Типы работ', key: 'types', href: '/types-works' },
+  { label: 'О компании', key: 'about', href: '/about' },
+  { label: 'Скачать презентацию', key: 'presentation', href: '/contacts' },
+  { label: 'Контакты', key: 'contacts', href: '/contacts' },
+];
 
 interface AppHeaderProps {
   onOpenModal?: () => void;
@@ -21,20 +24,7 @@ interface AppHeaderProps {
 export default function AppHeader({ onOpenModal }: AppHeaderProps) {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
-  
-  // Загрузка навигации из API
-  useEffect(() => {
-    fetch('/api/navigation')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && data.data) {
-          setMenuItems(data.data);
-        }
-      })
-      .catch(err => console.error('Failed to load navigation:', err));
-  }, []);
   
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -217,7 +207,7 @@ export default function AppHeader({ onOpenModal }: AppHeaderProps) {
           <Menu
             theme="dark"
             mode="horizontal"
-            items={menuItems.map((item) => ({
+            items={headerMenuItems.map((item) => ({
               key: item.key,
               style: menuItemInlineStyle,
               className: 'nav-menu-item',
@@ -300,7 +290,7 @@ export default function AppHeader({ onOpenModal }: AppHeaderProps) {
 
       {/* Mobile Menu Dropdown */}
       <div className={`mobile-menu-container ${isMenuOpen ? 'open' : ''}`}>
-        {menuItems.map((item) => (
+        {headerMenuItems.map((item) => (
           <div key={item.key} className="mobile-menu-item">
             <a onClick={() => handleMenuClick(item.href)}>
               {item.label}

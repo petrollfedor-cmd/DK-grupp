@@ -84,6 +84,31 @@ export default function HomePage() {
       .catch(err => console.error('Failed to load footer:', err));
   }, []);
 
+  // Форматирование описания проекта
+  const formatDescription = (desc: string) => {
+    const items = desc.split(';').filter(s => s.trim());
+    if (items.length === 0) return desc;
+    
+    return (
+      <ul style={{ margin: 0, paddingLeft: '20px' }}>
+        {items.map((item, idx) => {
+          const parts = item.split('—').map(s => s.trim());
+          return (
+            <li key={idx} style={{ marginBottom: '4px' }}>
+              {parts.length >= 2 ? (
+                <>
+                  <strong>{parts[0]}</strong> — {parts.slice(1).join('—').trim()}
+                </>
+              ) : (
+                item.trim()
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
   useEffect(() => {
     const sections = [
       { id: 'projects', title: 'Проекты' },
@@ -132,7 +157,7 @@ export default function HomePage() {
 
       <Hero
         imageUrl={heroData?.imageUrl}
-        title={heroData?.title}
+        title={heroData?.title || ''}
         description={heroData?.description}
       />
 
@@ -175,29 +200,7 @@ export default function HomePage() {
               image={project.image}
               icon={project.icon}
               title={project.title}
-              description={
-                (() => {
-                  const items = project.description.split(';').filter(s => s.trim());
-                  return (
-                    <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                      {items.map((item, idx) => {
-                        const parts = item.split('—').map(s => s.trim());
-                        return (
-                          <li key={idx} style={{ marginBottom: '4px' }}>
-                            {parts.length >= 2 ? (
-                              <>
-                                <strong>{parts[0]}</strong> — {parts.slice(1).join('—').trim()}
-                              </>
-                            ) : (
-                              item.trim()
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  );
-                })()
-              }
+              description={formatDescription(project.description)}
               maxHeight={project.maxHeight}
             />
           ))}

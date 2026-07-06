@@ -1,14 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Typography } from 'antd';
 import Link from 'next/link';
 
-interface HeroData {
-  imageUrl: string;
-  title: string;
-  description: string;
-  mainTitle: string;
-}
+const { Title, Paragraph } = Typography;
 
 interface HeroProps {
   imageUrl?: string;
@@ -17,30 +12,13 @@ interface HeroProps {
 }
 
 export default function Hero({ imageUrl, title, description }: HeroProps) {
-  const [heroData, setHeroData] = useState<HeroData | null>(null);
-  
-  // Загрузка данных hero из API
-  useEffect(() => {
-    fetch('/api/hero')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && data.data) {
-          setHeroData(data.data);
-        }
-      })
-      .catch(err => console.error('Failed to load hero:', err));
-  }, []);
-  
-  // Используем данные из API или пропсы как fallback
-  const currentImageUrl = heroData?.imageUrl || imageUrl || '/placeholder-hero.jpg';
-  const currentDescription = heroData?.description || description;
   return (
     <section
       className="hero-section"
       style={{
         position: 'relative',
         height: '550px',
-        background: `url('${currentImageUrl}') center/cover`,
+        background: `url('${imageUrl || '/placeholder-hero.jpg'}') center/cover`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -90,7 +68,7 @@ export default function Hero({ imageUrl, title, description }: HeroProps) {
             textAlign: 'left',
           }}
         >
-          {currentDescription}
+          {description}
         </p>
       </div>
     </section>

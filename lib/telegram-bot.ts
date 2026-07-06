@@ -750,7 +750,7 @@ function showProjectConfirm(userId: number, chatId: number, data: any) {
   bot.sendMessage(chatId, `⚠️ Подтвердите изменения:\n\n📝 ${title}\n📄 ${desc}\n🖼 ${image}`, { reply_markup: keyboard });
 }
 
-bot.on('polling_error', (error) => {
+bot.on('polling_error', (error: any) => {
   console.log('Polling error (ignored):', error.code);
 });
 
