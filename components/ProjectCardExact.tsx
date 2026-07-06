@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 interface ProjectCardExactProps {
@@ -48,17 +47,18 @@ export default function ProjectCardExact({
         onMouseEnter={!isMobile ? () => setIsHovered(true) : undefined}
         onMouseLeave={!isMobile ? () => setIsHovered(false) : undefined}
       >
-        <Image
+        <img
           src={image}
           alt={title}
-          fill
           style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
             objectFit: 'cover',
             transition: 'transform 0.3s ease',
             transform: isHovered ? 'scale(1.05)' : 'scale(1)',
           }}
-          quality={90}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
         />
 
         <div

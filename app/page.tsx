@@ -9,9 +9,105 @@ import ProjectCardExact from '@/components/ProjectCardExact';
 
 const { Title } = Typography;
 
+interface Project {
+  id: number;
+  image: string;
+  icon: string;
+  title: string;
+  description: string;
+  maxHeight: number;
+}
+
+interface HeroData {
+  imageUrl: string;
+  title: string;
+  description: string;
+  mainTitle: string;
+}
+
+interface FooterData {
+  contacts: {
+    phone: string;
+    email: string;
+    phoneHref: string;
+    emailHref: string;
+  };
+  calculationSection: {
+    title: string;
+    description: string;
+    getCalcButton: string;
+    contactsButton: string;
+    contactsHref: string;
+  };
+}
+
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [heroData, setHeroData] = useState<HeroData | null>(null);
+  const [footerData, setFooterData] = useState<FooterData | null>(null);
+
+  // Загрузка проектов из API
+  useEffect(() => {
+    fetch('/api/projects')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data) {
+          setProjects(data.data);
+        }
+      })
+      .catch(err => console.error('Failed to load projects:', err));
+  }, []);
+
+  // Загрузка hero данных из API
+  useEffect(() => {
+    fetch('/api/hero')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data) {
+          setHeroData(data.data);
+        }
+      })
+      .catch(err => console.error('Failed to load hero:', err));
+  }, []);
+
+  // Загрузка footer данных из API
+  useEffect(() => {
+    fetch('/api/footer')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data) {
+          setFooterData(data.data);
+        }
+      })
+      .catch(err => console.error('Failed to load footer:', err));
+  }, []);
+
+  // Форматирование описания проекта
+  const formatDescription = (desc: string) => {
+    const items = desc.split(';').filter(s => s.trim());
+    if (items.length === 0) return desc;
+    
+    return (
+      <ul style={{ margin: 0, paddingLeft: '20px' }}>
+        {items.map((item, idx) => {
+          const parts = item.split('—').map(s => s.trim());
+          return (
+            <li key={idx} style={{ marginBottom: '4px' }}>
+              {parts.length >= 2 ? (
+                <>
+                  <strong>{parts[0]}</strong> — {parts.slice(1).join('—').trim()}
+                </>
+              ) : (
+                item.trim()
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
 
   useEffect(() => {
     const sections = [
@@ -60,13 +156,15 @@ export default function HomePage() {
       />
 
       <Hero
-        imageUrl="/figma/265:278.png"
-        title="СТРОИТЕЛЬНО-МОНТАЖНЫЕ РАБОТЫ РАЗЛИЧНЫХ ТИПОВ"
-        description="Фасадные работы всех типов: проектирование, остекление, инженерная документация"
+        imageUrl={heroData?.imageUrl}
+        title={heroData?.title || ''}
+        description={heroData?.description}
       />
 
       <div className="hero-main-title-wrapper">
-        <h1 className="hero-main-title" style={{ fontSize: 'clamp(24px, 3vw, 32px)', marginTop: '20px', marginBottom: '20px' }}>СТРОИТЕЛЬНО-МОНТАЖНЫЕ РАБОТЫ РАЗЛИЧНЫХ ТИПОВ</h1>
+        <h1 className="hero-main-title" style={{ fontSize: 'clamp(24px, 3vw, 32px)', marginTop: '20px', marginBottom: '20px' }}>
+          {heroData?.mainTitle || 'СТРОИТЕЛЬНО-МОНТАЖНЫЕ РАБОТЫ РАЗЛИЧНЫХ ТИПОВ'}
+        </h1>
       </div>
 
       <section id="projects" style={{ padding: '20px 60px', maxWidth: '1920px', margin: '0 auto' }}>
@@ -96,107 +194,16 @@ export default function HomePage() {
             justifyContent: 'start',
           }}
         >
-          {/* Карточка 1: Аэропорт Гагарин */}
-          <ProjectCardExact
-            image="/figma/88:69.png"
-            icon="/figma/88:69.png"
-            title="Аэропорт Гагарин г. Саратов"
-            description={
-              <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                <li><strong>Проектирование</strong> — разработка рабочей документации, расчет нагрузок, оптимизация раскроя материала;</li>
-                <li><strong>Поставка материалов</strong> — эмалит, несущие профили, крепежные элементы, уплотнители (полная комплектация);</li>
-                <li><strong>Монтаж несущих конструкций</strong> — установка каркаса под остекление с контролем геометрии;</li>
-                <li><strong>Остекление</strong> — монтаж панелей эмалита площадью 2100 м² с соблюдением технологии;</li>
-                <li><strong>Герметизация и отделка</strong> — обработка швов, установка отливов, финишная доводка;</li>
-              </ul>
-            }
-            maxHeight={280}
-          />
-
-          {/* Карточка 2: Новый комплекс ИКБ №1 */}
-          <ProjectCardExact
-            image="/figma/161:32.png"
-            icon="/figma/161:32.png"
-            title="Новый комплекс ИКБ №1"
-            description={
-              <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                <li><strong>Проектирование</strong> — разработка полного пакета документации с учетом всех нагрузок и норм;</li>
-                <li><strong>Поставка</strong> — комплектация материалами под ключ (стекло, профили, крепеж, уплотнители);</li>
-                <li><strong>Монтаж</strong> — установка внутренних светопрозрачных конструкций — 150 м²;</li>
-                <li><strong>Монтаж</strong> — фасадных противопожарных входных групп — 1750 м²;</li>
-              </ul>
-            }
-            maxHeight={280}
-          />
-
-          {/* Карточка 3: МГУ кластер Ломоносов */}
-          <ProjectCardExact
-            image="/figma/6:15.png"
-            icon="/figma/6:15.png"
-            title="МГУ кластер Ломоносов"
-            description={
-              <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                <li>облицовка 62 колонн эмалитом (высотой до 18 м) — 1360 м²;</li>
-                <li>стеклянные ограждения (прямые участки) — 2300 пог. м;</li>
-                <li>стеклянное ограждение винтовой лестницы — 157 пог. м.</li>
-              </ul>
-            }
-            maxHeight={280}
-          />
-
-          {/* Карточка 4: Научный центр имени А.С. Логинова МКНЦ */}
-          <ProjectCardExact
-            image="/figma/88:70.png"
-            icon="/figma/88:70.png"
-            title="Научный центр имени А.С. Логинова МКНЦ"
-            description={
-              <>
-                <p style={{ margin: '0 0 12px 0' }}>Проектирование и полный цикл работ по остеклению и реставрации:</p>
-                <ul style={{ margin: '0 0 12px 0', paddingLeft: '20px' }}>
-                  <li>внутренние светопрозрачные конструкции — 350 м² (монтаж);</li>
-                  <li>внутренние противопожарные светопрозрачные конструкции — 150 м² (монтаж);</li>
-                  <li>фасадная стоечно-ригельная система — 3000 м² (реставрация).</li>
-                </ul>
-                <p style={{ margin: 0 }}>Включая все подготовительные, монтажные и отделочные этапы.</p>
-              </>
-            }
-            maxHeight={280}
-          />
-
-          {/* Карточка 5: Показывается только при нажатии "Все проекты" */}
-          {showAllProjects && (
-            <>
-              <ProjectCardExact
-                image="/figma/223:15.png"
-                icon="/figma/223:15.png"
-                title="Центр Самбо и Бокса в Лужниках"
-                description={
-                  <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                    <li><strong>Проектирование полного цикла</strong> — разработка КМД (конструкций металлических), расчеты нагрузок, узлов крепления, раскладка элементов;</li>
-                    <li><strong>Колонны (6 шт., высота до 18 м)</strong> — проектирование, поставка материалов и монтаж облицовки/остекления колонн с учетом сложной геометрии и высотных работ;</li>
-                    <li><strong>Светопрозрачный потолок</strong> — проектирование, поставка и монтаж конструкций площадью 1780 м² (включая несущий каркас, заполнение, герметизацию);</li>
-                    <li><strong>Сопровождение всех этапов</strong> — авторский надзор, контроль качества, решение технических вопросов на площадке, сдача объекта.</li>
-                  </ul>
-                }
-                maxHeight={280}
-              />
-
-              {/* Карточка 6: Показывается только при нажатии "Все проекты" */}
-              <ProjectCardExact
-                image="/figma/227:89.png"
-                icon="/figma/227:89.png"
-                title="Флагманский центр ГКБ № 15 имени О.М. Филатова"
-                description={
-                  <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                    <li><strong>Проектирование</strong> — адаптация фасадных решений;</li>
-                    <li><strong>Поставка</strong> — структурное остекление, алюминиевые конструкции;</li>
-                    <li><strong>Монтаж</strong> — фасадное остекление 2800 м²;</li>
-                  </ul>
-                }
-                maxHeight={280}
-              />
-            </>
-          )}
+          {projects.slice(0, showAllProjects ? undefined : 4).map((project) => (
+            <ProjectCardExact
+              key={project.id}
+              image={project.image}
+              icon={project.icon}
+              title={project.title}
+              description={formatDescription(project.description)}
+              maxHeight={project.maxHeight}
+            />
+          ))}
         </div>
 
         {/* Кнопка "Все проекты" */}
@@ -236,7 +243,7 @@ export default function HomePage() {
             color: '#23365E',
           }}
         >
-          Нужно рассчитать стоимость объекта?
+          {footerData?.calculationSection?.title || 'Нужно рассчитать стоимость объекта?'}
         </h2>
         <p
           style={{
@@ -248,7 +255,7 @@ export default function HomePage() {
             margin: '0 auto 32px auto',
           }}
         >
-          Заполните форму и прикрепите файлы (фото, чертежи, спецификации) — мы подготовим расчёт
+          {footerData?.calculationSection?.description || 'Заполните форму и прикрепите файлы (фото, чертежи, спецификации) — мы подготовим расчёт'}
         </p>
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
           <button
@@ -277,10 +284,10 @@ export default function HomePage() {
               e.currentTarget.style.boxShadow = '0 4px 12px rgba(35, 54, 94, 0.3)';
             }}
           >
-            Получить расчёт
+            {footerData?.calculationSection?.getCalcButton || 'Получить расчёт'}
           </button>
           <Link
-            href="/contacts"
+            href={footerData?.calculationSection?.contactsHref || '/contacts'}
             style={{
               padding: '18px 48px',
               fontSize: '18px',
@@ -305,7 +312,7 @@ export default function HomePage() {
               e.currentTarget.style.color = '#23365E';
             }}
           >
-            Контакты
+            {footerData?.calculationSection?.contactsButton || 'Контакты'}
           </Link>
         </div>
       </section>
