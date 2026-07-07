@@ -707,11 +707,21 @@ bot.on('message', async (msg) => {
   
   // Hero edit: step 5 (image) → step 6 (confirm)
   if (state.mode === 'edit_hero' && state.step === 5) {
-    setUserState(userId, { ...state, step: 6, tempData: text });
+    let imagePath = text || '/figma/default.png';
+    const photo = msg.photo?.[msg.photo.length - 1];
+    if (photo) {
+      const fileId = photo.file_id;
+      const filename = `hero_${Date.now()}.png`;
+      const downloadPath = path.join(process.cwd(), 'public', 'figma', filename);
+      const fileStream = bot.getFileStream(fileId);
+      await new Promise<void>((resolve, reject) => { fileStream.on('error', reject); fileStream.pipe(fs.createWriteStream(downloadPath)); fileStream.on('end', resolve); });
+      imagePath = `/figma/${filename}`;
+    }
+    setUserState(userId, { ...state, step: 6, tempData: imagePath });
     const { getAllContent } = require('./content');
     const content = getAllContent();
     const keyboard = { inline_keyboard: [[{ text: '✅ Сохранить', callback_data: 'confirm_hero_image' }, { text: '❌ Отмена', callback_data: 'cancel_hero_image' }]] };
-    bot.sendMessage(chatId, `⚠️ Новое: \`\`\`\n${text}\n\`\`\`\n\nТекущее: \`\`\`\n${content.hero.imageUrl}\n\`\`\``, { reply_markup: keyboard });
+    bot.sendMessage(chatId, `⚠️ Новое: \`\`\`\n${imagePath}\n\`\`\`\n\nТекущее: \`\`\`\n${content.hero.imageUrl}\n\`\`\``, { reply_markup: keyboard });
     return;
   }
   

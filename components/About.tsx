@@ -1,6 +1,6 @@
 'use client';
 
-import { Typography, Row, Col } from 'antd';
+import { Typography } from 'antd';
 
 const { Title, Paragraph } = Typography;
 
@@ -85,29 +85,40 @@ export default function About() {
       </Paragraph>
 
       {/* Services Grid */}
-      <Row gutter={[32, 32]}>
+      <style>{`
+        .about-services-grid, .about-benefits-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 32px;
+        }
+        @media (max-width: 767px) {
+          .about-services-grid, .about-benefits-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
+
+      <div className="about-services-grid">
         {services.map((service, idx) => (
-          <Col xs={24} md={12} key={idx}>
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-              <img
-                src={service.icon}
-                alt={service.title}
-                style={{ width: '48px', height: '48px', objectFit: 'contain', flexShrink: 0 }}
-              />
-              <div>
-                <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', color: '#333', marginBottom: 0 }}>
-                  {service.title}
-                  {service.description && (
-                    <>
-                      {' — '}{service.description}
-                    </>
-                  )}
-                </Paragraph>
-              </div>
+          <div key={idx} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+            <img
+              src={service.icon}
+              alt={service.title}
+              style={{ width: '48px', height: '48px', objectFit: 'contain', flexShrink: 0 }}
+            />
+            <div>
+              <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', color: '#333', marginBottom: 0 }}>
+                {service.title}
+                {service.description && (
+                  <>
+                    {' — '}{service.description}
+                  </>
+                )}
+              </Paragraph>
             </div>
-          </Col>
+          </div>
         ))}
-      </Row>
+      </div>
 
       {/* Final paragraph */}
       <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', marginTop: '48px', color: '#333' }}>
@@ -120,27 +131,25 @@ export default function About() {
       </Title>
 
       {/* Benefits Grid */}
-      <Row gutter={[32, 32]}>
+      <div className="about-benefits-grid">
         {benefits.map((benefit, idx) => (
-          <Col xs={24} md={12} key={idx}>
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-              <img
-                src={benefit.icon}
-                alt={benefit.title}
-                style={{ width: '48px', height: '48px', objectFit: 'contain', flexShrink: 0 }}
-              />
-              <div>
-                <Title level={4} style={{ marginBottom: '12px', color: '#1e3a5f', marginTop: 0 }}>
-                  {benefit.title}
-                </Title>
-                <Paragraph style={{ fontSize: '14px', lineHeight: '1.6', color: '#555', marginBottom: 0 }}>
-                  {benefit.description}
-                </Paragraph>
-              </div>
+          <div key={idx} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+            <img
+              src={benefit.icon}
+              alt={benefit.title}
+              style={{ width: '48px', height: '48px', objectFit: 'contain', flexShrink: 0 }}
+            />
+            <div>
+              <Title level={4} style={{ marginBottom: '12px', color: '#1e3a5f', marginTop: 0 }}>
+                {benefit.title}
+              </Title>
+              <Paragraph style={{ fontSize: '14px', lineHeight: '1.6', color: '#555', marginBottom: 0 }}>
+                {benefit.description}
+              </Paragraph>
             </div>
-          </Col>
+          </div>
         ))}
-      </Row>
+      </div>
     </section>
   );
 }
