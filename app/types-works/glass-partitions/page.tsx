@@ -2,6 +2,7 @@
 
 import { Typography, Row, Col, Card, Table, Tabs, Tag } from 'antd';
 import { useState, useEffect } from 'react';
+import AppBreadcrumbs from '@/components/AppBreadcrumbs';
 
 const { Title, Paragraph, Text } = Typography;
 const { TabPane } = Tabs;
@@ -128,20 +129,7 @@ export default function GlassPartitionsPage() {
         }
       `}</style>
 
-      {/* Хлебные крошки */}
-      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-        <a href="/" style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', color: '#23365E', textDecoration: 'none' }}>
-          Главная
-        </a>
-        <span style={{ color: '#23365E', opacity: 0.5 }}>/</span>
-        <a href="/types-works" style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', color: '#23365E', textDecoration: 'none' }}>
-          Типы работ
-        </a>
-        <span style={{ color: '#23365E', opacity: 0.5 }}>/</span>
-        <span style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', color: '#23365E', opacity: 0.6 }}>
-          Продукция
-        </span>
-      </div>
+      <AppBreadcrumbs />
 
       {/* Введение */}
       <Title level={2} style={{ fontFamily: 'Lato, sans-serif', fontSize: isMobile ? '24px' : '28px', fontWeight: 600, color: '#23365E', marginBottom: '24px' }}>

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import AppBreadcrumbs from '@/components/AppBreadcrumbs';
 
 const workTypes = [
   {
@@ -47,37 +48,7 @@ const workTypes = [
 export default function TypesWorksPage() {
   return (
     <main className="types-works-main" style={{ padding: '40px 142px', maxWidth: '1920px', margin: '0 auto' }}>
-      {/* Хлебные крошки */}
-      <div style={{ marginBottom: '32px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <Link
-          href="/"
-          style={{
-            fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: '16px',
-            color: '#23365E',
-            textDecoration: 'none',
-          }}
-        >
-          Главная
-        </Link>
-        <span style={{ color: '#23365E', opacity: 0.5 }}>/</span>
-        <span style={{
-          fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: '16px',
-          color: '#23365E',
-        }}>
-          Типы работ
-        </span>
-        <span style={{ color: '#23365E', opacity: 0.5 }}>/</span>
-        <span style={{
-          fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: '16px',
-          color: '#23365E',
-          opacity: 0.6,
-        }}>
-          ...
-        </span>
-      </div>
+      <AppBreadcrumbs />
 
       {/* Заголовок */}
       <h2 style={{

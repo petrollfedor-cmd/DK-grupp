@@ -118,7 +118,7 @@ bot.on('callback_query', (query) => {
         const { getAllContent } = require('./content');
         const content = getAllContent();
         const item = content.navigation[itemIndex];
-        bot.sendMessage(chatId, `✏️ Название\n\nТекущее: ${item.label}\n\nНапишите новое название:`, { reply_markup: { force_reply: true } });
+        bot.sendMessage(chatId, `✏️ Название\n\nТекущее: ${item.label}\n\nНапишите новое название:`, { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
         break;
       }
       case 'nav_item_href': {
@@ -127,7 +127,7 @@ bot.on('callback_query', (query) => {
         const { getAllContent } = require('./content');
         const content = getAllContent();
         const item = content.navigation[itemIndex];
-        bot.sendMessage(chatId, `🔗 Ссылка\n\nТекущая: ${item.href}\n\nНапишите новую ссылку:`, { reply_markup: { force_reply: true } });
+        bot.sendMessage(chatId, `🔗 Ссылка\n\nТекущая: ${item.href}\n\nНапишите новую ссылку:`, { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
         break;
       }
       case 'confirm_nav_item': {
@@ -280,7 +280,7 @@ bot.on('callback_query', (query) => {
           const currentDesc = state.tempData.description || project.description;
           const currentImage = state.tempData.image || project.image;
           setUserState(userId, { ...state, step: 23, tempData: { index: state.tempData.index, title: currentTitle, description: currentDesc, image: currentImage } });
-          bot.sendMessage(chatId, '📸 Отправьте новое фото или введите путь к фото:', { reply_markup: { force_reply: true } });
+          bot.sendMessage(chatId, '📸 Отправьте новое фото или введите путь к фото:', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
         }
         break;
       }
@@ -362,7 +362,7 @@ bot.on('callback_query', (query) => {
         const state = getUserState(userId);
         if (state.mode === 'edit_projects' && state.step === 13) {
           setUserState(userId, { ...state, step: 16, tempData: state.tempData });
-          bot.sendMessage(chatId, '📸 Отправьте новое фото или введите путь к фото:', { reply_markup: { force_reply: true } });
+          bot.sendMessage(chatId, '📸 Отправьте новое фото или введите путь к фото:', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
         }
         break;
       }

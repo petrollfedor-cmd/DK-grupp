@@ -2,6 +2,7 @@
 
 import { Typography } from 'antd';
 import NextImage from 'next/image';
+import AppBreadcrumbs from '@/components/AppBreadcrumbs';
 
 const { Title, Paragraph } = Typography;
 
@@ -25,41 +26,7 @@ export default function FireWindowsPage() {
           }
         }
       `}</style>
-      {/* Хлебные крошки */}
-      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <a
-          href="/"
-          style={{
-            fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: '16px',
-            color: '#23365E',
-            textDecoration: 'none',
-          }}
-        >
-          Главная
-        </a>
-        <span style={{ color: '#23365E', opacity: 0.5 }}>/</span>
-        <a
-          href="/types-works"
-          style={{
-            fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: '16px',
-            color: '#23365E',
-            textDecoration: 'none',
-          }}
-        >
-          Типы работ
-        </a>
-        <span style={{ color: '#23365E', opacity: 0.5 }}>/</span>
-        <span style={{
-          fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: '16px',
-          color: '#23365E',
-          opacity: 0.6,
-        }}>
-          Противопожарные окна и витражи
-        </span>
-      </div>
+      <AppBreadcrumbs />
 
       {/* Заголовок */}
       <h2 style={{

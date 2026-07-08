@@ -1,6 +1,7 @@
 'use client';
 
 import { Typography } from 'antd';
+import AppBreadcrumbs from '@/components/AppBreadcrumbs';
 
 const { Title, Paragraph } = Typography;
 
@@ -37,41 +38,7 @@ export default function EngineeringPage() {
           }
         }
       `}</style>
-      {/* Хлебные крошки */}
-      <div style={{ marginBottom: '32px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <a
-          href="/"
-          style={{
-            fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: '16px',
-            color: '#23365E',
-            textDecoration: 'none',
-          }}
-        >
-          Главная
-        </a>
-        <span style={{ color: '#23365E', opacity: 0.5 }}>/</span>
-        <a
-          href="/types-works"
-          style={{
-            fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: '16px',
-            color: '#23365E',
-            textDecoration: 'none',
-          }}
-        >
-          Типы работ
-        </a>
-        <span style={{ color: '#23365E', opacity: 0.5 }}>/</span>
-        <span style={{
-          fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: '16px',
-          color: '#23365E',
-          opacity: 0.6,
-        }}>
-          Разработка инженерной документации
-        </span>
-      </div>
+      <AppBreadcrumbs />
 
       {/* Заголовок */}
       <h2 style={{

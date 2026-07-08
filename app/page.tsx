@@ -5,6 +5,7 @@ import { Typography } from 'antd';
 import Link from 'next/link';
 import Hero from '@/components/Hero';
 import AppBreadcrumb from '@/components/Breadcrumb';
+import AppBreadcrumbs from '@/components/AppBreadcrumbs';
 import ProjectCardExact from '@/components/ProjectCardExact';
 
 const { Title } = Typography;
@@ -144,16 +145,7 @@ export default function HomePage() {
 
   return (
     <main>
-      <AppBreadcrumb
-        items={
-          activeSection
-            ? [
-                { title: 'Главная', href: '/' },
-                { title: activeSection },
-              ]
-            : [{ title: 'Главная' }]
-        }
-      />
+      <AppBreadcrumbs />
 
       <Hero
         imageUrl={heroData?.imageUrl}
