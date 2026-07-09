@@ -96,6 +96,8 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
           .calc-modal-inner {
             border-radius: 16px 16px 0 0 !important;
             max-height: 85vh !important;
+            max-width: 380px !important;
+            margin: 0 auto !important;
           }
           .calc-modal-grid {
             grid-template-columns: 1fr !important;

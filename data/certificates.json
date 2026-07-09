@@ -1,0 +1,72 @@
+[
+  {
+    "filename": "okno-e60-bez-impasta.pdf",
+    "name": "Окно Е60 без импоста",
+    "category": "windows"
+  },
+  {
+    "filename": "okno-e60-s-impustom.pdf",
+    "name": "Окно Е60 с импостом",
+    "category": "windows"
+  },
+  {
+    "filename": "okno-eiw30.pdf",
+    "name": "Окно EIW30",
+    "category": "windows"
+  },
+  {
+    "filename": "Витраж EIW15.pdf",
+    "name": "Витраж EIW15",
+    "category": "facade"
+  },
+  {
+    "filename": "Витраж EIW30.pdf",
+    "name": "Витраж EIW30",
+    "category": "facade"
+  },
+  {
+    "filename": "Витраж EIW45.pdf",
+    "name": "Витраж EIW45",
+    "category": "facade"
+  },
+  {
+    "filename": "Витраж EIW60.pdf",
+    "name": "Витраж EIW60",
+    "category": "facade"
+  },
+  {
+    "filename": "Дверь EIW 15.pdf",
+    "name": "Дверь EIW 15",
+    "category": "doors"
+  },
+  {
+    "filename": "Дверь EIW 30.pdf",
+    "name": "Дверь EIW 30",
+    "category": "doors"
+  },
+  {
+    "filename": "Дверь EIW 60.pdf",
+    "name": "Дверь EIW 60",
+    "category": "doors"
+  },
+  {
+    "filename": "Дверь ЕiWS 60.pdf",
+    "name": "Дверь ЕiWS 60",
+    "category": "doors"
+  },
+  {
+    "filename": "Сертификат Окно Е15 с импостами.pdf",
+    "name": "Сертификат Окно Е15 с импостами",
+    "category": "windows"
+  },
+  {
+    "filename": "Сертификат Окно Е60 с импостами.pdf",
+    "name": "Сертификат Окно Е60 с импостами",
+    "category": "windows"
+  },
+  {
+    "filename": "cert_1783541829089.pdf",
+    "name": "cert 1783541829089",
+    "category": "other"
+  }
+]

@@ -181,6 +181,13 @@ section {
   .site-contacts-bar {
     display: none !important;
   }
+  #calculation {
+    padding: 40px 16px !important;
+    max-width: 100% !important;
+  }
+  #calculation p {
+    max-width: 100% !important;
+  }
 }
 
 /* Логотип и контакты — наложены на hero */

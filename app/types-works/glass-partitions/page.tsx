@@ -126,6 +126,14 @@ export default function GlassPartitionsPage() {
           .gp-table td {
             padding: 12px 8px !important;
           }
+          .gp-extra-tag {
+            display: block !important;
+            max-width: 100% !important;
+            word-break: break-word !important;
+            white-space: normal !important;
+            margin-top: 8px !important;
+            line-height: 1.4 !important;
+          }
         }
       `}</style>
 
@@ -272,7 +280,7 @@ export default function GlassPartitionsPage() {
           <Paragraph style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', lineHeight: '1.8', color: '#444', marginBottom: '12px' }}>
             <Text strong>Где применяется:</Text> Переговорные комнаты, медицинские кабинеты, офисные перегородки, фасады.
           </Paragraph>
-          <Tag color="blue" style={{ fontFamily: 'Lato, sans-serif' }}>Дополнительно: может работать как проекционный экран</Tag>
+          <Tag color="blue" className="gp-extra-tag" style={{ fontFamily: 'Lato, sans-serif' }}>Дополнительно: может работать как проекционный экран</Tag>
         </Card>
 
         {/* 2.2 Триплекс с сеткой */}
@@ -289,7 +297,7 @@ export default function GlassPartitionsPage() {
           <Paragraph style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', lineHeight: '1.8', color: '#444', marginBottom: '12px' }}>
             <Text strong>Где применяется:</Text> Фасадное остекление, витрины, входные группы, декоративные перегородки.
           </Paragraph>
-          <Tag color="green" style={{ fontFamily: 'Lato, sans-serif' }}>Защита: блокирует до 99% УФ-излучения, осколки держатся на сетке</Tag>
+          <Tag color="green" className="gp-extra-tag" style={{ fontFamily: 'Lato, sans-serif' }}>Защита: блокирует до 99% УФ-излучения, осколки держатся на сетке</Tag>
         </Card>
 
         {/* 2.3 Декоративный триплекс */}

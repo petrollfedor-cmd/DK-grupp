@@ -2,6 +2,14 @@ import fs from 'fs';
 import path from 'path';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
+const CERT_DIR = path.join(process.cwd(), 'public', 'documents', 'certificates');
+const CERT_META_PATH = path.join(process.cwd(), 'data', 'certificates.json');
+
+export interface Certificate {
+  filename: string;
+  name: string;
+  category: 'windows' | 'facade' | 'doors' | 'other';
+}
 
 export interface ContentData {
   navigation: any[];
@@ -109,6 +117,85 @@ export function updateProject(index: number, project: any): boolean {
     return false;
   } catch (error) {
     console.error('Error updating project:', error);
+    return false;
+  }
+}
+
+// Certificate management
+export function getCertificates(): Certificate[] {
+  // Если есть метаданные — используем их
+  if (fs.existsSync(CERT_META_PATH)) {
+    const fileBuffer = fs.readFileSync(CERT_META_PATH);
+    const data = fileBuffer.toString('utf-8');
+    const certs = JSON.parse(data) as Certificate[];
+    // Фильтруем только существующие файлы
+    const validCerts = certs.filter(c => fs.existsSync(path.join(CERT_DIR, c.filename)));
+    // Добавляем файлы из папки, которых нет в метаданных
+    const existingFiles = fs.readdirSync(CERT_DIR).filter(f => /\.(pdf|png|jpg|jpeg)$/i.test(f));
+    const missingFiles = existingFiles.filter(f => !certs.some(c => c.filename === f));
+    if (missingFiles.length > 0) {
+      missingFiles.forEach(f => {
+        validCerts.push({ filename: f, name: f.replace(/\.[^.]+$/, '').replace(/_/g, ' '), category: 'other' });
+      });
+      saveCertificates(validCerts);
+    }
+    return validCerts;
+  }
+  // Если метаданных нет — сканируем папку
+  if (!fs.existsSync(CERT_DIR)) return [];
+  const files = fs.readdirSync(CERT_DIR).filter(f => /\.(pdf|png|jpg|jpeg)$/i.test(f));
+  const certs: Certificate[] = files.map(f => ({
+    filename: f,
+    name: f.replace(/\.[^.]+$/, '').replace(/_/g, ' '),
+    category: 'other' as const
+  }));
+  saveCertificates(certs);
+  return certs;
+}
+
+export function saveCertificates(certificates: Certificate[]): void {
+  writeJSON('certificates.json', certificates);
+}
+
+export function addCertificate(filename: string, name: string, category: string): boolean {
+  try {
+    const certs = getCertificates();
+    // Проверяем, есть ли уже сертификат с таким filename
+    if (certs.some(c => c.filename === filename)) {
+      // Обновляем существующий сертификат
+      const cert = certs.find(c => c.filename === filename);
+      if (cert) {
+        cert.name = name;
+        cert.category = category as Certificate['category'];
+      }
+      saveCertificates(certs);
+      return true;
+    }
+    certs.push({ filename, name, category: category as Certificate['category'] });
+    saveCertificates(certs);
+    return true;
+  } catch (error) {
+    console.error('Error adding certificate:', error);
+    return false;
+  }
+}
+
+export function deleteCertificate(index: number): boolean {
+  try {
+    const certs = getCertificates();
+    if (index >= 0 && index < certs.length) {
+      const cert = certs[index];
+      const filePath = path.join(CERT_DIR, cert.filename);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      certs.splice(index, 1);
+      saveCertificates(certs);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error deleting certificate:', error);
     return false;
   }
 }

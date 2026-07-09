@@ -7,6 +7,7 @@ import Hero from '@/components/Hero';
 import AppBreadcrumb from '@/components/Breadcrumb';
 import AppBreadcrumbs from '@/components/AppBreadcrumbs';
 import ProjectCardExact from '@/components/ProjectCardExact';
+import { useModal } from '@/app/ModalContext';
 
 const { Title } = Typography;
 
@@ -43,6 +44,7 @@ interface FooterData {
 }
 
 export default function HomePage() {
+  const { openCalculationModal } = useModal();
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -251,7 +253,7 @@ export default function HomePage() {
         </p>
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
           <button
-            onClick={() => document.querySelector<HTMLButtonElement>('.site-action-button')?.click()}
+            onClick={openCalculationModal}
             style={{
               padding: '18px 48px',
               fontSize: '18px',

@@ -13,9 +13,18 @@
     "maxIcon": "/figma/MAX-32x32.png"
   },
   "partners": [
-    { "name": "Private Glass", "image": "/figma/private-glass.svg" },
-    { "name": "АО ЦСИ", "image": "/figma/tsi-logo.svg" },
-    { "name": "Рубеж", "image": "/figma/rubez-logo.png" }
+    {
+      "name": "Private Glass",
+      "image": "/figma/private-glass.svg"
+    },
+    {
+      "name": "АО ЦСИ",
+      "image": "/figma/tsi-logo.svg"
+    },
+    {
+      "name": "Рубеж",
+      "image": "/figma/rubez-logo.png"
+    }
   ],
   "documents": [
     {

@@ -55,22 +55,35 @@ export default function AppBreadcrumbs() {
     }
 
     if (currentNav) {
-      setBreadcrumbs([
-        { title: 'Главная', href: '/' },
-        { title: currentNav.label, href: currentNav.href },
-      ]);
+      // На главной странице показываем только "Главная"
+      if (currentNav.key === 'main') {
+        setBreadcrumbs([{ title: 'Главная' }]);
+      } else {
+        setBreadcrumbs([
+          { title: 'Главная', href: '/' },
+          { title: currentNav.label, href: currentNav.href },
+        ]);
+      }
     } else {
-      setBreadcrumbs([{ title: 'Главная', href: '/' }]);
+      setBreadcrumbs([{ title: 'Главная' }]);
     }
   }, [navItems, pathname]);
 
   if (breadcrumbs.length === 0) return null;
 
   return (
-    <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+    <>
+      <style>{`
+        @media (max-width: 767px) {
+          .app-breadcrumbs-container {
+            padding: 0 22px !important;
+          }
+        }
+      `}</style>
+      <div className="app-breadcrumbs-container" style={{ marginBottom: '24px', padding: '0 40px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
       {breadcrumbs.map((crumb, idx) => (
-        <span key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {idx > 0 && <span style={{ color: '#23365E', opacity: 0.5 }}>/</span>}
+        <span key={idx} style={{ display: 'flex', alignItems: 'center' }}>
+          {idx > 0 && <span style={{ color: '#23365E', opacity: 0.5, margin: '0 8px' }}>/</span>}
           {crumb.href ? (
             <Link href={crumb.href} style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', color: '#23365E', textDecoration: 'none' }}>
               {crumb.title}
@@ -83,5 +96,6 @@ export default function AppBreadcrumbs() {
         </span>
       ))}
     </div>
+    </>
   );
 }
