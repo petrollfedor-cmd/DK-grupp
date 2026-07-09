@@ -234,10 +234,10 @@ bot.on('callback_query', (query) => {
         const state = getUserState(userId);
         if (state.mode === 'edit_projects' && state.step === 18 && state.tempData) {
           const orderStr = state.tempData;
-          const order = orderStr.split(/[\s,]+/).map(n => parseInt(n) - 1).filter(n => !isNaN(n) && n >= 0);
+          const order = orderStr.split(/[\s,]+/).map((n: string) => parseInt(n) - 1).filter((n: number) => !isNaN(n) && n >= 0);
           const { getAllContent, updateProjects } = require('./content');
           const content = getAllContent();
-          const newProjects = order.map(idx => content.projects[idx]).filter(Boolean);
+          const newProjects = order.map((idx: number) => content.projects[idx]).filter(Boolean);
           if (newProjects.length === content.projects.length) {
             updateProjects(newProjects);
             const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
