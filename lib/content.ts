@@ -35,30 +35,28 @@ export function writeJSON(filename: string, data: any): void {
 
 // Глобальные переменные для отложенной синхронизации
 let pendingSyncFiles: { path: string; content: string }[] = [];
-let syncTimeout: NodeJS.Timeout | null = null;
 
-export async function scheduleGitSync() {
-  // Собираем все pending файлы и делаем один коммит
+export function scheduleGitSync() {
   if (pendingSyncFiles.length === 0) return;
   
   const filesToSync = [...pendingSyncFiles];
   pendingSyncFiles = [];
   
-  if (syncTimeout) clearTimeout(syncTimeout);
-  
-  syncTimeout = setTimeout(async () => {
-    if (filesToSync.length === 1) {
-      const { path: filePath, content } = filesToSync[0];
-      const filename = path.basename(filePath);
-      await syncFileToGit(filePath, content, `Update ${filename}`);
-    } else {
-      // Если несколько файлов — делаем по одному
-      for (const { path: filePath, content } of filesToSync) {
-        const filename = path.basename(filePath);
-        await syncFileToGit(filePath, content, `Update ${filename}`);
-      }
-    }
-  }, 1000);
+  // Запускаем синхронизацию напрямую без setTimeout
+  for (const { path: filePath, content } of filesToSync) {
+    const filename = path.basename(filePath);
+    syncFileToGit(filePath, content, `Update ${filename}`)
+      .then((result: any) => {
+        if (result.success) {
+          console.log('✅ Synced to GitHub:', filePath);
+        } else {
+          console.error('❌ GitHub sync failed:', result.message);
+        }
+      })
+      .catch((err: any) => {
+        console.error('❌ GitHub sync error:', err);
+      });
+  }
 }
 
 export function getAllContent(): ContentData {
