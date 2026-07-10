@@ -6,16 +6,13 @@ import * as path from 'path';
 
 const require = createRequire(import.meta.url);
 
-dotenv.config({ path: '.env.local' });
-
 const CERT_DIR = path.join(process.cwd(), 'public', 'documents', 'certificates');
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const adminIds = process.env.TELEGRAM_ADMIN_IDS?.split(',').map((id: string) => parseInt(id.trim())) || [];
 
 if (!botToken) {
-  console.error('TELEGRAM_BOT_TOKEN not set in .env.local');
-  process.exit(1);
+  console.warn('⚠️ TELEGRAM_BOT_TOKEN not set — Telegram bot disabled (only needed for bot functionality)');
 }
 
 // Создаем бота с прокси если указан
@@ -29,7 +26,7 @@ if (proxy) {
   };
 }
 
-export const bot = new TelegramBot(botToken, botOptions);
+export const bot = new TelegramBot(botToken!, botOptions);
 
 export function isAdmin(userId: number): boolean {
   return adminIds.includes(userId);
@@ -1417,7 +1414,7 @@ if (useWebhook && webhookUrl) {
       bot.startPolling();
     });
 } else {
-  // Polling-режим для локальной разработки
+  // Polling-режим для локальной разработки и Railway
   bot.startPolling();
   console.log('🤖 Telegram Bot started and polling...');
 }
