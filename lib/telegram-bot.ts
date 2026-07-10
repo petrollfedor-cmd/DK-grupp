@@ -50,12 +50,12 @@ function sendDeployNotification(chatId: number, bot: any, initialMsg: string): v
   const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
   
   // Сразу показываем "Деплой начнётся"
-  bot.sendMessage(chatId, initialMsg + '\n\n🚀 Деплой начнётся через 5-10 секунд...', { reply_markup: mainKeyboard });
+  bot.sendMessage(chatId, initialMsg + '\n\n🚀 Данные отправлены в GitHub...', { reply_markup: mainKeyboard });
   
-  // Через 2.5 минуты показываем "Готово" (Vercel собирает ~2 минуты)
+  // Через 10 секунд показываем "Готово" (сайт читает из GitHub напрямую, без ребилда)
   setTimeout(() => {
     bot.sendMessage(chatId, '✅ Сайт обновлён!\n\n👀 Посмотри результат: https://dk-grupp.vercel.app', { reply_markup: mainKeyboard });
-  }, 150000);
+  }, 10000);
 }
 
 const userStates: Map<number, UserState> = new Map();

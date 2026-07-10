@@ -1,14 +1,27 @@
 import { NextResponse } from 'next/server';
-import { readJSON } from '@/lib/content';
+
+const GITHUB_REPO = process.env.GITHUB_REPO || 'petrollfedor-cmd/DK-grupp';
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
+
+async function readFromGitHub(filename: string): Promise<any | null> {
+  const url = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/data/${filename}`;
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (err) {
+    console.error('Failed to fetch from GitHub:', filename, err);
+    return null;
+  }
+}
 
 export async function GET() {
-  try {
-    const navigation = readJSON<any[]>('navigation.json') || [];
+  const navigation = await readFromGitHub('navigation.json');
+  if (navigation) {
     return NextResponse.json({ success: true, data: navigation });
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: 'Failed to load navigation' },
-      { status: 500 }
-    );
   }
+  return NextResponse.json(
+    { success: false, error: 'Failed to load navigation' },
+    { status: 500 }
+  );
 }
