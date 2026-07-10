@@ -1393,30 +1393,20 @@ function showProjectConfirm(userId: number, chatId: number, data: any) {
   bot.sendMessage(chatId, `⚠️ Подтвердите изменения:\n\n📝 ${title}\n📄 ${desc}\n🖼 ${image}`, { reply_markup: keyboard });
 }
 
-bot.on('polling_error', (error: any) => {
-  console.log('Polling error (ignored):', error.code);
-});
+// Устанавливаем webhook для Vercel
+const webhookUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}/api/bot/webhook`
+  : process.env.WEBHOOK_URL;
 
-// Определяем режим запуска
-const useWebhook = process.env.USE_WEBHOOK === 'true';
-const webhookUrl = process.env.WEBHOOK_URL || process.env.NEXT_PUBLIC_SITE_URL;
-
-if (useWebhook && webhookUrl) {
-  // Webhook-режим для production (Vercel)
+if (webhookUrl) {
   const url = webhookUrl.replace(/\/$/, '') + '/api/bot/webhook';
   bot.setWebhook(url)
     .then(() => {
-      console.log('🤖 Telegram Bot started in webhook mode:', url);
+      console.log('✅ Telegram Bot webhook set:', url);
     })
     .catch((err: any) => {
       console.error('❌ Failed to set webhook:', err.message);
-      console.log('⚠️ Falling back to polling mode...');
-      bot.startPolling();
     });
-} else {
-  // Polling-режим для локальной разработки и Railway
-  bot.startPolling();
-  console.log('🤖 Telegram Bot started and polling...');
 }
 
 process.on('uncaughtException', (err) => {
