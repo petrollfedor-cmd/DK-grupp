@@ -52,10 +52,10 @@ function sendDeployNotification(chatId: number, bot: any, initialMsg: string): v
   // Сразу показываем "Деплой начнётся"
   bot.sendMessage(chatId, initialMsg + '\n\n🚀 Деплой начнётся через 5-10 секунд...', { reply_markup: mainKeyboard });
   
-  // Через 2 минуты показываем "Готово"
+  // Через 2.5 минуты показываем "Готово" (Vercel собирает ~2 минуты)
   setTimeout(() => {
     bot.sendMessage(chatId, '✅ Сайт обновлён!\n\n👀 Посмотри результат: https://dk-grupp.vercel.app', { reply_markup: mainKeyboard });
-  }, 120000);
+  }, 150000);
 }
 
 const userStates: Map<number, UserState> = new Map();
