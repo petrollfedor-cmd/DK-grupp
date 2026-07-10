@@ -45,6 +45,19 @@ interface UserState {
   tempData: any;
 }
 
+// Хелпер для отправки уведомлений о деплое
+function sendDeployNotification(chatId: number, bot: any, initialMsg: string): void {
+  const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
+  
+  // Сразу показываем "Деплой начнётся"
+  bot.sendMessage(chatId, initialMsg + '\n\n🚀 Деплой начнётся через 5-10 секунд...', { reply_markup: mainKeyboard });
+  
+  // Через 30 секунд показываем "Готово"
+  setTimeout(() => {
+    bot.sendMessage(chatId, '✅ Сайт обновлён!\n\n👀 Посмотри результат: https://dk-grupp.vercel.app', { reply_markup: mainKeyboard });
+  }, 30000);
+}
+
 const userStates: Map<number, UserState> = new Map();
 
 export function getUserState(userId: number): UserState {
@@ -158,9 +171,7 @@ bot.on('callback_query', (query) => {
           if (type === 'name') content.navigation[index].label = value;
           else if (type === 'href') content.navigation[index].href = value;
           updateNavigation(content.navigation);
-          console.log('✅ Данные сохранены, синхронизация с GitHub...');
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, `✅ Обновлено!\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app`, { reply_markup: mainKeyboard });
+          sendDeployNotification(chatId, bot, '✅ Обновлено!');
         }
         clearUserState(userId);
         break;
@@ -242,9 +253,7 @@ bot.on('callback_query', (query) => {
           const newProjects = order.map((idx: number) => content.projects[idx]).filter(Boolean);
           if (newProjects.length === content.projects.length) {
             updateProjects(newProjects);
-            console.log('✅ Данные сохранены, синхронизация с GitHub...');
-            const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-            bot.sendMessage(chatId, `✅ Порядок проектов обновлён!\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app`, { reply_markup: mainKeyboard });
+            sendDeployNotification(chatId, bot, '✅ Порядок проектов обновлён!');
           } else {
             bot.sendMessage(chatId, '❌ Ошибка: не все проекты найдены.');
           }
@@ -341,9 +350,7 @@ bot.on('callback_query', (query) => {
           if (description) content.projects[index].description = description;
           if (image) content.projects[index].image = image;
           updateProjects(content.projects);
-          console.log('✅ Данные сохранены, синхронизация с GitHub...');
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, '✅ Проект обновлён!\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app', { reply_markup: mainKeyboard });
+          sendDeployNotification(chatId, bot, '✅ Проект обновлён!');
           clearUserState(userId);
         }
         break;
@@ -370,9 +377,7 @@ bot.on('callback_query', (query) => {
             return { id: content.projects[index]?.id || index + 1, title: title || 'Без названия', description: description || '', image: image || '/figma/default.png', icon: image || '/figma/default.png', maxHeight: 280 };
           });
           updateProjects(newProjects);
-          console.log('✅ Данные сохранены, синхронизация с GitHub...');
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, `✅ Проекты обновлены! ${newProjects.length} проектов.\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app`, { reply_markup: mainKeyboard });
+          sendDeployNotification(chatId, bot, `✅ Проекты обновлены! ${newProjects.length} проектов.`);
         }
         clearUserState(userId);
         break;
@@ -384,9 +389,7 @@ bot.on('callback_query', (query) => {
           const { title, description, image } = state.tempData;
           const { addProject } = require('./content');
           addProject({ title, description, image });
-          console.log('✅ Данные сохранены, синхронизация с GitHub...');
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, '✅ Проект добавлен!\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app', { reply_markup: mainKeyboard });
+          sendDeployNotification(chatId, bot, '✅ Проект добавлен!');
         }
         clearUserState(userId);
         break;
@@ -421,9 +424,7 @@ bot.on('callback_query', (query) => {
         if (state.mode === 'edit_projects' && state.step === 12 && state.tempData !== null) {
           const { deleteProject } = require('./content');
           deleteProject(state.tempData);
-          console.log('✅ Данные сохранены, синхронизация с GitHub...');
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, '✅ Проект удалён!\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app', { reply_markup: mainKeyboard });
+          sendDeployNotification(chatId, bot, '✅ Проект удалён!');
         }
         clearUserState(userId);
         break;
@@ -552,9 +553,7 @@ bot.on('callback_query', (query) => {
         if (state.mode === 'edit_certificates' && state.step === 12 && state.tempData !== null) {
           const { deleteCertificate } = require('./content');
           deleteCertificate(state.tempData);
-          console.log('✅ Данные сохранены, синхронизация с GitHub...');
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, '✅ Сертификат удалён!\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app', { reply_markup: mainKeyboard });
+          sendDeployNotification(chatId, bot, '✅ Сертификат удалён!');
         }
         clearUserState(userId);
         break;
@@ -607,9 +606,7 @@ bot.on('callback_query', (query) => {
           if (name) certs[index].name = name;
           if (category) certs[index].category = category;
           saveCertificates(certs);
-          console.log('✅ Данные сохранены, синхронизация с GitHub...');
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, '✅ Сертификат обновлён!\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app', { reply_markup: mainKeyboard });
+          sendDeployNotification(chatId, bot, '✅ Сертификат обновлён!');
         }
         clearUserState(userId);
         break;
@@ -635,9 +632,7 @@ bot.on('callback_query', (query) => {
           const { name, category, filename } = state.tempData;
           const { addCertificate } = require('./content');
           addCertificate(filename, name, category);
-          console.log('✅ Данные сохранены, синхронизация с GitHub...');
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, '✅ Сертификат добавлен!\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app', { reply_markup: mainKeyboard });
+          sendDeployNotification(chatId, bot, '✅ Сертификат добавлен!');
         }
         clearUserState(userId);
         break;
@@ -716,9 +711,10 @@ bot.on('callback_query', (query) => {
           const content = getAllContent();
           content.footer.contacts = { ...content.footer.contacts, phone, email };
           updateFooter(content.footer);
-          console.log('✅ Данные сохранены, синхронизация с GitHub...');
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, `✅ Контакты обновлены!\n\n📞 ${phone}\n📧 ${email}\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app`, { reply_markup: mainKeyboard });
+          sendDeployNotification(chatId, bot, `✅ Контакты обновлены!
+
+📞 ${phone}
+📧 ${email}`);
         }
         clearUserState(userId);
         break;
@@ -1228,9 +1224,10 @@ bot.on('message', async (msg) => {
     const content = getAllContent();
     content.footer.partners.push({ name, image: imagePath });
     updateFooter(content.footer);
-    console.log('✅ Данные сохранены, синхронизация с GitHub...');
-    const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-    bot.sendMessage(chatId, `✅ Партнёр добавлен!\n\n📝 ${name}\n🖼 ${imagePath}\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app`, { reply_markup: mainKeyboard });
+    sendDeployNotification(chatId, bot, `✅ Партнёр добавлен!
+
+📝 ${name}
+🖼 ${imagePath}`);
     clearUserState(userId);
     return;
   }
@@ -1253,9 +1250,9 @@ bot.on('message', async (msg) => {
     if (imageIndex !== undefined && content.footer.partners[imageIndex]) {
       content.footer.partners[imageIndex].image = imagePath;
       updateFooter(content.footer);
-      console.log('✅ Данные сохранены, синхронизация с GitHub...');
-      const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-      bot.sendMessage(chatId, `✅ Иконка обновлена!\n\n🖼 ${imagePath}\n\n🔄 Синхронизация с GitHub...\n\n👀 Посмотри результат: https://dk-grupp.vercel.app`, { reply_markup: mainKeyboard });
+      sendDeployNotification(chatId, bot, `✅ Иконка обновлена!
+
+🖼 ${imagePath}`);
     }
     clearUserState(userId);
     return;
