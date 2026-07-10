@@ -71,9 +71,7 @@ export function getAllContent(): ContentData {
 export function updateNavigation(items: any[]): boolean {
   try {
     writeJSON('navigation.json', items);
-    // Запланируем синхронизацию в GitHub
-    const filePath = path.join(DATA_DIR, 'navigation.json');
-    pendingSyncFiles.push({ path: '/data/navigation.json', content: JSON.stringify(items, null, 2) });
+    pendingSyncFiles.push({ path: 'data/navigation.json', content: JSON.stringify(items, null, 2) });
     scheduleGitSync();
     return true;
   } catch (error) {
@@ -85,7 +83,7 @@ export function updateNavigation(items: any[]): boolean {
 export function updateHero(data: any): boolean {
   try {
     writeJSON('hero.json', data);
-    pendingSyncFiles.push({ path: '/data/hero.json', content: JSON.stringify(data, null, 2) });
+    pendingSyncFiles.push({ path: 'data/hero.json', content: JSON.stringify(data, null, 2) });
     scheduleGitSync();
     return true;
   } catch (error) {
@@ -97,7 +95,7 @@ export function updateHero(data: any): boolean {
 export function updateProjects(items: any[]): boolean {
   try {
     writeJSON('projects.json', items);
-    pendingSyncFiles.push({ path: '/data/projects.json', content: JSON.stringify(items, null, 2) });
+    pendingSyncFiles.push({ path: 'data/projects.json', content: JSON.stringify(items, null, 2) });
     scheduleGitSync();
     return true;
   } catch (error) {
@@ -109,7 +107,7 @@ export function updateProjects(items: any[]): boolean {
 export function updateFooter(data: any): boolean {
   try {
     writeJSON('footer.json', data);
-    pendingSyncFiles.push({ path: '/data/footer.json', content: JSON.stringify(data, null, 2) });
+    pendingSyncFiles.push({ path: 'data/footer.json', content: JSON.stringify(data, null, 2) });
     scheduleGitSync();
     return true;
   } catch (error) {
@@ -192,7 +190,7 @@ export function getCertificates(): Certificate[] {
 
 export function saveCertificates(certificates: Certificate[]): void {
   writeJSON('certificates.json', certificates);
-  pendingSyncFiles.push({ path: '/data/certificates.json', content: JSON.stringify(certificates, null, 2) });
+  pendingSyncFiles.push({ path: 'data/certificates.json', content: JSON.stringify(certificates, null, 2) });
   scheduleGitSync();
 }
 
