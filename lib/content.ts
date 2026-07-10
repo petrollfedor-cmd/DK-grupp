@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { syncFileToGit } from './git-sync';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const CERT_DIR = path.join(process.cwd(), 'public', 'documents', 'certificates');
@@ -32,6 +33,34 @@ export function writeJSON(filename: string, data: any): void {
   fs.writeFileSync(filepath, JSON.stringify(data, null, 2), 'utf-8');
 }
 
+// Глобальные переменные для отложенной синхронизации
+let pendingSyncFiles: { path: string; content: string }[] = [];
+let syncTimeout: NodeJS.Timeout | null = null;
+
+export async function scheduleGitSync() {
+  // Собираем все pending файлы и делаем один коммит
+  if (pendingSyncFiles.length === 0) return;
+  
+  const filesToSync = [...pendingSyncFiles];
+  pendingSyncFiles = [];
+  
+  if (syncTimeout) clearTimeout(syncTimeout);
+  
+  syncTimeout = setTimeout(async () => {
+    if (filesToSync.length === 1) {
+      const { path: filePath, content } = filesToSync[0];
+      const filename = path.basename(filePath);
+      await syncFileToGit(filePath, content, `Update ${filename}`);
+    } else {
+      // Если несколько файлов — делаем по одному
+      for (const { path: filePath, content } of filesToSync) {
+        const filename = path.basename(filePath);
+        await syncFileToGit(filePath, content, `Update ${filename}`);
+      }
+    }
+  }, 1000);
+}
+
 export function getAllContent(): ContentData {
   return {
     navigation: readJSON('navigation.json') || [],
@@ -44,6 +73,10 @@ export function getAllContent(): ContentData {
 export function updateNavigation(items: any[]): boolean {
   try {
     writeJSON('navigation.json', items);
+    // Запланируем синхронизацию в GitHub
+    const filePath = path.join(DATA_DIR, 'navigation.json');
+    pendingSyncFiles.push({ path: '/data/navigation.json', content: JSON.stringify(items, null, 2) });
+    scheduleGitSync();
     return true;
   } catch (error) {
     console.error('Error updating navigation:', error);
@@ -54,6 +87,8 @@ export function updateNavigation(items: any[]): boolean {
 export function updateHero(data: any): boolean {
   try {
     writeJSON('hero.json', data);
+    pendingSyncFiles.push({ path: '/data/hero.json', content: JSON.stringify(data, null, 2) });
+    scheduleGitSync();
     return true;
   } catch (error) {
     console.error('Error updating hero:', error);
@@ -64,6 +99,8 @@ export function updateHero(data: any): boolean {
 export function updateProjects(items: any[]): boolean {
   try {
     writeJSON('projects.json', items);
+    pendingSyncFiles.push({ path: '/data/projects.json', content: JSON.stringify(items, null, 2) });
+    scheduleGitSync();
     return true;
   } catch (error) {
     console.error('Error updating projects:', error);
@@ -74,6 +111,8 @@ export function updateProjects(items: any[]): boolean {
 export function updateFooter(data: any): boolean {
   try {
     writeJSON('footer.json', data);
+    pendingSyncFiles.push({ path: '/data/footer.json', content: JSON.stringify(data, null, 2) });
+    scheduleGitSync();
     return true;
   } catch (error) {
     console.error('Error updating footer:', error);
@@ -155,6 +194,8 @@ export function getCertificates(): Certificate[] {
 
 export function saveCertificates(certificates: Certificate[]): void {
   writeJSON('certificates.json', certificates);
+  pendingSyncFiles.push({ path: '/data/certificates.json', content: JSON.stringify(certificates, null, 2) });
+  scheduleGitSync();
 }
 
 export function addCertificate(filename: string, name: string, category: string): boolean {
