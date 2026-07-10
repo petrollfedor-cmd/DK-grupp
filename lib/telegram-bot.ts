@@ -11,7 +11,7 @@ dotenv.config({ path: '.env.local' });
 const CERT_DIR = path.join(process.cwd(), 'public', 'documents', 'certificates');
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
-const adminIds = process.env.TELEGRAM_ADMIN_IDS?.split(',').map(id => parseInt(id.trim())) || [];
+const adminIds = process.env.TELEGRAM_ADMIN_IDS?.split(',').map((id: string) => parseInt(id.trim())) || [];
 
 if (!botToken) {
   console.error('TELEGRAM_BOT_TOKEN not set in .env.local');
@@ -100,6 +100,7 @@ bot.on('callback_query', (query) => {
   try { bot.answerCallbackQuery(query.id); } catch (e) {}
   
   const chatId = query.message?.chat.id;
+  const text = query.message && 'text' in query.message ? query.message.text : undefined;
   if (!chatId) return;
   
   try {
@@ -594,6 +595,7 @@ bot.on('callback_query', (query) => {
         const state = getUserState(userId);
         if (state.mode === 'edit_certificates' && state.step === 24 && state.tempData) {
           const { index, name, category } = state.tempData;
+          const { getCertificates, saveCertificates } = require('./content');
           const certs = getCertificates();
           if (name) certs[index].name = name;
           if (category) certs[index].category = category;
@@ -614,7 +616,7 @@ bot.on('callback_query', (query) => {
         const categoryMap: Record<string, string> = {
           '1': 'sro', '2': 'iso', '3': 'fire', '4': 'windows', '5': 'facade', '6': 'doors', '7': 'other'
         };
-        const category = categoryMap[text] || 'other';
+        const category = text ? (categoryMap[text] || 'other') : 'other';
         setUserState(userId, { ...state, step: 15, tempData: { name: state.tempData?.name || '', category } });
         bot.sendMessage(chatId, '📸 Отправьте фото или PDF файла, или введите путь к файлу:', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
         break;
@@ -816,6 +818,16 @@ function startReorderProjects(userId: number, chatId: number) {
   const projects = content.projects.map((p: any, i: number) => `${i + 1}. ${p.title}`).join('\n');
   setUserState(userId, { mode: 'edit_projects', step: 17, tempData: null });
   bot.sendMessage(chatId, `🔄 Изменить порядок проектов\n\n📋 Текущий порядок:\n${projects}\n\n📝 Введите новый порядок через ПРОБЕЛ:\n\nПример: 3 1 5 2 4\n\n⚠️ Важно:\n• Каждое число — номер проекта\n• Числа через пробел (не слитно!)\n• Все номера должны быть от 1 до ${content.projects.length}\n• Без повторов`, { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+}
+
+function startDeleteProject(userId: number, chatId: number) {
+  const { getAllContent } = require('./content');
+  const content = getAllContent();
+  if (content.projects.length === 0) { bot.sendMessage(chatId, '❌ Нет проектов.'); return; }
+  const keyboard = {
+    inline_keyboard: content.projects.map((p: any, i: number) => [{ text: `🗑 ${i + 1}. ${p.title}`, callback_data: `proj_delete_item_${i}` }]).concat([[{ text: '↩️ Назад', callback_data: 'back' }]])
+  };
+  bot.sendMessage(chatId, '🗑 Выберите проект для удаления:', { reply_markup: keyboard });
 }
 
 function startDeleteCertificate(userId: number, chatId: number) {
@@ -1243,8 +1255,13 @@ bot.on('message', async (msg) => {
     const content = getAllContent();
     const total = content.projects.length;
     
+    if (!text) {
+      bot.sendMessage(chatId, '❌ Ошибка: текст не может быть пустым.', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+      return;
+    }
+    
     const parts = text.trim().split(/[\s,]+/).filter(p => p.trim());
-    const numbers = parts.map(n => parseInt(n));
+    const numbers = parts.map((n: string) => parseInt(n));
     
     // Проверка: все числа?
     if (numbers.some(n => isNaN(n))) {
@@ -1290,7 +1307,7 @@ bot.on('message', async (msg) => {
     const categoryMap: Record<string, string> = {
       '1': 'sro', '2': 'iso', '3': 'fire', '4': 'windows', '5': 'facade', '6': 'doors', '7': 'other'
     };
-    const category = categoryMap[text] || 'other';
+    const category = text ? (categoryMap[text] || 'other') : 'other';
     setUserState(userId, { ...state, step: 15, tempData: { name, category } });
     bot.sendMessage(chatId, '📸 Отправьте фото или PDF файла, или введите путь к файлу:', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
     return;
@@ -1353,7 +1370,7 @@ bot.on('message', async (msg) => {
     const categoryMap: Record<string, string> = {
       '1': 'sro', '2': 'iso', '3': 'fire', '4': 'windows', '5': 'facade', '6': 'doors', '7': 'other'
     };
-    const category = text ? (categoryMap[text] || 'other') : 'other';
+    const category = text && categoryMap[text] ? categoryMap[text] : 'other';
     setUserState(userId, { ...state, step: 24, tempData: { index, name, category, filename } });
     const categoryNames: Record<string, string> = {
       'sro': 'Допуски СРО', 'iso': 'ISO', 'fire': 'Пожарная безопасность',
@@ -1383,8 +1400,27 @@ bot.on('polling_error', (error: any) => {
   console.log('Polling error (ignored):', error.code);
 });
 
-bot.startPolling();
-console.log('🤖 Telegram Bot started and polling...');
+// Определяем режим запуска
+const useWebhook = process.env.USE_WEBHOOK === 'true';
+const webhookUrl = process.env.WEBHOOK_URL || process.env.NEXT_PUBLIC_SITE_URL;
+
+if (useWebhook && webhookUrl) {
+  // Webhook-режим для production (Vercel)
+  const url = webhookUrl.replace(/\/$/, '') + '/api/bot/webhook';
+  bot.setWebhook(url)
+    .then(() => {
+      console.log('🤖 Telegram Bot started in webhook mode:', url);
+    })
+    .catch((err: any) => {
+      console.error('❌ Failed to set webhook:', err.message);
+      console.log('⚠️ Falling back to polling mode...');
+      bot.startPolling();
+    });
+} else {
+  // Polling-режим для локальной разработки
+  bot.startPolling();
+  console.log('🤖 Telegram Bot started and polling...');
+}
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught error (ignored):', err.message);
