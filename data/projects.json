@@ -64,5 +64,11 @@
     "description": "Мы - крутые",
     "image": "/figma/project_1783785360308.png",
     "id": 9
+  },
+  {
+    "title": "Саша и Лёша",
+    "description": "Саша - крут",
+    "image": "/figma/project_1783785591341.png",
+    "id": 10
   }
 ]
