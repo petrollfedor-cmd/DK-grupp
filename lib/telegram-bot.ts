@@ -1071,10 +1071,19 @@ bot.on('message', async (msg) => {
     if (photo) {
       const fileId = photo.file_id;
       const filename = `project_${Date.now()}.png`;
-      const downloadPath = path.join(process.cwd(), 'public', 'figma', filename);
-      const fileStream = bot.getFileStream(fileId);
-      await new Promise<void>((resolve, reject) => { fileStream.on('error', reject); fileStream.pipe(fs.createWriteStream(downloadPath)); fileStream.on('end', resolve); });
-      imagePath = `/figma/${filename}`;
+      const fileBuffer = await new Promise<Buffer>((resolve, reject) => {
+        const fileStream = bot.getFileStream(fileId);
+        const chunks: Buffer[] = [];
+        fileStream.on('data', (chunk: Buffer) => chunks.push(chunk));
+        fileStream.on('end', () => resolve(Buffer.concat(chunks)));
+        fileStream.on('error', reject);
+      });
+      const uploadResult = await uploadFileToGitHub(`public/figma/${filename}`, fileBuffer, `Add project image: ${title}`);
+      if (uploadResult.success) {
+        imagePath = `/figma/${filename}`;
+      } else {
+        console.error('❌ Failed to upload photo to GitHub:', uploadResult.message);
+      }
     }
     setUserState(userId, { ...state, step: 13, tempData: { title, description, image: imagePath } });
     const keyboard = { inline_keyboard: [[{ text: '✏️ Название', callback_data: 'edit_add_title' }, { text: '✏️ Описание', callback_data: 'edit_add_desc' }], [{ text: '🖼 Фото', callback_data: 'edit_add_image' }], [{ text: '↩️ Назад', callback_data: 'back' }, { text: '✅ Сохранить', callback_data: 'confirm_add_project' }]] };
@@ -1179,10 +1188,23 @@ bot.on('message', async (msg) => {
     if (photo) {
       const fileId = photo.file_id;
       const filename = `hero_${Date.now()}.png`;
-      const downloadPath = path.join(process.cwd(), 'public', 'figma', filename);
-      const fileStream = bot.getFileStream(fileId);
-      await new Promise<void>((resolve, reject) => { fileStream.on('error', reject); fileStream.pipe(fs.createWriteStream(downloadPath)); fileStream.on('end', resolve); });
-      imagePath = `/figma/${filename}`;
+      const fileBuffer = await new Promise<Buffer>((resolve, reject) => {
+        const fileStream = bot.getFileStream(fileId);
+        const chunks: Buffer[] = [];
+        fileStream.on('data', (chunk: Buffer) => chunks.push(chunk));
+        fileStream.on('end', () => resolve(Buffer.concat(chunks)));
+        fileStream.on('error', reject);
+      });
+      const uploadResult = await uploadFileToGitHub(`public/figma/${filename}`, fileBuffer, `Update hero image`);
+      if (uploadResult.success) {
+        imagePath = `/figma/${filename}`;
+        console.log('✅ Hero photo uploaded to GitHub:', imagePath);
+      } else {
+        console.error('❌ Failed to upload hero photo to GitHub:', uploadResult.message);
+        bot.sendMessage(chatId, '⚠️ Фото не удалось загрузить. Попробуйте ещё раз.', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+        clearUserState(userId);
+        return;
+      }
     }
     setUserState(userId, { ...state, step: 6, tempData: imagePath });
     const { getAllContent } = require('./content');
@@ -1242,10 +1264,19 @@ bot.on('message', async (msg) => {
     if (photo) {
       const fileId = photo.file_id;
       const filename = `partner_${Date.now()}.png`;
-      const downloadPath = path.join(process.cwd(), 'public', 'figma', filename);
-      const fileStream = bot.getFileStream(fileId);
-      await new Promise<void>((resolve, reject) => { fileStream.on('error', reject); fileStream.pipe(fs.createWriteStream(downloadPath)); fileStream.on('end', resolve); });
-      imagePath = `/figma/${filename}`;
+      const fileBuffer = await new Promise<Buffer>((resolve, reject) => {
+        const fileStream = bot.getFileStream(fileId);
+        const chunks: Buffer[] = [];
+        fileStream.on('data', (chunk: Buffer) => chunks.push(chunk));
+        fileStream.on('end', () => resolve(Buffer.concat(chunks)));
+        fileStream.on('error', reject);
+      });
+      const uploadResult = await uploadFileToGitHub(`public/figma/${filename}`, fileBuffer, `Add partner icon: ${name}`);
+      if (uploadResult.success) {
+        imagePath = `/figma/${filename}`;
+      } else {
+        console.error('❌ Failed to upload partner icon to GitHub:', uploadResult.message);
+      }
     }
     const { getAllContent, updateFooter } = require('./content');
     const content = getAllContent();
@@ -1267,10 +1298,19 @@ bot.on('message', async (msg) => {
     if (photo) {
       const fileId = photo.file_id;
       const filename = `partner_${Date.now()}.png`;
-      const downloadPath = path.join(process.cwd(), 'public', 'figma', filename);
-      const fileStream = bot.getFileStream(fileId);
-      await new Promise<void>((resolve, reject) => { fileStream.on('error', reject); fileStream.pipe(fs.createWriteStream(downloadPath)); fileStream.on('end', resolve); });
-      imagePath = `/figma/${filename}`;
+      const fileBuffer = await new Promise<Buffer>((resolve, reject) => {
+        const fileStream = bot.getFileStream(fileId);
+        const chunks: Buffer[] = [];
+        fileStream.on('data', (chunk: Buffer) => chunks.push(chunk));
+        fileStream.on('end', () => resolve(Buffer.concat(chunks)));
+        fileStream.on('error', reject);
+      });
+      const uploadResult = await uploadFileToGitHub(`public/figma/${filename}`, fileBuffer, `Update partner icon`);
+      if (uploadResult.success) {
+        imagePath = `/figma/${filename}`;
+      } else {
+        console.error('❌ Failed to upload partner icon to GitHub:', uploadResult.message);
+      }
     }
     const { getAllContent, updateFooter } = require('./content');
     const content = getAllContent();
