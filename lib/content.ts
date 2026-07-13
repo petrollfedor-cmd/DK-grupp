@@ -6,6 +6,9 @@ const DATA_DIR = path.join(process.cwd(), 'data');
 const CERT_DIR = path.join(process.cwd(), 'public', 'documents', 'certificates');
 const CERT_META_PATH = path.join(process.cwd(), 'data', 'certificates.json');
 
+const GITHUB_REPO = process.env.GITHUB_REPO || 'petrollfedor-cmd/DK-grupp';
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
+
 export interface Certificate {
   filename: string;
   name: string;
@@ -17,6 +20,38 @@ export interface ContentData {
   hero: any;
   projects: any[];
   footer: any;
+}
+
+// Кэш данных из GitHub
+let githubCache: ContentData | null = null;
+let cacheTimestamp = 0;
+const CACHE_TTL = 5000; // 5 секунд
+
+/**
+ * Читает JSON напрямую из GitHub через API
+ */
+async function readFromGitHub(filename: string): Promise<any | null> {
+  const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/data/${filename}?ref=${GITHUB_BRANCH}`;
+  try {
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+    if (!GITHUB_TOKEN) return null;
+    
+    const res = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+      },
+    });
+    if (!res.ok) return null;
+    
+    const data = await res.json();
+    // GitHub возвращает base64-encoded content
+    const decoded = Buffer.from(data.content, 'base64').toString('utf-8');
+    return JSON.parse(decoded);
+  } catch (err) {
+    console.error('Failed to fetch from GitHub:', filename, err);
+    return null;
+  }
 }
 
 export function readJSON<T>(filename: string): T | null {
@@ -31,6 +66,27 @@ export function readJSON<T>(filename: string): T | null {
 export function writeJSON(filename: string, data: any): void {
   const filepath = path.join(DATA_DIR, filename);
   fs.writeFileSync(filepath, JSON.stringify(data, null, 2), 'utf-8');
+}
+
+/**
+ * Получает актуальные данные из GitHub с кэшированием
+ */
+async function getGitHubContent(): Promise<ContentData> {
+  const now = Date.now();
+  if (githubCache && (now - cacheTimestamp) < CACHE_TTL) {
+    return githubCache;
+  }
+  
+  const [navigation, hero, projects, footer] = await Promise.all([
+    readFromGitHub('navigation.json') || [],
+    readFromGitHub('hero.json') || {},
+    readFromGitHub('projects.json') || [],
+    readFromGitHub('footer.json') || {},
+  ]);
+  
+  githubCache = { navigation, hero, projects, footer };
+  cacheTimestamp = now;
+  return githubCache;
 }
 
 // Глобальные переменные для отложенной синхронизации
@@ -73,6 +129,8 @@ export function updateNavigation(items: any[]): boolean {
     writeJSON('navigation.json', items);
     pendingSyncFiles.push({ path: 'data/navigation.json', content: JSON.stringify(items, null, 2) });
     scheduleGitSync();
+    githubCache = { ...githubCache!, navigation: items };
+    cacheTimestamp = Date.now();
     return true;
   } catch (error) {
     console.error('Error updating navigation:', error);
@@ -85,21 +143,11 @@ export function updateHero(data: any): boolean {
     writeJSON('hero.json', data);
     pendingSyncFiles.push({ path: 'data/hero.json', content: JSON.stringify(data, null, 2) });
     scheduleGitSync();
+    githubCache = { ...githubCache!, hero: data };
+    cacheTimestamp = Date.now();
     return true;
   } catch (error) {
     console.error('Error updating hero:', error);
-    return false;
-  }
-}
-
-export function updateProjects(items: any[]): boolean {
-  try {
-    writeJSON('projects.json', items);
-    pendingSyncFiles.push({ path: 'data/projects.json', content: JSON.stringify(items, null, 2) });
-    scheduleGitSync();
-    return true;
-  } catch (error) {
-    console.error('Error updating projects:', error);
     return false;
   }
 }
@@ -109,6 +157,8 @@ export function updateFooter(data: any): boolean {
     writeJSON('footer.json', data);
     pendingSyncFiles.push({ path: 'data/footer.json', content: JSON.stringify(data, null, 2) });
     scheduleGitSync();
+    githubCache = { ...githubCache!, footer: data };
+    cacheTimestamp = Date.now();
     return true;
   } catch (error) {
     console.error('Error updating footer:', error);
@@ -116,38 +166,53 @@ export function updateFooter(data: any): boolean {
   }
 }
 
-export function addProject(project: any): boolean {
+export function updateProjects(items: any[]): boolean {
   try {
-    const content = getAllContent();
+    writeJSON('projects.json', items);
+    pendingSyncFiles.push({ path: 'data/projects.json', content: JSON.stringify(items, null, 2) });
+    scheduleGitSync();
+    githubCache = { ...githubCache!, projects: items };
+    cacheTimestamp = Date.now();
+    return true;
+  } catch (error) {
+    console.error('Error updating projects:', error);
+    return false;
+  }
+}
+
+export async function addProject(project: any): Promise<boolean> {
+  try {
+    // Читаем из GitHub чтобы не потерять данные при перезапуске Railway
+    const ghContent = await getGitHubContent();
     const newProject = {
       ...project,
-      id: content.projects.length > 0 ? Math.max(...content.projects.map((p: any) => p.id)) + 1 : 1
+      id: ghContent.projects.length > 0 ? Math.max(...ghContent.projects.map((p: any) => p.id)) + 1 : 1
     };
-    content.projects.push(newProject);
-    return updateProjects(content.projects);
+    ghContent.projects.push(newProject);
+    return updateProjects(ghContent.projects);
   } catch (error) {
     console.error('Error adding project:', error);
     return false;
   }
 }
 
-export function deleteProject(index: number): boolean {
+export async function deleteProject(index: number): Promise<boolean> {
   try {
-    const content = getAllContent();
-    content.projects.splice(index, 1);
-    return updateProjects(content.projects);
+    const ghContent = await getGitHubContent();
+    ghContent.projects.splice(index, 1);
+    return updateProjects(ghContent.projects);
   } catch (error) {
     console.error('Error deleting project:', error);
     return false;
   }
 }
 
-export function updateProject(index: number, project: any): boolean {
+export async function updateProject(index: number, project: any): Promise<boolean> {
   try {
-    const content = getAllContent();
-    if (index >= 0 && index < content.projects.length) {
-      content.projects[index] = { ...content.projects[index], ...project };
-      return updateProjects(content.projects);
+    const ghContent = await getGitHubContent();
+    if (index >= 0 && index < ghContent.projects.length) {
+      ghContent.projects[index] = { ...ghContent.projects[index], ...project };
+      return updateProjects(ghContent.projects);
     }
     return false;
   } catch (error) {

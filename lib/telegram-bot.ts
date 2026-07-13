@@ -101,7 +101,7 @@ bot.onText(/\/start/, (msg) => {
 });
 
 // Callback query handler
-bot.on('callback_query', (query) => {
+bot.on('callback_query', async (query) => {
   const userId = query.from.id;
   const data = query.data;
   console.log('📩 Callback received:', data, 'from user:', userId);
@@ -390,9 +390,8 @@ bot.on('callback_query', (query) => {
         const state = getUserState(userId);
         if (state.mode === 'edit_projects' && state.step === 13 && state.tempData) {
           const { title, description, image } = state.tempData;
-          // Фото уже загружено в GitHub на шаге 12, просто сохраняем проект
           const { addProject } = require('./content');
-          addProject({ title, description, image });
+          await addProject({ title, description, image });
           sendDeployNotification(chatId, bot, '✅ Проект добавлен!');
         }
         clearUserState(userId);
@@ -427,7 +426,7 @@ bot.on('callback_query', (query) => {
         const state = getUserState(userId);
         if (state.mode === 'edit_projects' && state.step === 12 && state.tempData !== null) {
           const { deleteProject } = require('./content');
-          deleteProject(state.tempData);
+          await deleteProject(state.tempData);
           sendDeployNotification(chatId, bot, '✅ Проект удалён!');
         }
         clearUserState(userId);
@@ -1035,6 +1034,9 @@ bot.on('message', async (msg) => {
         console.log('✅ Photo uploaded to GitHub:', imagePath);
       } else {
         console.error('❌ Failed to upload photo to GitHub:', uploadResult.message);
+        bot.sendMessage(chatId, '⚠️ Фото не удалось загрузить в GitHub. Попробуйте ещё раз.', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+        clearUserState(userId);
+        return;
       }
     }
     setUserState(userId, { ...state, step: 13, tempData: { title, description, image: imagePath } });
