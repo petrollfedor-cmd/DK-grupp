@@ -346,17 +346,7 @@ bot.on('callback_query', (query) => {
         if (state.mode === 'edit_projects' && state.step === 24 && state.tempData) {
           const { index, title, description, image } = state.tempData;
           
-          // Загружаем новое фото в GitHub если оно изменилось
-          if (image && !image.includes('default') && image.startsWith('/figma/') && image !== (state.tempData._oldImage || '')) {
-            const localPath = path.join(process.cwd(), 'public', image.replace(/^\//, ''));
-            uploadFileToGitHub(image.replace(/^\//, ''), localPath, `Update project image: ${title}`)
-              .then((result) => {
-                if (!result.success) {
-                  console.error('⚠️ Failed to upload image to GitHub:', result.message);
-                }
-              });
-          }
-          
+          // Фото уже загружено в GitHub на шаге 12/23, просто сохраняем проект
           const { getAllContent, updateProjects } = require('./content');
           const content = getAllContent();
           if (title) content.projects[index].title = title;
@@ -400,18 +390,7 @@ bot.on('callback_query', (query) => {
         const state = getUserState(userId);
         if (state.mode === 'edit_projects' && state.step === 13 && state.tempData) {
           const { title, description, image } = state.tempData;
-          
-          // Загружаем фото в GitHub если это не дефолтное фото
-          if (image && !image.includes('default') && image.startsWith('/figma/')) {
-            const localPath = path.join(process.cwd(), 'public', image.replace(/^\//, ''));
-            uploadFileToGitHub(image.replace(/^\//, ''), localPath, `Add project image: ${title}`)
-              .then((uploadResult) => {
-                if (!uploadResult.success) {
-                  console.error('⚠️ Failed to upload image to GitHub:', uploadResult.message);
-                }
-              });
-          }
-          
+          // Фото уже загружено в GitHub на шаге 12, просто сохраняем проект
           const { addProject } = require('./content');
           addProject({ title, description, image });
           sendDeployNotification(chatId, bot, '✅ Проект добавлен!');
@@ -1042,10 +1021,21 @@ bot.on('message', async (msg) => {
     if (photo) {
       const fileId = photo.file_id;
       const filename = `project_${Date.now()}.png`;
-      const downloadPath = path.join(process.cwd(), 'public', 'figma', filename);
-      const fileStream = bot.getFileStream(fileId);
-      await new Promise<void>((resolve, reject) => { fileStream.on('error', reject); fileStream.pipe(fs.createWriteStream(downloadPath)); fileStream.on('end', resolve); });
-      imagePath = `/figma/${filename}`;
+      const fileBuffer = await new Promise<Buffer>((resolve, reject) => {
+        const fileStream = bot.getFileStream(fileId);
+        const chunks: Buffer[] = [];
+        fileStream.on('data', (chunk: Buffer) => chunks.push(chunk));
+        fileStream.on('end', () => resolve(Buffer.concat(chunks)));
+        fileStream.on('error', reject);
+      });
+      // Загружаем сразу в GitHub без сохранения на диск
+      const uploadResult = await uploadFileToGitHub(`public/figma/${filename}`, fileBuffer, `Add project image: ${title}`);
+      if (uploadResult.success) {
+        imagePath = `/figma/${filename}`;
+        console.log('✅ Photo uploaded to GitHub:', imagePath);
+      } else {
+        console.error('❌ Failed to upload photo to GitHub:', uploadResult.message);
+      }
     }
     setUserState(userId, { ...state, step: 13, tempData: { title, description, image: imagePath } });
     const keyboard = { inline_keyboard: [[{ text: '✏️ Название', callback_data: 'edit_add_title' }, { text: '✏️ Описание', callback_data: 'edit_add_desc' }], [{ text: '🖼 Фото', callback_data: 'edit_add_image' }], [{ text: '↩️ Назад', callback_data: 'back' }, { text: '✅ Сохранить', callback_data: 'confirm_add_project' }]] };
@@ -1116,10 +1106,20 @@ bot.on('message', async (msg) => {
     if (photo) {
       const fileId = photo.file_id;
       const filename = `project_${Date.now()}.png`;
-      const downloadPath = path.join(process.cwd(), 'public', 'figma', filename);
-      const fileStream = bot.getFileStream(fileId);
-      await new Promise<void>((resolve, reject) => { fileStream.on('error', reject); fileStream.pipe(fs.createWriteStream(downloadPath)); fileStream.on('end', resolve); });
-      imagePath = `/figma/${filename}`;
+      const fileBuffer = await new Promise<Buffer>((resolve, reject) => {
+        const fileStream = bot.getFileStream(fileId);
+        const chunks: Buffer[] = [];
+        fileStream.on('data', (chunk: Buffer) => chunks.push(chunk));
+        fileStream.on('end', () => resolve(Buffer.concat(chunks)));
+        fileStream.on('error', reject);
+      });
+      const uploadResult = await uploadFileToGitHub(`public/figma/${filename}`, fileBuffer, `Update project image: ${title}`);
+      if (uploadResult.success) {
+        imagePath = `/figma/${filename}`;
+        console.log('✅ Photo uploaded to GitHub:', imagePath);
+      } else {
+        console.error('❌ Failed to upload photo to GitHub:', uploadResult.message);
+      }
     }
     const newTempData = { index, title, description, image: imagePath };
     setUserState(userId, { ...state, step: 24, tempData: newTempData });

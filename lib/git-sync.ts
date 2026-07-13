@@ -17,11 +17,11 @@ interface GitSyncResult {
 }
 
 /**
- * Загружает бинарный файл (изображение) в GitHub через API
+ * Загружает бинарные данные (изображение) в GitHub через API
  */
 export async function uploadFileToGitHub(
   repoPath: string,
-  localFilePath: string,
+  fileBuffer: Buffer,
   commitMessage: string
 ): Promise<GitSyncResult> {
   if (!GITHUB_TOKEN) {
@@ -33,13 +33,6 @@ export async function uploadFileToGitHub(
     // Убираем ведущий слеш для GitHub API
     const cleanPath = repoPath.replace(/^\//, '');
     
-    // Читаем файл как бинарные данные
-    if (!fs.existsSync(localFilePath)) {
-      console.error('❌ File not found:', localFilePath);
-      return { success: false, message: 'File not found: ' + localFilePath };
-    }
-
-    const fileBuffer = fs.readFileSync(localFilePath);
     const encodedContent = fileBuffer.toString('base64');
 
     let sha = '';
