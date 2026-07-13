@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import { createRequire } from 'module';
 import * as fs from 'fs';
 import * as path from 'path';
+import { uploadFileToGitHub } from './git-sync';
 
 const require = createRequire(import.meta.url);
 
@@ -343,9 +344,21 @@ bot.on('callback_query', (query) => {
       case 'proj_confirm_edit': {
         const state = getUserState(userId);
         if (state.mode === 'edit_projects' && state.step === 24 && state.tempData) {
+          const { index, title, description, image } = state.tempData;
+          
+          // Загружаем новое фото в GitHub если оно изменилось
+          if (image && !image.includes('default') && image.startsWith('/figma/') && image !== (state.tempData._oldImage || '')) {
+            const localPath = path.join(process.cwd(), 'public', image);
+            uploadFileToGitHub(image, localPath, `Update project image: ${title}`)
+              .then((result) => {
+                if (!result.success) {
+                  console.error('⚠️ Failed to upload image to GitHub:', result.message);
+                }
+              });
+          }
+          
           const { getAllContent, updateProjects } = require('./content');
           const content = getAllContent();
-          const { index, title, description, image } = state.tempData;
           if (title) content.projects[index].title = title;
           if (description) content.projects[index].description = description;
           if (image) content.projects[index].image = image;
@@ -387,6 +400,18 @@ bot.on('callback_query', (query) => {
         const state = getUserState(userId);
         if (state.mode === 'edit_projects' && state.step === 13 && state.tempData) {
           const { title, description, image } = state.tempData;
+          
+          // Загружаем фото в GitHub если это не дефолтное фото
+          if (image && !image.includes('default') && image.startsWith('/figma/')) {
+            const localPath = path.join(process.cwd(), 'public', image);
+            uploadFileToGitHub(image, localPath, `Add project image: ${title}`)
+              .then((uploadResult) => {
+                if (!uploadResult.success) {
+                  console.error('⚠️ Failed to upload image to GitHub:', uploadResult.message);
+                }
+              });
+          }
+          
           const { addProject } = require('./content');
           addProject({ title, description, image });
           sendDeployNotification(chatId, bot, '✅ Проект добавлен!');
