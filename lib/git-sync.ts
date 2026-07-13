@@ -30,6 +30,9 @@ export async function uploadFileToGitHub(
   }
 
   try {
+    // Убираем ведущий слеш для GitHub API
+    const cleanPath = repoPath.replace(/^\//, '');
+    
     // Читаем файл как бинарные данные
     if (!fs.existsSync(localFilePath)) {
       console.error('❌ File not found:', localFilePath);
@@ -41,7 +44,7 @@ export async function uploadFileToGitHub(
 
     let sha = '';
     const getRes = await fetch(
-      `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoPath}?ref=${GITHUB_BRANCH}`,
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/${cleanPath}?ref=${GITHUB_BRANCH}`,
       {
         headers: {
           'Authorization': `Bearer ${GITHUB_TOKEN}`,
@@ -56,7 +59,7 @@ export async function uploadFileToGitHub(
     }
 
     const putRes = await fetch(
-      `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoPath}`,
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/${cleanPath}`,
       {
         method: 'PUT',
         headers: {

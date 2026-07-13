@@ -348,8 +348,8 @@ bot.on('callback_query', (query) => {
           
           // Загружаем новое фото в GitHub если оно изменилось
           if (image && !image.includes('default') && image.startsWith('/figma/') && image !== (state.tempData._oldImage || '')) {
-            const localPath = path.join(process.cwd(), 'public', image);
-            uploadFileToGitHub(image, localPath, `Update project image: ${title}`)
+            const localPath = path.join(process.cwd(), 'public', image.replace(/^\//, ''));
+            uploadFileToGitHub(image.replace(/^\//, ''), localPath, `Update project image: ${title}`)
               .then((result) => {
                 if (!result.success) {
                   console.error('⚠️ Failed to upload image to GitHub:', result.message);
@@ -403,8 +403,8 @@ bot.on('callback_query', (query) => {
           
           // Загружаем фото в GitHub если это не дефолтное фото
           if (image && !image.includes('default') && image.startsWith('/figma/')) {
-            const localPath = path.join(process.cwd(), 'public', image);
-            uploadFileToGitHub(image, localPath, `Add project image: ${title}`)
+            const localPath = path.join(process.cwd(), 'public', image.replace(/^\//, ''));
+            uploadFileToGitHub(image.replace(/^\//, ''), localPath, `Add project image: ${title}`)
               .then((uploadResult) => {
                 if (!uploadResult.success) {
                   console.error('⚠️ Failed to upload image to GitHub:', uploadResult.message);
