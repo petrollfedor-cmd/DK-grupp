@@ -222,35 +222,31 @@ export async function updateProject(index: number, project: any): Promise<boolea
 }
 
 // Certificate management
-export function getCertificates(): Certificate[] {
-  // Если есть метаданные — используем их
-  if (fs.existsSync(CERT_META_PATH)) {
-    const fileBuffer = fs.readFileSync(CERT_META_PATH);
-    const data = fileBuffer.toString('utf-8');
-    const certs = JSON.parse(data) as Certificate[];
-    // Фильтруем только существующие файлы
-    const validCerts = certs.filter(c => fs.existsSync(path.join(CERT_DIR, c.filename)));
-    // Добавляем файлы из папки, которых нет в метаданных
-    const existingFiles = fs.readdirSync(CERT_DIR).filter(f => /\.(pdf|png|jpg|jpeg)$/i.test(f));
-    const missingFiles = existingFiles.filter(f => !certs.some(c => c.filename === f));
-    if (missingFiles.length > 0) {
-      missingFiles.forEach(f => {
-        validCerts.push({ filename: f, name: f.replace(/\.[^.]+$/, '').replace(/_/g, ' '), category: 'other' });
-      });
-      saveCertificates(validCerts);
-    }
-    return validCerts;
+async function readCertsFromGitHub(): Promise<Certificate[]> {
+  try {
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+    if (!GITHUB_TOKEN) return [];
+    
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/data/certificates.json?ref=${GITHUB_BRANCH}`;
+    const res = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+      },
+    });
+    if (!res.ok) return [];
+    
+    const data = await res.json();
+    const decoded = Buffer.from(data.content, 'base64').toString('utf-8');
+    return JSON.parse(decoded) as Certificate[];
+  } catch (err) {
+    console.error('Failed to fetch certificates from GitHub:', err);
+    return [];
   }
-  // Если метаданных нет — сканируем папку
-  if (!fs.existsSync(CERT_DIR)) return [];
-  const files = fs.readdirSync(CERT_DIR).filter(f => /\.(pdf|png|jpg|jpeg)$/i.test(f));
-  const certs: Certificate[] = files.map(f => ({
-    filename: f,
-    name: f.replace(/\.[^.]+$/, '').replace(/_/g, ' '),
-    category: 'other' as const
-  }));
-  saveCertificates(certs);
-  return certs;
+}
+
+export async function getCertificates(): Promise<Certificate[]> {
+  return await readCertsFromGitHub();
 }
 
 export function saveCertificates(certificates: Certificate[]): void {
@@ -259,12 +255,10 @@ export function saveCertificates(certificates: Certificate[]): void {
   scheduleGitSync();
 }
 
-export function addCertificate(filename: string, name: string, category: string): boolean {
+export async function addCertificate(filename: string, name: string, category: string): Promise<boolean> {
   try {
-    const certs = getCertificates();
-    // Проверяем, есть ли уже сертификат с таким filename
+    const certs = await getCertificates();
     if (certs.some(c => c.filename === filename)) {
-      // Обновляем существующий сертификат
       const cert = certs.find(c => c.filename === filename);
       if (cert) {
         cert.name = name;
@@ -282,15 +276,10 @@ export function addCertificate(filename: string, name: string, category: string)
   }
 }
 
-export function deleteCertificate(index: number): boolean {
+export async function deleteCertificate(index: number): Promise<boolean> {
   try {
-    const certs = getCertificates();
+    const certs = await getCertificates();
     if (index >= 0 && index < certs.length) {
-      const cert = certs[index];
-      const filePath = path.join(CERT_DIR, cert.filename);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
       certs.splice(index, 1);
       saveCertificates(certs);
       return true;

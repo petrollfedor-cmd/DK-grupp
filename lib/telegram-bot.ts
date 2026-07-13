@@ -538,7 +538,7 @@ bot.on('callback_query', async (query) => {
         const itemIndex = parseInt(data.split('_').pop()!);
         console.log('🗑 Deleting cert item:', itemIndex, 'data:', data);
         const { getCertificates } = require('./content');
-        const certs = getCertificates();
+        const certs = await getCertificates();
         const cert = certs[itemIndex];
         console.log('🗑 Cert found:', cert);
         setUserState(userId, { mode: 'edit_certificates', step: 12, tempData: itemIndex });
@@ -555,7 +555,7 @@ bot.on('callback_query', async (query) => {
         const state = getUserState(userId);
         if (state.mode === 'edit_certificates' && state.step === 12 && state.tempData !== null) {
           const { deleteCertificate } = require('./content');
-          deleteCertificate(state.tempData);
+          await deleteCertificate(state.tempData);
           sendDeployNotification(chatId, bot, '✅ Сертификат удалён!');
         }
         clearUserState(userId);
@@ -571,7 +571,7 @@ bot.on('callback_query', async (query) => {
       case 'cert_edit_28': case 'cert_edit_29': case 'cert_edit_30': {
         const itemIndex = parseInt(data.split('_').pop()!);
         const { getCertificates } = require('./content');
-        const certs = getCertificates();
+        const certs = await getCertificates();
         const cert = certs[itemIndex];
         setUserState(userId, { mode: 'edit_certificates', step: 20, tempData: { index: itemIndex, name: cert.name, category: cert.category, filename: cert.filename } });
         const categoryNames: Record<string, string> = { 'windows': 'Окна', 'facade': 'Витражи', 'doors': 'Двери', 'other': 'Прочее' };
@@ -605,7 +605,7 @@ bot.on('callback_query', async (query) => {
         if (state.mode === 'edit_certificates' && state.step === 24 && state.tempData) {
           const { index, name, category } = state.tempData;
           const { getCertificates, saveCertificates } = require('./content');
-          const certs = getCertificates();
+          const certs = await getCertificates();
           if (name) certs[index].name = name;
           if (category) certs[index].category = category;
           saveCertificates(certs);
@@ -634,7 +634,7 @@ bot.on('callback_query', async (query) => {
         if (state.mode === 'edit_certificates' && state.step === 16 && state.tempData) {
           const { name, category, filename } = state.tempData;
           const { addCertificate } = require('./content');
-          addCertificate(filename, name, category);
+          await addCertificate(filename, name, category);
           sendDeployNotification(chatId, bot, '✅ Сертификат добавлен!');
         }
         clearUserState(userId);
@@ -839,9 +839,9 @@ function startDeleteProject(userId: number, chatId: number) {
   bot.sendMessage(chatId, '🗑 Выберите проект для удаления:', { reply_markup: keyboard });
 }
 
-function startDeleteCertificate(userId: number, chatId: number) {
+async function startDeleteCertificate(userId: number, chatId: number) {
   const { getCertificates } = require('./content');
-  const certs = getCertificates();
+  const certs = await getCertificates();
   if (certs.length === 0) { bot.sendMessage(chatId, '❌ Нет сертификатов.'); return; }
   const keyboard = {
     inline_keyboard: certs.map((c: any, i: number) => [{ text: `🗑 ${i + 1}. ${c.name}`, callback_data: `cert_delete_item_${i}` }]).concat([[{ text: '↩️ Назад', callback_data: 'back' }]])
@@ -915,7 +915,7 @@ async function handleEditDocuments(userId: number, chatId?: number) {
 async function handleEditCertificates(userId: number, chatId?: number) {
   if (!chatId) return;
   const { getCertificates } = require('./content');
-  const certs = getCertificates();
+  const certs = await getCertificates();
   
   const categoryNames: Record<string, string> = {
     'sro': '🏗 Допуски СРО',
@@ -977,7 +977,7 @@ async function handleStats(userId: number, chatId?: number) {
   try {
     const { getAllContent, getCertificates } = require('./content');
     const content = getAllContent();
-    const certificates = getCertificates();
+    const certificates = await getCertificates();
     console.log('Content loaded:', Object.keys(content));
     const message = `📊 Статистика:\n\n📋 Навигация: ${content.navigation.length}\n🏗 Проекты: ${content.projects.length}\n📄 Документы: ${content.footer.documents.length}\n📑 Сертификаты: ${certificates.length}\n👥 Партнёры: ${content.footer.partners.length}`;
     console.log('Sending message:', message);
@@ -1354,30 +1354,40 @@ bot.on('message', async (msg) => {
     const { name, category } = state.tempData;
     let filename = text || `cert_${Date.now()}.pdf`;
     let fileId: string | undefined;
+    let isPdf = false;
     
     // Check for photo (image)
     const photo = msg.photo?.[msg.photo.length - 1];
     if (photo) {
       fileId = photo.file_id;
-      const ext = text?.endsWith('.png') ? '.png' : '.pdf';
+      const ext = '.png';
       filename = `cert_${Date.now()}${ext}`;
     }
     // Check for document (PDF)
     else if (msg.document && msg.document.mime_type === 'application/pdf') {
       fileId = msg.document.file_id;
-      filename = text || `cert_${Date.now()}.pdf`;
+      isPdf = true;
+      filename = `cert_${Date.now()}.pdf`;
     }
     
-    // Download file if we have a fileId
+    // Download file to memory and upload to GitHub
     if (fileId) {
       try {
-        const downloadPath = path.join(CERT_DIR, filename);
-        const fileStream = bot.getFileStream(fileId);
-        await new Promise<void>((resolve, reject) => { 
-          fileStream.on('error', reject); 
-          fileStream.pipe(fs.createWriteStream(downloadPath)); 
-          fileStream.on('end', resolve); 
+        const fileBuffer = await new Promise<Buffer>((resolve, reject) => {
+          const fileStream = bot.getFileStream(fileId);
+          const chunks: Buffer[] = [];
+          fileStream.on('data', (chunk: Buffer) => chunks.push(chunk));
+          fileStream.on('end', () => resolve(Buffer.concat(chunks)));
+          fileStream.on('error', reject);
         });
+        
+        const uploadResult = await uploadFileToGitHub(`public/documents/certificates/${filename}`, fileBuffer, `Add certificate: ${name}`);
+        if (!uploadResult.success) {
+          console.error('❌ Failed to upload certificate to GitHub:', uploadResult.message);
+          bot.sendMessage(chatId, '❌ Ошибка при загрузке файла в GitHub. Попробуйте еще раз.', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+          return;
+        }
+        console.log('✅ Certificate uploaded to GitHub:', filename);
       } catch (error) {
         console.error('Error downloading certificate file:', error);
         bot.sendMessage(chatId, '❌ Ошибка при загрузке файла. Попробуйте еще раз.', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
