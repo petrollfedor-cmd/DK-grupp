@@ -186,62 +186,7 @@ bot.on('callback_query', async (query) => {
       }
       case 'edit_hero': handleEditHero(userId, chatId); break;
       case 'hero_title': startEditHeroTitle(userId, chatId); break;
-      case 'hero_desc': startEditHeroDesc(userId, chatId); break;
       case 'hero_image': startEditHeroImage(userId, chatId); break;
-      case 'hero_change_title':
-        setUserState(userId, { mode: 'edit_hero', step: 1, tempData: null });
-        bot.sendMessage(chatId, '✍️ Отправьте новый заголовок:');
-        break;
-      case 'hero_change_desc':
-        setUserState(userId, { mode: 'edit_hero', step: 3, tempData: null });
-        bot.sendMessage(chatId, '✍️ Отправьте новое описание:');
-        break;
-      case 'hero_change_image':
-        setUserState(userId, { mode: 'edit_hero', step: 5, tempData: null });
-        bot.sendMessage(chatId, '✍️ Отправьте новый путь к фото:');
-        break;
-      case 'confirm_hero_title': {
-        const state = getUserState(userId);
-        if (state.mode === 'edit_hero' && state.step === 2 && state.tempData) {
-          const { getAllContent, updateHero } = require('./content');
-          const content = getAllContent();
-          content.hero.title = state.tempData;
-          updateHero(content.hero);
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, '✅ Заголовок обновлен!', { reply_markup: mainKeyboard });
-        }
-        clearUserState(userId);
-        break;
-      }
-      case 'cancel_hero_title': { bot.sendMessage(chatId, '❌ Отменено.'); clearUserState(userId); break; }
-      case 'confirm_hero_desc': {
-        const state = getUserState(userId);
-        if (state.mode === 'edit_hero' && state.step === 4 && state.tempData) {
-          const { getAllContent, updateHero } = require('./content');
-          const content = getAllContent();
-          content.hero.description = state.tempData;
-          updateHero(content.hero);
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, '✅ Описание обновлено!', { reply_markup: mainKeyboard });
-        }
-        clearUserState(userId);
-        break;
-      }
-      case 'cancel_hero_desc': { bot.sendMessage(chatId, '❌ Отменено.'); clearUserState(userId); break; }
-      case 'confirm_hero_image': {
-        const state = getUserState(userId);
-        if (state.mode === 'edit_hero' && state.step === 6 && state.tempData) {
-          const { getAllContent, updateHero } = require('./content');
-          const content = getAllContent();
-          content.hero.imageUrl = state.tempData;
-          updateHero(content.hero);
-          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
-          bot.sendMessage(chatId, '✅ Фото обновлено!', { reply_markup: mainKeyboard });
-        }
-        clearUserState(userId);
-        break;
-      }
-      case 'cancel_hero_image': { bot.sendMessage(chatId, '❌ Отменено.'); clearUserState(userId); break; }
       case 'edit_projects': handleEditProjects(userId, chatId); break;
       case 'proj_reorder': startReorderProjects(userId, chatId); break;
       case 'confirm_reorder': {
@@ -768,8 +713,8 @@ async function handleEditHero(userId: number, chatId?: number) {
   const { getAllContent } = require('./content');
   const content = getAllContent();
   let message = '🖼 Hero секция:\n\n';
-  message += `📝 Заголовок: ${content.hero.title}\n📄 Описание: ${content.hero.description}\n🎯 Главный заголовок: ${content.hero.mainTitle}`;
-  const keyboard = { inline_keyboard: [[{ text: '✏️ Заголовок', callback_data: 'hero_title' }, { text: '📝 Описание', callback_data: 'hero_desc' }], [{ text: '🖼 Фото', callback_data: 'hero_image' }, { text: '↩️ Назад', callback_data: 'back' }]] };
+  message += `📝 Заголовок: ${content.hero.title}\n🎯 Главный заголовок: ${content.hero.mainTitle}`;
+  const keyboard = { inline_keyboard: [[{ text: '✏️ Заголовок', callback_data: 'hero_title' }], [{ text: '🖼 Фото', callback_data: 'hero_image' }, { text: '↩️ Назад', callback_data: 'back' }]] };
   bot.sendMessage(chatId, message, { reply_markup: keyboard });
   setUserState(userId, { mode: 'edit_hero', step: 0, tempData: null });
 }
@@ -779,14 +724,6 @@ function startEditHeroTitle(userId: number, chatId: number) {
   const content = getAllContent();
   const keyboard = { inline_keyboard: [[{ text: '✏️ Изменить', callback_data: 'hero_change_title' }, { text: '↩️ Назад', callback_data: 'back' }]] };
   bot.sendMessage(chatId, `📝 Текущее:\n\`\`\`\n${content.hero.title}\n\`\`\``, { reply_markup: keyboard });
-  setUserState(userId, { mode: 'edit_hero', step: 0, tempData: null });
-}
-
-function startEditHeroDesc(userId: number, chatId: number) {
-  const { getAllContent } = require('./content');
-  const content = getAllContent();
-  const keyboard = { inline_keyboard: [[{ text: '✏️ Изменить', callback_data: 'hero_change_desc' }, { text: '↩️ Назад', callback_data: 'back' }]] };
-  bot.sendMessage(chatId, `📄 Текущее:\n\`\`\`\n${content.hero.description}\n\`\`\``, { reply_markup: keyboard });
   setUserState(userId, { mode: 'edit_hero', step: 0, tempData: null });
 }
 
@@ -1168,16 +1105,6 @@ bot.on('message', async (msg) => {
     const content = getAllContent();
     const keyboard = { inline_keyboard: [[{ text: '✅ Сохранить', callback_data: 'confirm_hero_title' }, { text: '❌ Отмена', callback_data: 'cancel_hero_title' }]] };
     bot.sendMessage(chatId, `⚠️ Новый: \`\`\`\n${text}\n\`\`\`\n\nТекущий: \`\`\`\n${content.hero.title}\n\`\`\``, { reply_markup: keyboard });
-    return;
-  }
-  
-  // Hero edit: step 3 (desc) → step 4 (confirm)
-  if (state.mode === 'edit_hero' && state.step === 3) {
-    setUserState(userId, { ...state, step: 4, tempData: text });
-    const { getAllContent } = require('./content');
-    const content = getAllContent();
-    const keyboard = { inline_keyboard: [[{ text: '✅ Сохранить', callback_data: 'confirm_hero_desc' }, { text: '❌ Отмена', callback_data: 'cancel_hero_desc' }]] };
-    bot.sendMessage(chatId, `⚠️ Новое: \`\`\`\n${text}\n\`\`\`\n\nТекущее: \`\`\`\n${content.hero.description}\n\`\`\``, { reply_markup: keyboard });
     return;
   }
   
