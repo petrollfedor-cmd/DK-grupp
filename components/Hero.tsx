@@ -9,10 +9,9 @@ interface HeroProps {
   imageUrl?: string;
   title: string;
   description?: string;
-  mainTitle?: string;
 }
 
-export default function Hero({ imageUrl, title, description, mainTitle }: HeroProps) {
+export default function Hero({ imageUrl, title, description }: HeroProps) {
   return (
     <section
       className="hero-section"
@@ -49,39 +48,25 @@ export default function Hero({ imageUrl, title, description, mainTitle }: HeroPr
           top: '50%',
           left: '192px',
           transform: 'translateY(-50%)',
-          padding: '32px',
+          padding: '24px',
           borderRadius: '5px',
           background: 'linear-gradient(97.13deg, rgba(218, 229, 239, 0.2) 47.02%, rgba(68, 89, 132, 0.2) 78.23%, rgba(18, 19, 33, 0.2) 98.57%)',
           border: '1px solid rgba(255, 255, 255, 0.39)',
           zIndex: 10,
           maxWidth: '700px',
           minWidth: '400px',
+          maxHeight: '400px',
+          overflowY: 'auto',
           whiteSpace: 'normal',
           wordWrap: 'break-word',
           overflowWrap: 'break-word',
         }}
       >
-        {mainTitle && (
-          <h2
-            style={{
-              color: '#fff',
-              margin: '0 0 16px 0',
-              fontFamily: 'Lato',
-              fontWeight: 700,
-              fontSize: 'clamp(20px, 2.5vw, 28px)',
-              lineHeight: '1.3',
-              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-              textAlign: 'left',
-            }}
-          >
-            {mainTitle}
-          </h2>
-        )}
         {title && (
           <p
             style={{
               color: '#fff',
-              margin: '0 0 12px 0',
+              margin: '0 0 10px 0',
               fontFamily: 'Lato',
               fontWeight: 600,
               fontSize: 'clamp(16px, 2vw, 22px)',
@@ -110,6 +95,53 @@ export default function Hero({ imageUrl, title, description, mainTitle }: HeroPr
             {description}
           </p>
         )}
+      </div>
+
+      {/* Мобильная версия hero */}
+      <div className="hero-mobile-content" style={{
+        position: 'absolute',
+        top: '50%',
+        left: '16px',
+        right: '16px',
+        transform: 'translateY(-50%)',
+        zIndex: 10,
+        display: 'none',
+      }}>
+        <div style={{
+          padding: '16px',
+          borderRadius: '8px',
+          background: 'rgba(0,0,0,0.5)',
+          backdropFilter: 'blur(4px)',
+          border: '1px solid rgba(255,255,255,0.3)',
+        }}>
+          {title && (
+            <p style={{
+              color: '#fff',
+              margin: '0 0 8px 0',
+              fontFamily: 'Lato',
+              fontWeight: 600,
+              fontSize: '18px',
+              lineHeight: '1.3',
+              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+            }}>
+              {title}
+            </p>
+          )}
+          {description && (
+            <p style={{
+              color: '#fff',
+              margin: 0,
+              fontFamily: 'Lato',
+              fontWeight: 400,
+              fontSize: '14px',
+              lineHeight: '1.4',
+              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+              opacity: 0.95,
+            }}>
+              {description}
+            </p>
+          )}
+        </div>
       </div>
     </section>
   );
