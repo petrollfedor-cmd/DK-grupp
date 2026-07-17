@@ -153,13 +153,8 @@ export default function HomePage() {
         imageUrl={heroData?.imageUrl}
         title={heroData?.title || ''}
         description={heroData?.description}
+        mainTitle={heroData?.mainTitle}
       />
-
-      <div className="hero-main-title-wrapper">
-        <h1 className="hero-main-title" style={{ fontSize: 'clamp(24px, 3vw, 32px)', marginTop: '20px', marginBottom: '20px' }}>
-          {heroData?.mainTitle || 'СТРОИТЕЛЬНО-МОНТАЖНЫЕ РАБОТЫ РАЗЛИЧНЫХ ТИПОВ'}
-        </h1>
-      </div>
 
       <section id="projects" style={{ padding: '20px 60px', maxWidth: '1920px', margin: '0 auto' }}>
         {/* Заголовок секции + кнопка "Все проекты" */}

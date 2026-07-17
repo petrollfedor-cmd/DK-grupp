@@ -9,9 +9,10 @@ interface HeroProps {
   imageUrl?: string;
   title: string;
   description?: string;
+  mainTitle?: string;
 }
 
-export default function Hero({ imageUrl, title, description }: HeroProps) {
+export default function Hero({ imageUrl, title, description, mainTitle }: HeroProps) {
   return (
     <section
       className="hero-section"
@@ -56,20 +57,55 @@ export default function Hero({ imageUrl, title, description }: HeroProps) {
           maxWidth: '500px',
         }}
       >
-        <p
-          style={{
-            color: '#fff',
-            margin: 0,
-            fontFamily: 'Lato',
-            fontWeight: 600,
-            fontSize: 'clamp(18px, 2vw, 24px)',
-            lineHeight: '1.4',
-            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-            textAlign: 'left',
-          }}
-        >
-          {description}
-        </p>
+        {mainTitle && (
+          <h2
+            style={{
+              color: '#fff',
+              margin: '0 0 16px 0',
+              fontFamily: 'Lato',
+              fontWeight: 700,
+              fontSize: 'clamp(20px, 2.5vw, 28px)',
+              lineHeight: '1.3',
+              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+              textAlign: 'left',
+            }}
+          >
+            {mainTitle}
+          </h2>
+        )}
+        {title && (
+          <p
+            style={{
+              color: '#fff',
+              margin: '0 0 12px 0',
+              fontFamily: 'Lato',
+              fontWeight: 600,
+              fontSize: 'clamp(16px, 2vw, 22px)',
+              lineHeight: '1.4',
+              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+              textAlign: 'left',
+            }}
+          >
+            {title}
+          </p>
+        )}
+        {description && (
+          <p
+            style={{
+              color: '#fff',
+              margin: 0,
+              fontFamily: 'Lato',
+              fontWeight: 500,
+              fontSize: 'clamp(14px, 1.5vw, 18px)',
+              lineHeight: '1.5',
+              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+              textAlign: 'left',
+              opacity: 0.9,
+            }}
+          >
+            {description}
+          </p>
+        )}
       </div>
     </section>
   );
