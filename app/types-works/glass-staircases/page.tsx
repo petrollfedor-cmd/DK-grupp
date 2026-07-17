@@ -98,7 +98,7 @@ function Carousel({ images }: { images: string[] }) {
         }}>
           <img
             src={visible[0]}
-            alt={`Фото 1`}
+            alt={`Стеклянное лестничное ограждение — пример работы ДК ГРУПП`}
             style={{
               width: '100%',
               height: '100%',
@@ -118,7 +118,7 @@ function Carousel({ images }: { images: string[] }) {
         }}>
           <img
             src={visible[1]}
-            alt={`Фото 2`}
+            alt={`Стеклянное ограждение лестницы — монтаж ДК ГРУПП`}
             style={{
               width: '100%',
               height: '100%',

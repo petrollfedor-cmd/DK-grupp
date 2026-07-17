@@ -56,7 +56,7 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
       <div className="footer-mobile" style={{ display: 'none', maxWidth: '1920px', margin: '0 auto', padding: '24px 16px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
           <div>
-            <NextImage src="/figma/15:462.png" alt="Логотип" width={90} height={80} quality={80} style={{ width: '90px', height: '80px', objectFit: 'contain', marginBottom: '12px' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+            <NextImage src="/figma/15:462.png" alt="Логотип ДК ГРУПП — строительная компания" width={90} height={80} quality={80} style={{ width: '90px', height: '80px', objectFit: 'contain', marginBottom: '12px' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
           </div>
           <div style={{ maxWidth: '50%' }}>
             <div style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', fontWeight: 600, color: '#fff', marginBottom: '8px' }}>Контакты:</div>
@@ -136,7 +136,7 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '24px', alignItems: 'start' }}>
               <div>
                 <div style={{ marginBottom: '24px' }}>
-                  <NextImage src="/figma/15:462.png" alt="Логотип" width={90} height={80} quality={80} style={{ width: '90px', height: '80px', objectFit: 'contain' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                  <NextImage src="/figma/15:462.png" alt="Логотип ДК ГРУПП — строительная компания" width={90} height={80} quality={80} style={{ width: '90px', height: '80px', objectFit: 'contain' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                 </div>
                 <div style={{ marginBottom: '24px' }}>
                   <div style={{ fontFamily: 'Lato, sans-serif', fontSize: '18px', color: '#fff', marginBottom: '12px' }}>Социальные сети:</div>

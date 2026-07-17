@@ -166,7 +166,7 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
           <div className="calc-modal-grid" style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '32px', marginBottom: '32px' }}>
             <div className="calc-modal-photo">
               <div style={{ position: 'relative', width: '100%', aspectRatio: '485/418', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#e0e0e0' }}>
-                <NextImage src="/figma/346:162.png" alt="Фото" fill style={{ objectFit: 'cover' }} loading="lazy" quality={80} />
+                <NextImage src="/figma/346:162.png" alt="Расчёт стоимости строительного объекта — ДК ГРУПП" fill style={{ objectFit: 'cover' }} loading="lazy" quality={80} />
               </div>
             </div>
 
