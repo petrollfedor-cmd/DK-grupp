@@ -10,7 +10,7 @@ const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 async function readFromGitHub(filename: string): Promise<any | null> {
   const url = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/data/${filename}`;
   try {
-    const res = await fetch(url, { cache: 'no-store' });
+    const res = await fetch(url, { cache: 'no-store', next: { revalidate: 0 } });
     if (!res.ok) return null;
     return await res.json();
   } catch (err) {
