@@ -67,6 +67,11 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png',
   },
+  verification: {
+    other: {
+      'mailru-domain': 'VwJbLOEYlZQb7urm',
+    },
+  },
   category: 'business',
 };
 
