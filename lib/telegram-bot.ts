@@ -186,7 +186,43 @@ bot.on('callback_query', async (query) => {
       }
       case 'edit_hero': handleEditHero(userId, chatId); break;
       case 'hero_title': startEditHeroTitle(userId, chatId); break;
+      case 'hero_change_title':
+        setUserState(userId, { mode: 'edit_hero', step: 1, tempData: null });
+        bot.sendMessage(chatId, '✍️ Отправьте новый заголовок:');
+        break;
+      case 'confirm_hero_title': {
+        const state = getUserState(userId);
+        if (state.mode === 'edit_hero' && state.step === 2 && state.tempData) {
+          const { getAllContent, updateHero } = require('./content');
+          const content = getAllContent();
+          content.hero.title = state.tempData;
+          updateHero(content.hero);
+          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
+          bot.sendMessage(chatId, '✅ Заголовок обновлен!', { reply_markup: mainKeyboard });
+        }
+        clearUserState(userId);
+        break;
+      }
+      case 'cancel_hero_title': { bot.sendMessage(chatId, '❌ Отменено.'); clearUserState(userId); break; }
       case 'hero_image': startEditHeroImage(userId, chatId); break;
+      case 'hero_change_image':
+        setUserState(userId, { mode: 'edit_hero', step: 5, tempData: null });
+        bot.sendMessage(chatId, '✍️ Отправьте новый путь к фото:');
+        break;
+      case 'confirm_hero_image': {
+        const state = getUserState(userId);
+        if (state.mode === 'edit_hero' && state.step === 6 && state.tempData) {
+          const { getAllContent, updateHero } = require('./content');
+          const content = getAllContent();
+          content.hero.imageUrl = state.tempData;
+          updateHero(content.hero);
+          const mainKeyboard = { inline_keyboard: [[{ text: '🏠 Главное меню', callback_data: 'back' }]] };
+          bot.sendMessage(chatId, '✅ Фото обновлено!', { reply_markup: mainKeyboard });
+        }
+        clearUserState(userId);
+        break;
+      }
+      case 'cancel_hero_image': { bot.sendMessage(chatId, '❌ Отменено.'); clearUserState(userId); break; }
       case 'edit_projects': handleEditProjects(userId, chatId); break;
       case 'proj_reorder': startReorderProjects(userId, chatId); break;
       case 'confirm_reorder': {
