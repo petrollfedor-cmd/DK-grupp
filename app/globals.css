@@ -247,6 +247,10 @@ section {
 .hero-description-box {
   backdrop-filter: blur(4px);
   animation: fadeInUp 0.8s ease-out 0.3s both;
+  max-width: 600px;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 @keyframes fadeInUp {

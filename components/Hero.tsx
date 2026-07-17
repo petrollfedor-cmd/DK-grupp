@@ -54,7 +54,11 @@ export default function Hero({ imageUrl, title, description, mainTitle }: HeroPr
           background: 'linear-gradient(97.13deg, rgba(218, 229, 239, 0.2) 47.02%, rgba(68, 89, 132, 0.2) 78.23%, rgba(18, 19, 33, 0.2) 98.57%)',
           border: '1px solid rgba(255, 255, 255, 0.39)',
           zIndex: 10,
-          maxWidth: '500px',
+          maxWidth: '700px',
+          minWidth: '400px',
+          whiteSpace: 'normal',
+          wordWrap: 'break-word',
+          overflowWrap: 'break-word',
         }}
       >
         {mainTitle && (
