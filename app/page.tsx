@@ -23,7 +23,6 @@ interface Project {
 interface HeroData {
   imageUrl: string;
   title: string;
-  description: string;
   mainTitle: string;
 }
 
@@ -152,7 +151,6 @@ export default function HomePage() {
       <Hero
         imageUrl={heroData?.imageUrl}
         title={heroData?.title || ''}
-        description={heroData?.description}
       />
 
       <div className="hero-main-title-wrapper">

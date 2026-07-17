@@ -8,10 +8,9 @@ const { Title, Paragraph } = Typography;
 interface HeroProps {
   imageUrl?: string;
   title: string;
-  description?: string;
 }
 
-export default function Hero({ imageUrl, title, description }: HeroProps) {
+export default function Hero({ imageUrl, title }: HeroProps) {
   return (
     <section
       className="hero-section"
@@ -66,7 +65,7 @@ export default function Hero({ imageUrl, title, description }: HeroProps) {
           <p
             style={{
               color: '#fff',
-              margin: '0 0 10px 0',
+              margin: 0,
               fontFamily: 'Lato',
               fontWeight: 600,
               fontSize: 'clamp(16px, 2vw, 22px)',
@@ -76,23 +75,6 @@ export default function Hero({ imageUrl, title, description }: HeroProps) {
             }}
           >
             {title}
-          </p>
-        )}
-        {description && (
-          <p
-            style={{
-              color: '#fff',
-              margin: 0,
-              fontFamily: 'Lato',
-              fontWeight: 500,
-              fontSize: 'clamp(14px, 1.5vw, 18px)',
-              lineHeight: '1.5',
-              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-              textAlign: 'left',
-              opacity: 0.9,
-            }}
-          >
-            {description}
           </p>
         )}
       </div>
@@ -117,7 +99,7 @@ export default function Hero({ imageUrl, title, description }: HeroProps) {
           {title && (
             <p style={{
               color: '#fff',
-              margin: '0 0 8px 0',
+              margin: 0,
               fontFamily: 'Lato',
               fontWeight: 600,
               fontSize: '18px',
@@ -125,20 +107,6 @@ export default function Hero({ imageUrl, title, description }: HeroProps) {
               textShadow: '0 2px 8px rgba(0,0,0,0.5)',
             }}>
               {title}
-            </p>
-          )}
-          {description && (
-            <p style={{
-              color: '#fff',
-              margin: 0,
-              fontFamily: 'Lato',
-              fontWeight: 400,
-              fontSize: '14px',
-              lineHeight: '1.4',
-              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-              opacity: 0.95,
-            }}>
-              {description}
             </p>
           )}
         </div>
