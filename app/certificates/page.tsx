@@ -218,7 +218,7 @@ export default function CertificatesPage() {
           Свяжитесь с нами, и мы предоставим необходимые сертификаты
         </Paragraph>
         <a
-          href="mailto:DK-Group1@yandex.ru"
+          href="mailto:info@dkfasad.ru"
           style={{
             display: 'inline-block',
             padding: '12px 32px',

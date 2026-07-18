@@ -70,7 +70,7 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
               <div style={{ width: '28px', height: '28px', borderRadius: '6px', backgroundColor: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 6l-10 7L2 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
-              <a href={`mailto:${footerData?.contacts?.email || 'DK-Group1@yandex.ru'}`} style={{ fontFamily: 'Lato, sans-serif', fontSize: '14px', color: '#fff', textDecoration: 'none' }}>{footerData?.contacts?.email || 'DK-Group1@yandex.ru'}</a>
+              <a href={`mailto:${footerData?.contacts?.email || 'info@dkfasad.ru'}`} style={{ fontFamily: 'Lato, sans-serif', fontSize: '14px', color: '#fff', textDecoration: 'none' }}>{footerData?.contacts?.email || 'info@dkfasad.ru'}</a>
             </div>
           </div>
         </div>
@@ -201,7 +201,7 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
                   <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 6l-10 7L2 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </div>
-                  <a href={`mailto:${footerData?.contacts?.email || 'DK-Group1@yandex.ru'}`} style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', color: '#fff', textDecoration: 'none' }}>{footerData?.contacts?.email || 'DK-Group1@yandex.ru'}</a>
+                  <a href={`mailto:${footerData?.contacts?.email || 'info@dkfasad.ru'}`} style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', color: '#fff', textDecoration: 'none' }}>{footerData?.contacts?.email || 'info@dkfasad.ru'}</a>
                 </div>
               </div>
             </div>

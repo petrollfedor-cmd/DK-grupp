@@ -21,7 +21,7 @@ export default function Contacts() {
             </div>
             <div style={{ marginBottom: '16px' }}>
               <MailOutlined style={{ marginRight: '8px', color: '#ff5722' }} />
-              <Text>dk-group1@yandex.ru</Text>
+              <a href="mailto:info@dkfasad.ru" style={{ color: 'inherit', textDecoration: 'none' }}>info@dkfasad.ru</a>
             </div>
             <div>
               <EnvironmentOutlined style={{ marginRight: '8px', color: '#ff5722' }} />

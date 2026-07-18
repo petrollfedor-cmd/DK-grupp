@@ -1190,7 +1190,7 @@ bot.on('message', async (msg) => {
   // Footer edit: step 10 (phone) → step 11 (email)
   if (state.mode === 'edit_footer' && state.step === 10) {
     setUserState(userId, { ...state, step: 11, tempData: { phone: text } });
-    bot.sendMessage(chatId, '✍️ Введите email (например: DK-Group1@yandex.ru):');
+    bot.sendMessage(chatId, '✍️ Введите email (например: info@dkfasad.ru):');
     return;
   }
   

@@ -35,7 +35,7 @@ export default function Hero({ imageUrl, title }: HeroProps) {
           </Link>
         </div>
         <div className="contacts-col hero-logo-contacts-delay" style={{ display: 'flex', gap: '48px', marginLeft: 'auto' }}>
-          <a href="mailto:DK-Group1@yandex.ru" className="contact-email">DK-Group1@yandex.ru</a>
+          <a href="mailto:info@dkfasad.ru" className="contact-email">info@dkfasad.ru</a>
           <a href="tel:+79119994995" className="contact-phone">+7 (911) 999-49-95</a>
         </div>
       </div>

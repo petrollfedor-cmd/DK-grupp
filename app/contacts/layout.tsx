@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Контакты — ДК ГРУПП',
-  description: 'Свяжитесь с ДК ГРУПП: телефон +7 (911) 999-49-95, email DK-Group1@yandex.ru. Офис в Самаре, пр. Карла Маркса, д. 192, оф. 713. Обсудите ваш проект и получите расчёт стоимости.',
+  description: 'Свяжитесь с ДК ГРУПП: телефон +7 (911) 999-49-95, email info@dkfasad.ru. Офис в Самаре, пр. Карла Маркса, д. 192, оф. 713. Обсудите ваш проект и получите расчёт стоимости.',
   keywords: ['контакты', 'телефон', 'email', 'Самара', 'ДК ГРУПП', 'расчёт стоимости'],
   alternates: { canonical: '/contacts' },
   openGraph: {
