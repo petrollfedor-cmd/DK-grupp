@@ -27,11 +27,11 @@ export default function CertificatesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/certificates')
+    fetch('https://raw.githubusercontent.com/petrollfedor-cmd/DK-grupp/main/data/certificates.json')
       .then(res => res.json())
       .then(data => {
-        if (data.success) {
-          setCertificates(data.data);
+        if (Array.isArray(data)) {
+          setCertificates(data);
         }
       })
       .catch(err => console.error('Failed to load certificates:', err))

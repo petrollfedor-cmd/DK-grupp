@@ -27,11 +27,11 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
   const [footerData, setFooterData] = useState<FooterData | null>(null);
 
   useEffect(() => {
-    fetch('/api/footer')
+    fetch('https://raw.githubusercontent.com/petrollfedor-cmd/DK-grupp/main/data/footer.json')
       .then(res => res.json())
       .then(data => {
-        if (data.success && data.data) {
-          setFooterData(data.data);
+        if (data) {
+          setFooterData(data);
         }
       })
       .catch(err => console.error('Failed to load footer:', err));
