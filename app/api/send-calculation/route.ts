@@ -1,11 +1,7 @@
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 
-const RECIPIENTS = [
-  'info@dkfasad.ru',
-  's.dudin@dkfasad.ru',
-  'e.kel@dkfasad.ru',
-];
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const TELEGRAM_ADMIN_IDS = process.env.TELEGRAM_ADMIN_IDS || '';
 
 export async function POST(request: Request) {
   try {
@@ -16,52 +12,68 @@ export async function POST(request: Request) {
     const requestText = formData.get('request') as string || '';
     const files = formData.getAll('files') as File[];
 
-    // SMTP transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.mail.ru',
-      port: parseInt(process.env.SMTP_PORT || '465'),
-      secure: true,
-      auth: {
-        user: process.env.SMTP_USER || 'info@dkfasad.ru',
-        pass: process.env.SMTP_PASS || '',
-      },
+    // Build message
+    const message = `
+📋 <b>Новая заявка на расчёт</b>
+
+👤 <b>ФИО:</b> ${fio}
+📞 <b>Телефон:</b> ${phone}
+📝 <b>Запрос:</b>
+${requestText}
+
+🌐 С сайта: dkfasad.ru
+    `.trim();
+
+    // Send message to all admins
+    const adminIds = TELEGRAM_ADMIN_IDS.split(',');
+    const sendPromises = adminIds.map(async (adminId) => {
+      const chatId = adminId.trim();
+
+      // Send text message first
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'HTML',
+        }),
+      });
+
+      // Send attached files if any
+      for (const file of files.filter(f => f.size > 0)) {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const formData = new FormData();
+        formData.append('chat_id', chatId);
+        formData.append('document', new Blob([buffer]), file.name);
+
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, {
+          method: 'POST',
+          body: formData,
+        });
+      }
     });
 
-    // Prepare attachments
-    const attachments = await Promise.all(
-      files.filter(f => f.size > 0).map(async (file, idx) => {
-        const buffer = Buffer.from(await file.arrayBuffer());
-        return {
-          filename: file.name,
-          content: buffer,
-          contentType: file.type,
-        };
-      })
-    );
-
-    const mailOptions = {
-      from: process.env.SMTP_USER || 'info@dkfasad.ru',
-      to: RECIPIENTS.join(', '),
-      subject: `Заявка на расчёт — ${fio}`,
-      html: `
-        <h2>Новая заявка на расчёт стоимости объекта</h2>
-        <p><strong>ФИО:</strong> ${fio}</p>
-        <p><strong>Телефон:</strong> ${phone}</p>
-        <p><strong>Запрос:</strong></p>
-        <p>${requestText.replace(/\n/g, '<br>')}</p>
-        <hr>
-        <p style="color: #999; font-size: 12px;">Заявка отправлена с сайта dkfasad.ru</p>
-      `,
-      attachments,
-    };
-
-    await transporter.sendMail(mailOptions);
+    await Promise.all(sendPromises);
 
     return NextResponse.json({ success: true, message: 'Заявка отправлена' });
   } catch (error) {
-    console.error('Failed to send calculation email:', error);
+    console.error('Failed to send calculation request:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to send email' },
+      { success: false, error: 'Failed to send request' },
+      { status: 500 }
+    );
+  }
+}
+    });
+
+    await Promise.all(sendPromises);
+
+    return NextResponse.json({ success: true, message: 'Заявка отправлена' });
+  } catch (error) {
+    console.error('Failed to send calculation request:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to send request' },
       { status: 500 }
     );
   }
