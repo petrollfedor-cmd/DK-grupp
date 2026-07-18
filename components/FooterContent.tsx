@@ -17,6 +17,12 @@ interface FooterData {
     phone: string;
     email: string;
   };
+  social?: {
+    telegram: string;
+    max: string;
+    telegramIcon: string;
+    maxIcon: string;
+  };
 }
 
 interface FooterContentProps {
@@ -77,10 +83,10 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
         <div style={{ marginBottom: '16px' }}>
           <div style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', color: '#fff', marginBottom: '12px' }}>Социальные сети:</div>
           <div style={{ display: 'flex', gap: '12px' }}>
-            <a href="https://t.me" target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '48px', height: '48px', backgroundColor: '#0088cc', borderRadius: '14px', overflow: 'hidden' }}>
+            <a href={footerData?.social?.telegram || 'https://t.me/Evgeniy8812'} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '48px', height: '48px', backgroundColor: '#0088cc', borderRadius: '14px', overflow: 'hidden' }}>
               <NextImage src="/figma/telegram_icon.png" alt="Telegram" width={32} height={32} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} />
             </a>
-            <a href="https://max.ru" target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '48px', height: '48px', backgroundColor: '#0088cc', borderRadius: '14px', overflow: 'hidden' }}>
+            <a href={footerData?.social?.max || 'https://web.max.ru/221165432'} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '48px', height: '48px', backgroundColor: '#0088cc', borderRadius: '14px', overflow: 'hidden' }}>
               <NextImage src="/figma/MAX-32x32.png" alt="MAX" width={32} height={32} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} />
             </a>
           </div>
@@ -141,10 +147,10 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
                 <div style={{ marginBottom: '24px' }}>
                   <div style={{ fontFamily: 'Lato, sans-serif', fontSize: '18px', color: '#fff', marginBottom: '12px' }}>Социальные сети:</div>
                   <div style={{ display: 'flex', gap: '12px' }}>
-                    <a href="https://t.me" target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '48px', height: '48px', backgroundColor: '#0088cc', borderRadius: '14px', overflow: 'hidden' }}>
+                    <a href={footerData?.social?.telegram || 'https://t.me/Evgeniy8812'} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '48px', height: '48px', backgroundColor: '#0088cc', borderRadius: '14px', overflow: 'hidden' }}>
                       <NextImage src="/figma/telegram_icon.png" alt="Telegram" width={32} height={32} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} />
                     </a>
-                    <a href="https://max.ru" target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '48px', height: '48px', backgroundColor: '#0088cc', borderRadius: '14px', overflow: 'hidden' }}>
+                    <a href={footerData?.social?.max || 'https://web.max.ru/221165432'} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '48px', height: '48px', backgroundColor: '#0088cc', borderRadius: '14px', overflow: 'hidden' }}>
                       <NextImage src="/figma/MAX-32x32.png" alt="MAX" width={32} height={32} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} />
                     </a>
                   </div>
