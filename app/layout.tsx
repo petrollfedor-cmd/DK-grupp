@@ -3,7 +3,7 @@ import 'antd/dist/reset.css';
 import './globals.css';
 import ClientLayout from './client-layout';
 
-const SITE_URL = 'https://dk-grupp.ru';
+const SITE_URL = 'https://dkfasad.ru';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
