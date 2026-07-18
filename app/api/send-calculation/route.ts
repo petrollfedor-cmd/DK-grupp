@@ -65,16 +65,3 @@ ${requestText}
     );
   }
 }
-    });
-
-    await Promise.all(sendPromises);
-
-    return NextResponse.json({ success: true, message: 'Заявка отправлена' });
-  } catch (error) {
-    console.error('Failed to send calculation request:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to send request' },
-      { status: 500 }
-    );
-  }
-}
