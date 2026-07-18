@@ -12,6 +12,8 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
   const [files, setFiles] = useState<File[]>([]);
   const [phone, setPhone] = useState('');
   const [errors, setErrors] = useState<{fio?: string; phone?: string; request?: string}>({});
+  const [isSending, setIsSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!isOpen) return null;
@@ -75,14 +77,41 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
-      setFiles([]);
-      setPhone('');
-      setErrors({});
-      onClose();
+    if (!validateForm()) return;
+
+    setIsSending(true);
+    setSubmitError(null);
+
+    try {
+      const fioInput = (document.querySelector('input[placeholder="ФИО:"]') as HTMLInputElement);
+      const requestInput = (document.querySelector('textarea[placeholder="Ваш запрос:"]') as HTMLTextAreaElement);
+
+      const formData = new FormData();
+      formData.append('fio', fioInput?.value || '');
+      formData.append('phone', phone);
+      formData.append('request', requestInput?.value || '');
+      files.forEach((file) => formData.append('files', file));
+
+      const res = await fetch('/api/send-calculation', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+        setFiles([]);
+        setPhone('');
+        setErrors({});
+        onClose();
+      } else {
+        setSubmitError('Не удалось отправить заявку. Попробуйте ещё раз или свяжитесь по телефону.');
+      }
+    } catch (err) {
+      setSubmitError('Ошибка сети. Проверьте подключение и попробуйте снова.');
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -206,8 +235,10 @@ export default function CalculationModal({ isOpen, onClose }: CalculationModalPr
                   )}
                 </div>
 
+                {submitError && <div style={{ color: '#ff4444', fontSize: '13px', textAlign: 'right' }}>{submitError}</div>}
+
                 <div style={{ textAlign: 'right', marginTop: '4px' }}>
-                  <button type="submit" className="calc-modal-submit-btn" style={{ padding: '12px 36px', fontSize: '15px', fontFamily: 'Lato, sans-serif', fontWeight: 600, color: '#23365e', backgroundColor: '#d9d9d9', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Отправить заявку</button>
+                  <button type="submit" disabled={isSending} className="calc-modal-submit-btn" style={{ padding: '12px 36px', fontSize: '15px', fontFamily: 'Lato, sans-serif', fontWeight: 600, color: '#23365e', backgroundColor: '#d9d9d9', border: 'none', borderRadius: '4px', cursor: isSending ? 'not-allowed' : 'pointer', opacity: isSending ? 0.6 : 1 }}>{isSending ? 'Отправка...' : 'Отправить заявку'}</button>
                 </div>
               </form>
             </div>
