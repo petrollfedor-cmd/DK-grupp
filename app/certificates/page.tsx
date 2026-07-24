@@ -8,7 +8,7 @@ const { Title, Paragraph } = Typography;
 interface Certificate {
   filename: string;
   name: string;
-  category: 'windows' | 'facade' | 'doors' | 'other';
+  category: string;
 }
 
 const categoryNames: Record<string, { title: string; icon: string }> = {
@@ -18,6 +18,7 @@ const categoryNames: Record<string, { title: string; icon: string }> = {
   windows: { title: '🪟 Окна', icon: '🪟' },
   facade: { title: '🏢 Витражи и фасады', icon: '🏢' },
   doors: { title: '🚪 Двери', icon: '🚪' },
+  'glass-partitions': { title: '🔲 Внутренние стеклянные перегородки', icon: '🔲' },
   other: { title: '📄 Прочие сертификаты', icon: '📄' },
 };
 
@@ -56,7 +57,7 @@ export default function CertificatesPage() {
   }, {} as Record<string, Certificate[]>);
 
   // Порядок категорий как в боте
-  const categoryOrder = ['sro', 'iso', 'fire', 'windows', 'facade', 'doors', 'other'];
+  const categoryOrder = ['sro', 'iso', 'fire', 'windows', 'facade', 'doors', 'glass-partitions', 'other'];
 
   if (loading) {
     return (
