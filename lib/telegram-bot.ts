@@ -555,7 +555,7 @@ bot.on('callback_query', async (query) => {
         const certs = await getCertificates();
         const cert = certs[itemIndex];
         setUserState(userId, { mode: 'edit_certificates', step: 20, tempData: { index: itemIndex, name: cert.name, category: cert.category, filename: cert.filename } });
-        const categoryNames: Record<string, string> = { 'windows': 'Окна', 'facade': 'Витражи', 'doors': 'Двери', 'other': 'Прочее' };
+        const categoryNames: Record<string, string> = { 'windows': 'Окна', 'facade': 'Витражи', 'doors': 'Двери', 'glass-partitions': 'Внутренние стеклянные перегородки', 'other': 'Прочее' };
         const keyboard = {
           inline_keyboard: [
             [{ text: '✏️ Название', callback_data: 'cert_edit_name' }, { text: '📂 Категория', callback_data: 'cert_edit_category' }],
@@ -577,7 +577,7 @@ bot.on('callback_query', async (query) => {
         const state = getUserState(userId);
         if (state.mode === 'edit_certificates' && (state.step === 20 || state.step === 24)) {
           setUserState(userId, { ...state, step: 22, tempData: state.tempData });
-          bot.sendMessage(chatId, '📂 Выберите категорию:\n\n1 — Допуски СРО\n2 — ISO\n3 — Пожарная безопасность\n4 — Окна\n5 — Витражи и фасады\n6 — Двери\n7 — Прочие', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+          bot.sendMessage(chatId, '📂 Выберите категорию:\n\n1 — Допуски СРО\n2 — ISO\n3 — Пожарная безопасность\n4 — Окна\n5 — Витражи и фасады\n6 — Двери\n7 — Внутренние стеклянные перегородки\n8 — Прочие', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
         }
         break;
       }
@@ -897,11 +897,12 @@ async function handleEditCertificates(userId: number, chatId?: number) {
     'windows': '🪟 Окна',
     'facade': '🏢 Витражи и фасады',
     'doors': '🚪 Двери',
+    'glass-partitions': '🔲 Внутренние стеклянные перегородки',
     'other': '📄 Прочие'
   };
   
   // Группируем по категориям как на сайте
-  const grouped: Record<string, any[]> = { sro: [], iso: [], fire: [], windows: [], facade: [], doors: [], other: [] };
+  const grouped: Record<string, any[]> = { sro: [], iso: [], fire: [], windows: [], facade: [], doors: [], 'glass-partitions': [], other: [] };
   certs.forEach((c: any, i: number) => {
     if (grouped[c.category]) {
       grouped[c.category].push({ ...c, index: i });
@@ -1336,7 +1337,7 @@ bot.on('message', async (msg) => {
   // Certificate: step 13 (name) → step 14 (category)
   if (state.mode === 'edit_certificates' && state.step === 13) {
     setUserState(userId, { ...state, step: 14, tempData: { name: text } });
-    bot.sendMessage(chatId, '📂 Выберите категорию:\n\n1 — Допуски СРО\n2 — ISO\n3 — Пожарная безопасность\n4 — Окна\n5 — Витражи и фасады\n6 — Двери\n7 — Прочие', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+    bot.sendMessage(chatId, '📂 Выберите категорию:\n\n1 — Допуски СРО\n2 — ISO\n3 — Пожарная безопасность\n4 — Окна\n5 — Витражи и фасады\n6 — Двери\n7 — Внутренние стеклянные перегородки\n8 — Прочие', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
     return;
   }
   
@@ -1344,7 +1345,7 @@ bot.on('message', async (msg) => {
   if (state.mode === 'edit_certificates' && state.step === 14) {
     const { name } = state.tempData;
     const categoryMap: Record<string, string> = {
-      '1': 'sro', '2': 'iso', '3': 'fire', '4': 'windows', '5': 'facade', '6': 'doors', '7': 'other'
+      '1': 'sro', '2': 'iso', '3': 'fire', '4': 'windows', '5': 'facade', '6': 'doors', '7': 'glass-partitions', '8': 'other'
     };
     const category = text ? (categoryMap[text] || 'other') : 'other';
     setUserState(userId, { ...state, step: 15, tempData: { name, category } });
@@ -1417,13 +1418,13 @@ bot.on('message', async (msg) => {
   if (state.mode === 'edit_certificates' && state.step === 22) {
     const { index, name, filename } = state.tempData || {};
     const categoryMap: Record<string, string> = {
-      '1': 'sro', '2': 'iso', '3': 'fire', '4': 'windows', '5': 'facade', '6': 'doors', '7': 'other'
+      '1': 'sro', '2': 'iso', '3': 'fire', '4': 'windows', '5': 'facade', '6': 'doors', '7': 'glass-partitions', '8': 'other'
     };
     const category = text && categoryMap[text] ? categoryMap[text] : 'other';
     setUserState(userId, { ...state, step: 24, tempData: { index, name, category, filename } });
     const categoryNames: Record<string, string> = {
       'sro': 'Допуски СРО', 'iso': 'ISO', 'fire': 'Пожарная безопасность',
-      'windows': 'Окна', 'facade': 'Витражи и фасады', 'doors': 'Двери', 'other': 'Прочие'
+      'windows': 'Окна', 'facade': 'Витражи и фасады', 'doors': 'Двери', 'glass-partitions': 'Внутренние стеклянные перегородки', 'other': 'Прочие'
     };
     const keyboard = { inline_keyboard: [[{ text: '✏️ Название', callback_data: 'cert_edit_name' }, { text: '📂 Категория', callback_data: 'cert_edit_category' }], [{ text: '↩️ Назад', callback_data: 'back' }, { text: '✅ Сохранить', callback_data: 'cert_confirm_edit' }]] };
     bot.sendMessage(chatId, `⚠️ Подтвердите:\n\n📝 ${name}\n📂 ${categoryNames[category]}`, { reply_markup: keyboard });
