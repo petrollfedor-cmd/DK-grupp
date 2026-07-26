@@ -1,125 +1,539 @@
 'use client';
 
-import { Typography } from 'antd';
-import NextImage from 'next/image';
 import AppBreadcrumbs from '@/components/AppBreadcrumbs';
-
-const { Title, Paragraph } = Typography;
 
 export default function FireWindowsPage() {
   return (
-    <main className="fire-windows-main" style={{ padding: '40px 142px', maxWidth: '1200px', margin: '0 auto' }}>
+    <main style={{ fontFamily: "'Lato', -apple-system, BlinkMacSystemFont, sans-serif" }}>
       <style>{`
         @media (max-width: 768px) {
-          .fire-windows-main {
-            padding-left: 16px !important;
-            padding-right: 16px !important;
-          }
-          .fw-header {
-            flex-direction: column !important;
-            gap: 16px !important;
-          }
-          .fw-header-image {
-            width: 100% !important;
-            height: auto !important;
-            aspect-ratio: 4/3 !important;
-          }
+          .rubez-container { padding: 20px 16px !important; }
+          .rubez-services-grid { grid-template-columns: 1fr !important; }
+          .rubez-stats { flex-direction: column !important; gap: 20px !important; }
+          .rubez-cta-content { flex-direction: column !important; gap: 32px !important; }
+          .rubez-cta-text { max-width: 100% !important; }
+          .rubez-cta-button { width: 100% !important; }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .rubez-services-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
       `}</style>
+
       <AppBreadcrumbs />
 
-      {/* Заголовок */}
-      <h2 style={{
-        fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-        fontSize: '28px',
-        fontWeight: 600,
-        color: '#23365E',
-        marginBottom: '16px',
+      {/* Блок 1: Шапка — партнёрский статус */}
+      <div style={{
+        background: '#f5f7fa',
+        padding: '40px 142px',
       }}>
-        Противопожарные окна и витражи
-      </h2>
-
-      {/* Описание */}
-      <div className="fw-header" style={{ display: 'flex', gap: '32px', marginBottom: '40px', alignItems: 'flex-start' }}>
-        <div style={{ flex: 1 }}>
-          <Paragraph style={{
-            fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: '16px',
-            lineHeight: '1.8',
-            color: '#444',
-            marginBottom: 0,
+        <div className="rubez-container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '16px',
+            flexWrap: 'wrap',
+            gap: '16px',
           }}>
-            Мы проектируем и монтируем противопожарные алюминиевые витражи — светопрозрачные самонесущие системы с нормируемым пределом огнестойкости E, EI, EIW на 15, 30, 45 или 60 минут. Такие конструкции работают как надёжная преграда для огня и устанавливаются как в наружных фасадах, так и внутри зданий. С их помощью мы защищаем проёмы, делим этажи на пожарные отсеки, создаём внутренние перегородки и противопожарные окна — везде, где важна безопасность без потери света.
-          </Paragraph>
-        </div>
-        <div className="fw-header-image" style={{
-          width: '380px',
-          height: '260px',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          flexShrink: 0,
-          boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
-        }}>
-          <img
-            src="/figma/12:77.png"
-            alt="Противопожарные окна и витражи"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-            loading="lazy"
-          />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '28px', fontWeight: 700, color: '#0b2b4a' }}>
+                Партнёр
+              </span>
+              <span style={{ fontSize: '28px', fontWeight: 700, color: '#e31e24' }}>
+                РУБЕЖ
+              </span>
+            </div>
+            <div style={{
+              background: '#e31e24',
+              color: '#fff',
+              padding: '6px 16px',
+              borderRadius: '20px',
+              fontSize: '14px',
+              fontWeight: 600,
+            }}>
+              Официальный дилер
+            </div>
+          </div>
+          <div style={{
+            background: '#e8ecf1',
+            padding: '10px 20px',
+            borderRadius: '8px',
+            display: 'inline-block',
+          }}>
+            <span style={{ fontSize: '15px', color: '#555', fontWeight: 500 }}>
+              Прямой дилер · Прямые цены
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* EI9 90 */}
-      <Title level={3} style={{
-        fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-        fontSize: '22px',
-        fontWeight: 600,
-        color: '#23365E',
-        marginBottom: '16px',
+      {/* Блок 2: О партнёре */}
+      <div style={{
+        padding: '60px 142px',
+        background: '#fff',
       }}>
-        Светопрозрачные перегородки, ограждения, фасады, зенитные фонари с пределом огнестойкости до EI9 90
-      </Title>
-      <Paragraph style={{
-        fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-        fontSize: '16px',
-        lineHeight: '1.8',
-        color: '#444',
-        marginBottom: '32px',
-      }}>
-        Это универсальные элементы строительных конструкций, которые обеспечивают не только огнестойкость до EI9 90,
-        но и эстетическое оформление помещений. Такие конструкции используются для создания безопасных и светлых пространств
-        в коммерческих и общественных зданиях. Они выполняются из высокопрочного закаленного стекла или триплекса, что
-        гарантирует надежную защиту и долговечность. Светопрозрачные перегородки и ограждения эффективно зонизируют
-        пространство, а фасады и зенитные фонари добавляют архитектурную выразительность и функциональность.
-      </Paragraph>
+        <div className="rubez-container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{
+            display: 'flex',
+            gap: '60px',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
+          }}>
+            <div style={{ flex: 1, minWidth: '300px' }}>
+              <h2 style={{
+                fontSize: '36px',
+                fontWeight: 700,
+                color: '#0b2b4a',
+                margin: '0 0 8px 0',
+              }}>
+                ГК «Рубеж»
+              </h2>
+              <p style={{
+                fontSize: '18px',
+                color: '#e31e24',
+                margin: '0 0 20px 0',
+                fontWeight: 500,
+              }}>
+                Проектирование и монтаж систем пожарной безопасности
+              </p>
+              <p style={{
+                fontSize: '16px',
+                lineHeight: '1.8',
+                color: '#444',
+                margin: 0,
+              }}>
+                Мы являемся прямым дилером ГК «Рубеж» — одного из ведущих разработчиков и производителей
+                решений в области пожарной автоматики. На нашем сайте вы можете заказать полный спектр услуг:
+                от проектирования до сервисного обслуживания. Все работы выполняются с использованием оригинального
+                оборудования и по прозрачной цене.
+              </p>
+            </div>
+            <div className="rubez-stats" style={{
+              display: 'flex',
+              gap: '40px',
+              flexShrink: 0,
+            }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: '48px',
+                  fontWeight: 700,
+                  color: '#e31e24',
+                  lineHeight: '1',
+                }}>
+                  28
+                </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: '#666',
+                  marginTop: '8px',
+                  fontWeight: 500,
+                }}>
+                  лет на рынке
+                </div>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: '48px',
+                  fontWeight: 700,
+                  color: '#e31e24',
+                  lineHeight: '1',
+                }}>
+                  500+
+                </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: '#666',
+                  marginTop: '8px',
+                  fontWeight: 500,
+                }}>
+                  реализованных проектов
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      {/* Противопожарные двери */}
-      <Title level={3} style={{
-        fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-        fontSize: '22px',
-        fontWeight: 600,
-        color: '#23365E',
-        marginBottom: '16px',
+      {/* Блок 3: Услуги */}
+      <div style={{
+        padding: '60px 142px',
+        background: '#f5f7fa',
       }}>
-        Противопожарные остекленные двери
-      </Title>
-      <Paragraph style={{
-        fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif',
-        fontSize: '16px',
-        lineHeight: '1.8',
-        color: '#444',
-        marginBottom: '32px',
+        <div className="rubez-container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{
+            fontSize: '32px',
+            fontWeight: 700,
+            color: '#0b2b4a',
+            margin: '0 0 12px 0',
+            textAlign: 'center',
+          }}>
+            Услуги ГК «Рубеж»
+          </h2>
+          <p style={{
+            fontSize: '16px',
+            color: '#666',
+            margin: '0 0 40px 0',
+            textAlign: 'center',
+          }}>
+            Комплексные решения «под ключ» для вашей безопасности
+          </p>
+
+          <div className="rubez-services-grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '24px',
+          }}>
+            {/* Карточка 1 */}
+            <div style={{
+              background: '#fff',
+              borderRadius: '12px',
+              padding: '28px',
+              border: '1px solid #e0e0e0',
+              transition: 'all 0.2s',
+            }}>
+              <div style={{ fontSize: '36px', marginBottom: '16px' }}>📐</div>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#0b2b4a',
+                margin: '0 0 12px 0',
+              }}>
+                3D-визуализация
+              </h3>
+              <p style={{
+                fontSize: '14px',
+                lineHeight: '1.6',
+                color: '#555',
+                margin: '0 0 16px 0',
+              }}>
+                Разрабатываем трехмерные модели при заказе изделий нашего производства и для
+                стороннего исполнения. Новинка 2022 года.
+              </p>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+                <span style={{
+                  fontSize: '12px',
+                  color: '#999',
+                  fontWeight: 500,
+                }}>
+                  С 2022
+                </span>
+                <a href="#" style={{
+                  fontSize: '14px',
+                  color: '#e31e24',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}>
+                  Подробнее →
+                </a>
+              </div>
+            </div>
+
+            {/* Карточка 2 */}
+            <div style={{
+              background: '#fff',
+              borderRadius: '12px',
+              padding: '28px',
+              border: '1px solid #e0e0e0',
+              transition: 'all 0.2s',
+            }}>
+              <div style={{ fontSize: '36px', marginBottom: '16px' }}>🌀</div>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#0b2b4a',
+                margin: '0 0 12px 0',
+              }}>
+                Вентиляция и дымоудаление
+              </h3>
+              <p style={{
+                fontSize: '14px',
+                lineHeight: '1.6',
+                color: '#555',
+                margin: '0 0 16px 0',
+              }}>
+                Более 20 крупных проектов в СПб, Ленинградской области и Казани. Системы для
+                любых типов объектов.
+              </p>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+                <span style={{
+                  fontSize: '12px',
+                  color: '#999',
+                  fontWeight: 500,
+                }}>
+                  10+ лет
+                </span>
+                <a href="#" style={{
+                  fontSize: '14px',
+                  color: '#e31e24',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}>
+                  Подробнее →
+                </a>
+              </div>
+            </div>
+
+            {/* Карточка 3 */}
+            <div style={{
+              background: '#fff',
+              borderRadius: '12px',
+              padding: '28px',
+              border: '1px solid #e0e0e0',
+              transition: 'all 0.2s',
+            }}>
+              <div style={{ fontSize: '36px', marginBottom: '16px' }}>🧯</div>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#0b2b4a',
+                margin: '0 0 12px 0',
+              }}>
+                Пожаротушение
+              </h3>
+              <p style={{
+                fontSize: '14px',
+                lineHeight: '1.6',
+                color: '#555',
+                margin: '0 0 16px 0',
+              }}>
+                Проектирование и монтаж систем с любым типом огнетушащего вещества. Полный
+                комплекс работ, гарантия качества.
+              </p>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+                <span style={{
+                  fontSize: '12px',
+                  color: '#999',
+                  fontWeight: 500,
+                }}>
+                  С 2010
+                </span>
+                <a href="#" style={{
+                  fontSize: '14px',
+                  color: '#e31e24',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}>
+                  Подробнее →
+                </a>
+              </div>
+            </div>
+
+            {/* Карточка 4 */}
+            <div style={{
+              background: '#fff',
+              borderRadius: '12px',
+              padding: '28px',
+              border: '1px solid #e0e0e0',
+              transition: 'all 0.2s',
+            }}>
+              <div style={{ fontSize: '36px', marginBottom: '16px' }}>🔔</div>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#0b2b4a',
+                margin: '0 0 12px 0',
+              }}>
+                Пожарная сигнализация
+              </h3>
+              <p style={{
+                fontSize: '14px',
+                lineHeight: '1.6',
+                color: '#555',
+                margin: '0 0 16px 0',
+              }}>
+                Системы пожарной сигнализации и СОУЭ под ключ. Опыт работы с крупными
+                строительными холдингами СЗФО.
+              </p>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+                <span style={{
+                  fontSize: '12px',
+                  color: '#999',
+                  fontWeight: 500,
+                }}>
+                  15+ лет
+                </span>
+                <a href="#" style={{
+                  fontSize: '14px',
+                  color: '#e31e24',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}>
+                  Подробнее →
+                </a>
+              </div>
+            </div>
+
+            {/* Карточка 5 */}
+            <div style={{
+              background: '#fff',
+              borderRadius: '12px',
+              padding: '28px',
+              border: '1px solid #e0e0e0',
+              transition: 'all 0.2s',
+            }}>
+              <div style={{ fontSize: '36px', marginBottom: '16px' }}>🛡️</div>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#0b2b4a',
+                margin: '0 0 12px 0',
+              }}>
+                Огнезащита
+              </h3>
+              <p style={{
+                fontSize: '14px',
+                lineHeight: '1.6',
+                color: '#555',
+                margin: '0 0 16px 0',
+              }}>
+                Более 500 заказов в Северо-Западном, Центральном и Южном федеральных округах.
+                Работаем без посредников.
+              </p>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+                <span style={{
+                  fontSize: '12px',
+                  color: '#999',
+                  fontWeight: 500,
+                }}>
+                  500+ заказов
+                </span>
+                <a href="#" style={{
+                  fontSize: '14px',
+                  color: '#e31e24',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}>
+                  Подробнее →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Блок 4: Преимущества и CTA */}
+      <div style={{
+        background: '#0b2b4a',
+        padding: '60px 142px',
       }}>
-        Противопожарные остекленные двери — это современные защитные конструкции, которые обеспечивают огнестойкость
-        и безопасность в различных зданиях. Эти двери сочетают в себе прочность и прозрачность, что позволяет сохранять
-        видимость и светопроницание, обеспечивая при этом надежную защиту от огня. Противопожарные остекленные двери
-        изготавливаются из закаленного стекла и огнестойких материалов, что делает их идеальными для использования в
-        офисных зданиях, торговых центрах, образовательных учреждениях и других объектах, где важны безопасность и эстетика.
-      </Paragraph>
+        <div className="rubez-container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div className="rubez-cta-content" style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '60px',
+            flexWrap: 'wrap',
+          }}>
+            <div className="rubez-cta-text" style={{
+              flex: 1,
+              minWidth: '300px',
+            }}>
+              <h3 style={{
+                fontSize: '28px',
+                fontWeight: 700,
+                color: '#fff',
+                margin: '0 0 24px 0',
+              }}>
+                Почему выбирают ГК «Рубеж»
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {[
+                  'Собственное производство',
+                  'Европейские стандарты',
+                  'Разрешительная документация',
+                ].map((item, i) => (
+                  <div key={i} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                  }}>
+                    <div style={{
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      background: '#e31e24',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 6L9 17L4 12" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <span style={{
+                      fontSize: '16px',
+                      color: '#fff',
+                      fontWeight: 500,
+                    }}>
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button className="rubez-cta-button" style={{
+              background: '#e31e24',
+              color: '#fff',
+              border: 'none',
+              padding: '18px 48px',
+              borderRadius: '8px',
+              fontSize: '18px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.2s',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = '#c41a20';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = '#e31e24';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+            >
+              Получить консультацию
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Футер */}
+      <div style={{
+        padding: '20px 142px',
+        background: '#f5f7fa',
+        borderTop: '1px solid #e0e0e0',
+      }}>
+        <p style={{
+          fontSize: '13px',
+          color: '#999',
+          margin: 0,
+          textAlign: 'center',
+        }}>
+          Официальный дилер ГК «Рубеж» · Все услуги сопровождаются гарантией и полным пакетом документов.
+        </p>
+      </div>
     </main>
   );
 }
