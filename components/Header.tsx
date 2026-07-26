@@ -209,9 +209,7 @@ export default function AppHeader({ onOpenModal }: AppHeaderProps) {
       {/* Desktop Header - всегда рендерится, но скрывается на мобильных через CSS */}
       <div className="desktop-header-wrapper">
         <Header style={headerStyle}>
-          <div style={headerLeftStyle}>
-            <div className="site-avatar" />
-          </div>
+          <div style={headerLeftStyle} />
 
           <Menu
             theme="dark"
@@ -232,7 +230,6 @@ export default function AppHeader({ onOpenModal }: AppHeaderProps) {
 
           <div style={headerRightStyle}>
             <button style={actionButtonStyle} onClick={onOpenModal}>Заказать расчет</button>
-            <div className="site-avatar" />
           </div>
         </Header>
       </div>
