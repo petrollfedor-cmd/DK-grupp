@@ -50,37 +50,37 @@ export default function HomePage() {
   const [heroData, setHeroData] = useState<HeroData | null>(null);
   const [footerData, setFooterData] = useState<FooterData | null>(null);
 
-  // Загрузка проектов из GitHub
+  // Загрузка проектов
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/petrollfedor-cmd/DK-grupp/main/data/projects.json')
+    fetch('/api/projects')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
-          setProjects(data);
+        if (data && Array.isArray(data.data)) {
+          setProjects(data.data);
         }
       })
       .catch(err => console.error('Failed to load projects:', err));
   }, []);
 
-  // Загрузка hero данных из GitHub
+  // Загрузка hero данных
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/petrollfedor-cmd/DK-grupp/main/data/hero.json')
+    fetch('/api/hero')
       .then(res => res.json())
       .then(data => {
-        if (data) {
-          setHeroData(data);
+        if (data && data.data) {
+          setHeroData(data.data);
         }
       })
       .catch(err => console.error('Failed to load hero:', err));
   }, []);
 
-  // Загрузка footer данных из GitHub
+  // Загрузка footer данных
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/petrollfedor-cmd/DK-grupp/main/data/footer.json')
+    fetch('/api/footer')
       .then(res => res.json())
       .then(data => {
-        if (data) {
-          setFooterData(data);
+        if (data && data.data) {
+          setFooterData(data.data);
         }
       })
       .catch(err => console.error('Failed to load footer:', err));

@@ -25,12 +25,11 @@ export default function AppHeader({ onOpenModal }: AppHeaderProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    const GITHUB_RAW = 'https://raw.githubusercontent.com/petrollfedor-cmd/DK-grupp/main/data/navigation.json';
-    fetch(GITHUB_RAW)
+    fetch('/api/navigation')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
-          setMenuItems(data);
+        if (data && Array.isArray(data.data)) {
+          setMenuItems(data.data);
         }
       })
       .catch(err => console.error('Failed to load navigation:', err));

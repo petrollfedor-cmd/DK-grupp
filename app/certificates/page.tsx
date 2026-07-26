@@ -15,24 +15,31 @@ const categoryNames: Record<string, { title: string; icon: string }> = {
   sro: { title: '🏗 Допуски СРО', icon: '🏗' },
   iso: { title: '📋 Системы менеджмента ISO', icon: '📋' },
   fire: { title: '🔥 Пожарная безопасность', icon: '🔥' },
-  windows: { title: '🪟 Окна', icon: '🪟' },
-  facade: { title: '🏢 Витражи и фасады', icon: '🏢' },
-  doors: { title: '🚪 Двери', icon: '🚪' },
+  'fire-windows': { title: '🪟 Окна', icon: '🪟' },
+  'fire-facade': { title: '🏢 Витражи и фасады', icon: '🏢' },
+  'fire-doors': { title: '🚪 Двери', icon: '🚪' },
   'glass-partitions': { title: '🔲 Внутренние стеклянные перегородки', icon: '🔲' },
   other: { title: '📄 Прочие сертификаты', icon: '📄' },
 };
 
+const fireSubcategories = [
+  { id: 'fire-windows', name: 'windows', label: '🪟 Окна' },
+  { id: 'fire-facade', name: 'facade', label: '🏢 Витражи и фасады' },
+  { id: 'fire-doors', name: 'doors', label: '🚪 Двери' },
+];
+
 export default function CertificatesPage() {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const [openSubcategory, setOpenSubcategory] = useState<string | null>(null);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/petrollfedor-cmd/DK-grupp/main/data/certificates.json')
+    fetch('/api/certificates')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
-          setCertificates(data);
+        if (data && Array.isArray(data.data)) {
+          setCertificates(data.data);
         }
       })
       .catch(err => console.error('Failed to load certificates:', err))
@@ -47,7 +54,11 @@ export default function CertificatesPage() {
     setOpenCategory(openCategory === id ? null : id);
   };
 
-  // Группируем сертификаты по категориям в правильном порядке
+  const toggleSubcategory = (id: string) => {
+    setOpenSubcategory(openSubcategory === id ? null : id);
+  };
+
+  // Группируем сертификаты по категориям
   const groupedCertificates = certificates.reduce((acc, cert) => {
     if (!acc[cert.category]) {
       acc[cert.category] = [];
@@ -56,8 +67,7 @@ export default function CertificatesPage() {
     return acc;
   }, {} as Record<string, Certificate[]>);
 
-  // Порядок категорий как в боте
-  const categoryOrder = ['sro', 'iso', 'fire', 'windows', 'facade', 'doors', 'glass-partitions', 'other'];
+  const categoryOrder = ['sro', 'iso', 'fire', 'glass-partitions', 'other'];
 
   if (loading) {
     return (
@@ -100,13 +110,175 @@ export default function CertificatesPage() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {categoryOrder.map((catId) => {
           const catInfo = categoryNames[catId];
-          const certs = groupedCertificates[catId] || [];
           const isOpen = openCategory === catId;
+
+          if (catId === 'fire') {
+            const fireCerts = groupedCertificates['windows'] || [];
+            const facadeCerts = groupedCertificates['facade'] || [];
+            const doorCerts = groupedCertificates['doors'] || [];
+            const totalFireCerts = fireCerts.length + facadeCerts.length + doorCerts.length;
+
+            return (
+              <div
+                key={catId}
+                style={{
+                  borderRadius: '8px',
+                  backgroundColor: '#fff',
+                  border: '1px solid #e0e0e0',
+                  overflow: 'hidden',
+                  transition: 'all 0.2s',
+                }}
+              >
+                <div
+                  onClick={() => toggleCategory(catId)}
+                  style={{
+                    padding: '16px 20px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    backgroundColor: isOpen ? '#f5f7fb' : '#fff',
+                    transition: 'background-color 0.2s',
+                  }}
+                  onMouseOver={(e) => {
+                    if (!isOpen) e.currentTarget.style.backgroundColor = '#f5f7fb';
+                  }}
+                  onMouseOut={(e) => {
+                    if (!isOpen) e.currentTarget.style.backgroundColor = '#fff';
+                  }}
+                >
+                  <span style={{ fontFamily: 'Lato, sans-serif', fontSize: '20px', fontWeight: 600, color: '#23365E' }}>
+                    {catInfo.title}
+                    <span style={{ fontSize: '14px', fontWeight: 400, color: '#999', marginLeft: '8px' }}>
+                      ({totalFireCerts})
+                    </span>
+                  </span>
+                  <span style={{
+                    fontSize: '20px',
+                    color: '#23365E',
+                    transition: 'transform 0.2s',
+                    transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+                    fontWeight: 'bold',
+                  }}>›</span>
+                </div>
+                <div style={{
+                  maxHeight: isOpen ? '2000px' : '0',
+                  overflow: 'hidden',
+                  transition: 'max-height 0.3s ease',
+                }}>
+                  <div style={{ padding: '0 20px 16px' }}>
+                    {fireSubcategories.map((sub) => {
+                      const subCerts = groupedCertificates[sub.name] || [];
+                      const isSubOpen = openSubcategory === sub.id;
+                      return (
+                        <div key={sub.id} style={{ marginBottom: '12px' }}>
+                          <div
+                            onClick={() => toggleSubcategory(sub.id)}
+                            style={{
+                              padding: '10px 12px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              backgroundColor: isSubOpen ? '#f5f7fb' : '#fff',
+                              borderRadius: '6px',
+                              border: '1px solid #e0e0e0',
+                              transition: 'all 0.2s',
+                            }}
+                            onMouseOver={(e) => {
+                              if (!isSubOpen) e.currentTarget.style.backgroundColor = '#f5f7fb';
+                            }}
+                            onMouseOut={(e) => {
+                              if (!isSubOpen) e.currentTarget.style.backgroundColor = '#fff';
+                            }}
+                          >
+                            <span style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', fontWeight: 500, color: '#23365E' }}>
+                              {sub.label}
+                              <span style={{ fontSize: '13px', fontWeight: 400, color: '#999', marginLeft: '8px' }}>
+                                ({subCerts.length})
+                              </span>
+                            </span>
+                            <span style={{
+                              fontSize: '16px',
+                              color: '#23365E',
+                              transition: 'transform 0.2s',
+                              transform: isSubOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+                              fontWeight: 'bold',
+                            }}>›</span>
+                          </div>
+                          <div style={{
+                            maxHeight: isSubOpen ? '2000px' : '0',
+                            overflow: 'hidden',
+                            transition: 'max-height 0.3s ease',
+                          }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 0 0' }}>
+                              {subCerts.map((cert, idx) => (
+                                <div
+                                  key={idx}
+                                  className="cert-item"
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    padding: '12px 16px',
+                                    backgroundColor: '#f5f7fb',
+                                    borderRadius: '6px',
+                                    border: '1px solid #e0e0e0',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                  }}
+                                  onClick={() => handleDownload(cert.filename)}
+                                  onMouseOver={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#e8edf5';
+                                    e.currentTarget.style.borderColor = '#23365E';
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(35, 54, 94, 0.15)';
+                                  }}
+                                  onMouseOut={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#f5f7fb';
+                                    e.currentTarget.style.borderColor = '#e0e0e0';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = 'none';
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+                                    <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#23365E', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                        <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M14 2V8H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M12 18V12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M9 15L12 12L15 15" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                      </svg>
+                                    </div>
+                                    <span className="cert-item-name" style={{ fontFamily: 'Lato, sans-serif', fontSize: '14px', color: '#23365E', fontWeight: 500 }}>
+                                      {cert.name}
+                                    </span>
+                                  </div>
+                                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: 'rgba(35, 54, 94, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                      <path d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15" stroke="#23365E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                      <path d="M7 10L12 15L17 10" stroke="#23365E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                      <path d="M12 15V3" stroke="#23365E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          const certs = groupedCertificates[catId] || [];
           return (
             <div
               key={catId}
               style={{
-                borderColor: '#23365E',
                 borderRadius: '8px',
                 backgroundColor: '#fff',
                 border: '1px solid #e0e0e0',
@@ -147,7 +319,7 @@ export default function CertificatesPage() {
                 }}>›</span>
               </div>
               <div style={{
-                maxHeight: isOpen ? '1000px' : '0',
+                maxHeight: isOpen ? '2000px' : '0',
                 overflow: 'hidden',
                 transition: 'max-height 0.3s ease',
               }}>

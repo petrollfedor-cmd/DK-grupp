@@ -1,25 +1,20 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
-const GITHUB_REPO = process.env.GITHUB_REPO || 'petrollfedor-cmd/DK-grupp';
-const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
-
-async function readFromGitHub(filename: string): Promise<any | null> {
-  const url = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/data/${filename}`;
+async function readHeroLocal(): Promise<any | null> {
+  const filepath = path.join(process.cwd(), 'data', 'hero.json');
   try {
-    const res = await fetch(url, { 
-      cache: 'no-store',
-      next: { revalidate: 0 }
-    });
-    if (!res.ok) return null;
-    return await res.json();
+    const data = fs.readFileSync(filepath, 'utf-8');
+    return JSON.parse(data);
   } catch (err) {
-    console.error('Failed to fetch from GitHub:', filename, err);
+    console.error('Failed to read hero.json locally:', err);
     return null;
   }
 }
 
 export async function GET() {
-  const hero = await readFromGitHub('hero.json');
+  const hero = await readHeroLocal();
   if (hero) {
     return NextResponse.json({ success: true, data: hero });
   }

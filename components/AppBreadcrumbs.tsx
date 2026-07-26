@@ -16,13 +16,12 @@ export default function AppBreadcrumbs() {
   const [breadcrumbs, setBreadcrumbs] = useState<{ title: string; href?: string }[]>([]);
 
   useEffect(() => {
-    const GITHUB_RAW = 'https://raw.githubusercontent.com/petrollfedor-cmd/DK-grupp/main/data/navigation.json';
     const loadNavigation = () => {
-      fetch(GITHUB_RAW)
+      fetch('/api/navigation')
         .then(res => res.json())
         .then(data => {
-          if (Array.isArray(data)) {
-            setNavItems(data);
+          if (data && Array.isArray(data.data)) {
+            setNavItems(data.data);
           }
         })
         .catch(err => console.error('Failed to load navigation:', err));

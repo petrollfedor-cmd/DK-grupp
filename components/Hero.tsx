@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Typography } from 'antd';
 import Link from 'next/link';
 
@@ -11,6 +12,12 @@ interface HeroProps {
 }
 
 export default function Hero({ imageUrl, title }: HeroProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // На мобильной показываем первые ~80 символов
+  const mobilePreview = title && title.length > 80 ? title.slice(0, 80) + '…' : title;
+  const mobileFull = title || '';
+
   return (
     <section
       className="hero-section"
@@ -72,6 +79,7 @@ export default function Hero({ imageUrl, title }: HeroProps) {
               lineHeight: '1.4',
               textShadow: '0 2px 8px rgba(0,0,0,0.5)',
               textAlign: 'left',
+              whiteSpace: 'pre-wrap',
             }}
           >
             {title}
@@ -82,10 +90,9 @@ export default function Hero({ imageUrl, title }: HeroProps) {
       {/* Мобильная версия hero */}
       <div className="hero-mobile-content" style={{
         position: 'absolute',
-        top: '50%',
+        bottom: '40px',
         left: '16px',
         right: '16px',
-        transform: 'translateY(-50%)',
         zIndex: 10,
         display: 'none',
       }}>
@@ -95,19 +102,53 @@ export default function Hero({ imageUrl, title }: HeroProps) {
           background: 'rgba(0,0,0,0.5)',
           backdropFilter: 'blur(4px)',
           border: '1px solid rgba(255,255,255,0.3)',
+          cursor: 'pointer',
+          transition: 'max-height 0.3s ease',
+          maxHeight: isExpanded ? '500px' : 'none',
+          overflow: 'visible',
         }}>
           {title && (
-            <p style={{
-              color: '#fff',
-              margin: 0,
-              fontFamily: 'Lato',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.3',
-              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-            }}>
-              {title}
-            </p>
+            <div onClick={() => setIsExpanded(!isExpanded)}>
+              <p style={{
+                color: '#fff',
+                margin: 0,
+                fontFamily: 'Lato',
+                fontWeight: 600,
+                fontSize: '14px',
+                lineHeight: '1.3',
+                textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                whiteSpace: 'pre-wrap',
+                display: '-webkit-box',
+                WebkitLineClamp: isExpanded ? '999' : 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}>
+                {isExpanded ? mobileFull : mobilePreview}
+              </p>
+              {title.length > 80 && (
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: '8px',
+                }}>
+                  <span style={{
+                    color: '#23365E',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    backgroundColor: '#fff',
+                    transition: 'transform 0.3s ease',
+                    transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                  }}>↓</span>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
