@@ -37,7 +37,7 @@ const requisites = [
 
 export default function RequisitesModal({ isOpen, onClose }: RequisitesModalProps) {
   const handleDownload = () => {
-    window.open('/documents/Реквизиты ДК ГРУПП.docx', '_blank');
+    window.open('/documents/Карточка ДК ГРУПП 29.25 (2).docx', '_blank');
   };
 
   if (!isOpen) return null;

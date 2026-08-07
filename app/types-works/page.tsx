@@ -6,7 +6,8 @@ import AppBreadcrumbs from '@/components/AppBreadcrumbs';
 const workTypes = [
   {
     image: '/figma/12:3.png',
-    title: 'Проектирование фасадов и светопрозрачных конструкций',
+    title: 'Фасадные светопрозрачные конструкции',
+    link: '/types-works/facades',
   },
   {
     image: '/figma/12:23.png',

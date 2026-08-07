@@ -36,14 +36,10 @@ export default function Hero({ imageUrl, title }: HeroProps) {
       
       {/* Логотип и контакты */}
       <div className="logo-contacts-overlay hero-logo-contacts" style={{ position: 'absolute', top: '0', left: '0', right: '0', height: '60px', display: 'flex', alignItems: 'center', zIndex: 99, padding: '0 142px' }}>
-        <div style={{ position: 'absolute', left: '188px', top: '0' }}>
+        <div style={{ position: 'absolute', left: '160px', top: '0' }}>
           <Link href="/" className="logo-link hero-logo-contacts-delay">
             <img src="/figma/2:5.png" alt="Логотип ДК ГРУПП — строительная компания" className="logo-img" />
           </Link>
-        </div>
-        <div className="contacts-col hero-logo-contacts-delay" style={{ display: 'flex', gap: '48px', marginLeft: 'auto' }}>
-          <a href="mailto:info@dkfasad.ru" className="contact-email">info@dkfasad.ru</a>
-          <a href="tel:+79119994995" className="contact-phone">+7 (911) 999-49-95</a>
         </div>
       </div>
 

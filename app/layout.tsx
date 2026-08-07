@@ -65,7 +65,12 @@ export const metadata: Metadata = {
     images: ['/figma/265:278.png'],
   },
   icons: {
-    icon: '/favicon.png',
+    icon: [
+      { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.png', sizes: 'any', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
   },
   verification: {
     other: {
