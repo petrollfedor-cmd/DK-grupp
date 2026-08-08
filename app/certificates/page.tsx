@@ -19,6 +19,7 @@ const categoryNames: Record<string, { title: string; icon: string }> = {
   'fire-facade': { title: '🏢 Витражи и фасады', icon: '🏢' },
   'fire-doors': { title: '🚪 Двери', icon: '🚪' },
   'glass-partitions': { title: '🔲 Внутренние стеклянные перегородки', icon: '🔲' },
+  qualification: { title: '📜 Квалификация СРО', icon: '📜' },
   other: { title: '📄 Прочие сертификаты', icon: '📄' },
 };
 
@@ -67,7 +68,7 @@ export default function CertificatesPage() {
     return acc;
   }, {} as Record<string, Certificate[]>);
 
-  const categoryOrder = ['sro', 'iso', 'fire', 'glass-partitions', 'other'];
+  const categoryOrder = ['sro', 'iso', 'fire', 'glass-partitions', 'qualification', 'other'];
 
   if (loading) {
     return (

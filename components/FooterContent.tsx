@@ -46,7 +46,7 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
   const partners = footerData?.partners || [];
 
   return (
-    <Footer style={{ background: '#23365E', color: '#fff', padding: '40px 0', minHeight: 'auto' }}>
+    <Footer style={{ background: '#23365E', color: '#fff', padding: '24px 0 0', minHeight: 'auto' }}>
       <style>{`
         @media (max-width: 767px) {
           .footer-desktop { display: none !important; }
@@ -101,7 +101,7 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
             ))}
           </div>
         </div>
-        <div style={{ marginBottom: '16px' }}>
+        <div style={{ marginBottom: '12px' }}>
           <div style={{ fontFamily: 'Lato, sans-serif', fontSize: '16px', fontWeight: 600, color: '#fff', marginBottom: '12px' }}>Документы:</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -130,7 +130,7 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
             </div>
           </div>
         </div>
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.15)', border: '2px solid rgba(255, 255, 255, 0.3)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.15)', border: '2px solid rgba(255, 255, 255, 0.3)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '16px auto 0' }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
       </div>
@@ -142,7 +142,7 @@ export default function FooterContent({ onOpenRequisites }: FooterContentProps) 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '24px', alignItems: 'start' }}>
               <div>
                 <div>
-                  <NextImage src="/figma/15:462.png" alt="Логотип ДК ГРУПП — строительная компания" width={180} height={160} quality={80} style={{ width: '180px', height: '160px', objectFit: 'contain', marginLeft: '-30px', position: 'relative', top: '-15px' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                  <NextImage src="/figma/15:462.png" alt="Логотип ДК ГРУПП — строительная компания" width={180} height={160} quality={80} style={{ width: '180px', height: '160px', objectFit: 'contain', marginLeft: '-30px', position: 'relative', top: '-30px' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                 </div>
                 <div style={{ marginBottom: '24px' }}>
                   <div style={{ fontFamily: 'Lato, sans-serif', fontSize: '18px', color: '#fff', marginBottom: '12px' }}>Социальные сети:</div>
