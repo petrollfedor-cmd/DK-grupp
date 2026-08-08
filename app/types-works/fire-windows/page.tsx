@@ -59,9 +59,6 @@ export default function FireWindowsPage() {
   return (
     <main style={{ fontFamily: 'Lato, -apple-system, BlinkMacSystemFont, sans-serif' }}>
       <style>{`
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
         @media (max-width: 992px) {
           .fw-about-grid {
             grid-template-columns: 1fr !important;
@@ -71,34 +68,136 @@ export default function FireWindowsPage() {
           }
         }
         @media (max-width: 768px) {
+          .fw-breadcrumbs-wrapper {
+            padding: 12px 16px 0 !important;
+          }
           .fw-hero {
-            padding: 60px 0 40px !important;
+            padding: 32px 0 24px !important;
           }
           .fw-hero__title {
-            font-size: 28px !important;
+            font-size: 22px !important;
+            margin-bottom: 12px !important;
+          }
+          .fw-hero__description {
+            padding: 0 16px !important;
           }
           .fw-hero__description p {
-            font-size: 16px !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+            margin-bottom: 10px !important;
+          }
+          .fw-advantages-section {
+            padding: 24px 0 !important;
+          }
+          .fw-advantages-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+            padding: 0 16px !important;
+          }
+          .fw-advantage-item {
+            padding: 16px 12px !important;
+          }
+          .fw-advantage-icon {
+            font-size: 28px !important;
+            margin-bottom: 8px !important;
+          }
+          .fw-advantage-title {
+            font-size: 15px !important;
+            margin-bottom: 4px !important;
+          }
+          .fw-advantage-text {
+            font-size: 13px !important;
+          }
+          .fw-services-section {
+            padding: 24px 0 !important;
+          }
+          .fw-services-header {
+            padding: 0 16px !important;
+            margin-bottom: 20px !important;
+          }
+          .fw-services-title {
+            font-size: 22px !important;
+          }
+          .fw-services-subtitle {
+            font-size: 14px !important;
           }
           .fw-services-grid {
             grid-template-columns: 1fr !important;
+            gap: 16px !important;
+            padding: 0 16px !important;
           }
-          .fw-advantages-grid {
-            grid-template-columns: 1fr 1fr !important;
+          .fw-service-card {
+            border-radius: 12px !important;
           }
-          .fw-cta {
-            padding: 60px 0 !important;
+          .fw-service-content {
+            padding: 16px !important;
+          }
+          .fw-service-badge {
+            font-size: 10px !important;
+            padding: 3px 10px !important;
+            margin-bottom: 8px !important;
+          }
+          .fw-service-name {
+            font-size: 17px !important;
+            margin-bottom: 8px !important;
+          }
+          .fw-service-text {
+            font-size: 14px !important;
+            margin-bottom: 12px !important;
+          }
+          .fw-service-details {
+            font-size: 12px !important;
+            padding-top: 12px !important;
+          }
+          .fw-service-details span {
+            margin-right: 12px !important;
+          }
+          .fw-service-details i {
+            font-size: 11px !important;
+            padding: 2px 8px !important;
+          }
+          .fw-about-section {
+            padding: 24px 0 !important;
+          }
+          .fw-about-grid {
+            gap: 24px !important;
+          }
+          .fw-about-content {
+            padding: 0 16px !important;
+          }
+          .fw-about-title {
+            font-size: 22px !important;
+            margin-bottom: 12px !important;
+          }
+          .fw-about-text {
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+            margin-bottom: 12px !important;
+          }
+          .fw-about-list li {
+            font-size: 14px !important;
+            padding: 6px 0 6px 28px !important;
+          }
+          .fw-about-image {
+            margin: 0 16px !important;
+            min-height: 180px !important;
           }
         }
-        @media (max-width: 500px) {
-          .fw-advantages-grid {
-            grid-template-columns: 1fr !important;
+        @media (hover: none) and (pointer: coarse) {
+          .fw-advantage-item,
+          .fw-service-card {
+            transition: none !important;
+          }
+          .fw-advantage-item:hover,
+          .fw-service-card:hover {
+            transform: none !important;
+            box-shadow: inherit !important;
           }
         }
       `}</style>
 
       {/* Хлебные крошки */}
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '12px 24px 0' }}>
+      <div className="fw-breadcrumbs-wrapper" style={{ maxWidth: '1280px', margin: '0 auto', padding: '12px 24px 0' }}>
         <AppBreadcrumbs />
       </div>
 
@@ -110,27 +209,28 @@ export default function FireWindowsPage() {
       }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
           <Title level={2} className="fw-hero__title" style={{
-            fontSize: 'clamp(32px, 4vw, 48px)',
+            fontSize: 'clamp(24px, 4vw, 36px)',
             fontWeight: 700,
             color: '#1a3a5c',
-            marginBottom: '20px',
+            marginBottom: '16px',
             marginTop: 0,
+            lineHeight: '1.2',
           }}>
             Комплексные услуги по светопрозрачным и противопожарным фасадным системам
           </Title>
           <div className="fw-hero__description" style={{ maxWidth: '850px' }}>
             <Paragraph style={{
-              fontSize: '18px',
+              fontSize: 'clamp(14px, 2vw, 16px)',
               color: '#555',
-              lineHeight: '1.8',
-              marginBottom: '16px',
+              lineHeight: '1.6',
+              marginBottom: '12px',
             }}>
               <strong style={{ color: '#1a3a5c' }}>Более 12 лет</strong> мы сопровождаем проекты любой сложности: от разработки концепции до ввода в эксплуатацию. Помимо собственного производства, мы предлагаем полный спектр инженерных решений для фасадов, включая системы пожарной безопасности, вентиляции и автоматизации.
             </Paragraph>
             <Paragraph style={{
-              fontSize: '18px',
+              fontSize: 'clamp(14px, 2vw, 16px)',
               color: '#555',
-              lineHeight: '1.8',
+              lineHeight: '1.6',
               marginBottom: 0,
             }}>
               Наши специалисты выполняют <strong style={{ color: '#1a3a5c' }}>3D-визуализацию</strong> будущих конструкций, помогая увидеть проект в деталях ещё до начала монтажа. Работаем с объектами культурного наследия, жилыми комплексами и деловыми центрами — всегда с учётом архитектурного контекста и требований надзорных органов.
@@ -140,35 +240,35 @@ export default function FireWindowsPage() {
       </section>
 
       {/* БЛОК 2: ПРЕИМУЩЕСТВА */}
-      <section style={{ padding: '40px 0', background: '#fff', borderBottom: '1px solid #e0e4e8' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
+      <section className="fw-advantages-section" style={{ padding: '40px 0', background: '#fff', borderBottom: '1px solid #e0e4e8' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
           <div className="fw-advantages-grid" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '32px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '24px',
           }}>
             {advantages.map((adv, idx) => (
-              <div key={idx} style={{
+              <div key={idx} className="fw-advantage-item" style={{
                 textAlign: 'center',
-                padding: '24px 16px',
-                borderRadius: '16px',
+                padding: '20px 16px',
+                borderRadius: '12px',
                 background: '#f4f7fa',
                 transition: 'transform 0.3s, box-shadow 0.3s',
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)';
               }}
               onMouseOut={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
               >
-                <div style={{ fontSize: '36px', marginBottom: '12px' }}>{adv.icon}</div>
-                <div style={{ fontSize: '18px', fontWeight: 600, color: '#1a3a5c', marginBottom: '6px' }}>
+                <div className="fw-advantage-icon" style={{ fontSize: '32px', marginBottom: '10px' }}>{adv.icon}</div>
+                <div className="fw-advantage-title" style={{ fontSize: '16px', fontWeight: 600, color: '#1a3a5c', marginBottom: '4px' }}>
                   {adv.title}
                 </div>
-                <div style={{ fontSize: '14px', color: '#555', lineHeight: '1.5' }}>
+                <div className="fw-advantage-text" style={{ fontSize: '13px', color: '#555', lineHeight: '1.4' }}>
                   {adv.text}
                 </div>
               </div>
@@ -178,20 +278,20 @@ export default function FireWindowsPage() {
       </section>
 
       {/* БЛОК 3: УСЛУГИ */}
-      <section style={{ padding: '40px 0', background: '#f4f7fa' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <Title level={3} style={{
-              fontSize: 'clamp(28px, 3vw, 38px)',
+      <section className="fw-services-section" style={{ padding: '40px 0', background: '#f4f7fa' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          <div className="fw-services-header" style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <Title level={3} className="fw-services-title" style={{
+              fontSize: 'clamp(22px, 3vw, 32px)',
               fontWeight: 700,
               color: '#1a3a5c',
-              marginBottom: '8px',
+              marginBottom: '6px',
               marginTop: 0,
             }}>
               Выберите услугу
             </Title>
-            <Paragraph style={{
-              fontSize: '17px',
+            <Paragraph className="fw-services-subtitle" style={{
+              fontSize: '15px',
               color: '#555',
               marginBottom: 0,
             }}>
@@ -200,26 +300,26 @@ export default function FireWindowsPage() {
           </div>
           <div className="fw-services-grid" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '32px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '24px',
           }}>
             {services.map((service, idx) => (
-              <div key={idx} style={{
+              <div key={idx} className="fw-service-card" style={{
                 background: '#fff',
-                borderRadius: '16px',
+                borderRadius: '12px',
                 overflow: 'hidden',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
                 transition: 'transform 0.3s, box-shadow 0.3s',
                 display: 'flex',
                 flexDirection: 'column',
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-6px)';
-                e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.12)';
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)';
               }}
               onMouseOut={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+                e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
               }}
               >
                 <img
@@ -233,59 +333,60 @@ export default function FireWindowsPage() {
                     background: '#d0d9e3',
                   }}
                 />
-                <div style={{ padding: '24px 24px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <div className="fw-service-content" style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                   {service.badge && (
-                    <span style={{
+                    <span className="fw-service-badge" style={{
                       display: 'inline-block',
                       background: '#c0392b',
                       color: '#fff',
-                      fontSize: '11px',
+                      fontSize: '10px',
                       fontWeight: 700,
-                      letterSpacing: '1px',
+                      letterSpacing: '0.5px',
                       textTransform: 'uppercase',
-                      padding: '4px 14px',
+                      padding: '3px 10px',
                       borderRadius: '50px',
                       alignSelf: 'flex-start',
-                      marginBottom: '12px',
+                      marginBottom: '10px',
                     }}>
                       {service.badge}
                     </span>
                   )}
-                  <h3 style={{
-                    fontSize: '20px',
+                  <h3 className="fw-service-name" style={{
+                    fontSize: '18px',
                     fontWeight: 700,
                     color: '#1a3a5c',
-                    marginBottom: '10px',
+                    marginBottom: '8px',
                     marginTop: 0,
+                    lineHeight: '1.3',
                   }}>
                     {service.title}
                   </h3>
-                  <p style={{
-                    fontSize: '15px',
+                  <p className="fw-service-text" style={{
+                    fontSize: '14px',
                     color: '#555',
-                    lineHeight: '1.6',
+                    lineHeight: '1.5',
                     flex: 1,
-                    marginBottom: '16px',
+                    marginBottom: '14px',
                   }}>
                     {service.text}
                   </p>
-                  <div style={{
-                    fontSize: '14px',
+                  <div className="fw-service-details" style={{
+                    fontSize: '13px',
                     color: '#1a3a5c',
                     fontWeight: 500,
                     borderTop: '1px solid #e0e4e8',
-                    paddingTop: '16px',
+                    paddingTop: '12px',
                     marginTop: 'auto',
                   }}>
-                    <span style={{ display: 'inline-block', marginRight: '20px' }}>
+                    <span style={{ display: 'inline-block', marginRight: '16px' }}>
                       {service.details.time}
                     </span>
                     <span style={{
                       fontStyle: 'normal',
                       background: '#f4f7fa',
-                      padding: '2px 10px',
-                      borderRadius: '20px',
-                      fontSize: '13px',
+                      padding: '2px 8px',
+                      borderRadius: '16px',
+                      fontSize: '12px',
                     }}>
                       {service.details.note}
                     </span>
@@ -298,33 +399,34 @@ export default function FireWindowsPage() {
       </section>
 
       {/* БЛОК 4: О КОМПАНИИ */}
-      <section style={{ padding: '40px 0', background: '#fff' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
+      <section className="fw-about-section" style={{ padding: '40px 0', background: '#fff' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
           <div className="fw-about-grid" style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: '48px',
+            gap: '40px',
             alignItems: 'center',
           }}>
-            <div>
-              <Title level={3} style={{
-                fontSize: 'clamp(26px, 3vw, 36px)',
+            <div className="fw-about-content">
+              <Title level={3} className="fw-about-title" style={{
+                fontSize: 'clamp(20px, 3vw, 30px)',
                 fontWeight: 700,
                 color: '#1a3a5c',
-                marginBottom: '16px',
+                marginBottom: '14px',
                 marginTop: 0,
+                lineHeight: '1.3',
               }}>
                 Почему нам доверяют сложные объекты
               </Title>
-              <Paragraph style={{
-                fontSize: '16px',
+              <Paragraph className="fw-about-text" style={{
+                fontSize: '15px',
                 color: '#555',
-                lineHeight: '1.7',
-                marginBottom: '16px',
+                lineHeight: '1.6',
+                marginBottom: '14px',
               }}>
                 Наша производственно-складская база расположена в Санкт-Петербурге, что ускоряет логистику и снижает бюджет для заказчиков из Северо-Западного региона. Мы используем материалы ведущих российских и европейских марок, а каждый этап работ документируем и согласовываем с надзорными органами.
               </Paragraph>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              <ul className="fw-about-list" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {[
                   { text: '<strong>Собственное производство</strong> — контроль качества на всех этапах.' },
                   { text: '<strong>Портфолио</strong> — объекты культурного наследия, ЖК премиум-класса, административные центры.' },
@@ -332,12 +434,12 @@ export default function FireWindowsPage() {
                   { text: '<strong>Гарантия</strong> — на все виды работ до 5 лет.' },
                 ].map((item, idx) => (
                   <li key={idx} style={{
-                    padding: '8px 0 8px 32px',
-                    background: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%231a3a5c\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"></polyline></svg>') left center no-repeat",
-                    backgroundSize: '20px',
+                    padding: '6px 0 6px 28px',
+                    background: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%231a3a5c\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"></polyline></svg>') left center no-repeat",
+                    backgroundSize: '18px',
                     color: '#2d2d2d',
-                    fontSize: '16px',
-                    lineHeight: '1.5',
+                    fontSize: '15px',
+                    lineHeight: '1.4',
                   }}
                   dangerouslySetInnerHTML={{ __html: item.text }}
                   />
@@ -346,7 +448,7 @@ export default function FireWindowsPage() {
             </div>
             <div className="fw-about-image" style={{
               background: '#d0d9e3',
-              borderRadius: '16px',
+              borderRadius: '12px',
               aspectRatio: '4/3',
               display: 'flex',
               alignItems: 'center',
@@ -354,7 +456,8 @@ export default function FireWindowsPage() {
               backgroundImage: "url('/figma/brandschutz.webp')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              minHeight: '250px',
+              minHeight: '220px',
+              margin: '0 24px',
             }} />
           </div>
         </div>
