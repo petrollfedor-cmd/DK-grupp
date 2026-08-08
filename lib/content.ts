@@ -20,6 +20,7 @@ export interface ContentData {
   hero: any;
   projects: any[];
   footer: any;
+  news?: any[];
 }
 
 // Кэш данных из GitHub
@@ -287,6 +288,61 @@ export async function deleteCertificate(index: number): Promise<boolean> {
     return false;
   } catch (error) {
     console.error('Error deleting certificate:', error);
+    return false;
+  }
+}
+
+// ========================
+// NEWS FUNCTIONS
+// ========================
+
+const NEWS_PATH = path.join(process.cwd(), 'data', 'news.json');
+
+export async function getNews(): Promise<any[]> {
+  try {
+    if (fs.existsSync(NEWS_PATH)) {
+      const data = fs.readFileSync(NEWS_PATH, 'utf-8');
+      return JSON.parse(data);
+    }
+    return [];
+  } catch (error) {
+    console.error('Error reading news:', error);
+    return [];
+  }
+}
+
+export async function addNewsItem(item: { title: string; description: string; images: string[]; tag: string }): Promise<boolean> {
+  try {
+    const news = await getNews();
+    const newItem = {
+      id: Date.now(),
+      date: new Date().toISOString().split('T')[0],
+      ...item,
+    };
+    news.unshift(newItem);
+    fs.writeFileSync(NEWS_PATH, JSON.stringify(news, null, 2), 'utf-8');
+    const newsData = fs.readFileSync(NEWS_PATH, 'utf-8');
+    await syncFileToGit('data/news.json', newsData, 'Add news item: ' + item.title);
+    return true;
+  } catch (error) {
+    console.error('Error adding news item:', error);
+    return false;
+  }
+}
+
+export async function deleteNewsItem(index: number): Promise<boolean> {
+  try {
+    const news = await getNews();
+    if (index >= 0 && index < news.length) {
+      news.splice(index, 1);
+      fs.writeFileSync(NEWS_PATH, JSON.stringify(news, null, 2), 'utf-8');
+      const newsData = fs.readFileSync(NEWS_PATH, 'utf-8');
+      await syncFileToGit('data/news.json', newsData, 'Delete news item at index ' + index);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error deleting news item:', error);
     return false;
   }
 }

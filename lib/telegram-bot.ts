@@ -41,7 +41,7 @@ export function getAdminIds(): number[] {
 }
 
 interface UserState {
-  mode: 'idle' | 'edit_navigation' | 'edit_hero' | 'edit_projects' | 'edit_footer' | 'edit_certificates';
+  mode: 'idle' | 'edit_navigation' | 'edit_hero' | 'edit_projects' | 'edit_footer' | 'edit_certificates' | 'edit_news';
   step: number;
   tempData: any;
 }
@@ -90,9 +90,9 @@ bot.onText(/\/start/, (msg) => {
     reply_markup: {
       inline_keyboard: [
         [{ text: '📋 Навигация', callback_data: 'edit_navigation' }, { text: '🖼 Hero секция', callback_data: 'edit_hero' }],
-        [{ text: '🏗 Проекты', callback_data: 'edit_projects' }, { text: '📎 Футер', callback_data: 'edit_footer' }],
-        [{ text: '📊 Статистика', callback_data: 'stats' }],
-        [{ text: '📝 Получить расчет', callback_data: 'get_calculation' }]
+        [{ text: '🏗 Проекты', callback_data: 'edit_projects' }, { text: '📰 Новости', callback_data: 'edit_news' }],
+        [{ text: '📊 Статистика', callback_data: 'stats' }, { text: '📝 Получить расчет', callback_data: 'get_calculation' }],
+        [{ text: '📎 Футер', callback_data: 'edit_footer' }]
       ]
     }
   };
@@ -415,6 +415,68 @@ bot.on('callback_query', async (query) => {
       }
       case 'cancel_delete_project': { bot.sendMessage(chatId, '❌ Отменено.'); clearUserState(userId); break; }
       case 'edit_footer': handleEditFooter(userId, chatId); break;
+      case 'edit_news': handleEditNews(userId, chatId); break;
+      case 'news_add': startAddNews(userId, chatId); break;
+      case 'news_add_title': {
+        setUserState(userId, { mode: 'edit_news', step: 10, tempData: { title: text } });
+        bot.sendMessage(chatId, '✍️ Введите описание новости:', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+        break;
+      }
+      case 'news_add_desc': {
+        const state = getUserState(userId);
+        if (state.mode === 'edit_news' && state.step === 10) {
+          setUserState(userId, { ...state, step: 11, tempData: { ...state.tempData, description: text } });
+          bot.sendMessage(chatId, '📂 Выберите тег:\n\n1 — Проекты\n2 — Компания\n3 — События', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+        }
+        break;
+      }
+      case 'news_add_tag': {
+        const state = getUserState(userId);
+        const tagMap: Record<string, string> = { '1': 'Проекты', '2': 'Компания', '3': 'События' };
+        const tag = text ? (tagMap[text] || 'Новости') : 'Новости';
+        setUserState(userId, { ...state, step: 12, tempData: { ...state.tempData, tag } });
+        bot.sendMessage(chatId, '📸 Отправьте фото (1-3 штуки) или напишите "Без фото":', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+        break;
+      }
+      case 'news_confirm': {
+        const state = getUserState(userId);
+        if (state.mode === 'edit_news' && state.step === 12 && state.tempData) {
+          const { title, description, tag, images } = state.tempData;
+          const { addNewsItem } = require('./content');
+          await addNewsItem({ title, description, images: images || [], tag });
+          sendDeployNotification(chatId, bot, '✅ Новость добавлена!');
+        }
+        clearUserState(userId);
+        break;
+      }
+      case 'news_delete': startDeleteNews(userId, chatId); break;
+      case 'news_delete_item_0': case 'news_delete_item_1': case 'news_delete_item_2': case 'news_delete_item_3':
+      case 'news_delete_item_4': case 'news_delete_item_5': case 'news_delete_item_6': case 'news_delete_item_7':
+      case 'news_delete_item_8': case 'news_delete_item_9': {
+        const itemIndex = parseInt(data.split('_').pop()!);
+        const { getNews } = require('./content');
+        const news = await getNews();
+        const item = news[itemIndex];
+        setUserState(userId, { mode: 'edit_news', step: 20, tempData: itemIndex });
+        const keyboard = {
+          inline_keyboard: [
+            [{ text: '✅ Удалить', callback_data: 'confirm_delete_news' }],
+            [{ text: '↩️ Назад', callback_data: 'back' }]
+          ]
+        };
+        bot.sendMessage(chatId, `🗑 Удалить новость?\n\n📝 ${item.title}\n📄 ${item.description.substring(0, 100)}...`, { reply_markup: keyboard });
+        break;
+      }
+      case 'confirm_delete_news': {
+        const state = getUserState(userId);
+        if (state.mode === 'edit_news' && state.step === 20 && state.tempData !== null) {
+          const { deleteNewsItem } = require('./content');
+          await deleteNewsItem(state.tempData);
+          sendDeployNotification(chatId, bot, '✅ Новость удалена!');
+        }
+        clearUserState(userId);
+        break;
+      }
       case 'footer_partners': handleEditPartners(userId, chatId); break;
       case 'partner_edit_0': case 'partner_edit_1': case 'partner_edit_2': case 'partner_edit_3': case 'partner_edit_4': case 'partner_edit_5': case 'partner_edit_6': case 'partner_edit_7':
       case 'partner_edit_8': case 'partner_edit_9': case 'partner_edit_10': case 'partner_edit_11': case 'partner_edit_12': case 'partner_edit_13':
@@ -1448,6 +1510,88 @@ function showProjectConfirm(userId: number, chatId: number, data: any) {
 
 bot.on('polling_error', (error: any) => {
   console.log('Polling error (ignored):', error.code);
+});
+
+// ========================
+// NEWS MANAGEMENT FUNCTIONS
+// ========================
+
+function handleEditNews(userId: number, chatId: number) {
+  const { getNews } = require('./content');
+  getNews().then((news: any[]) => {
+    let message = '📰 Новости:\n\nВсего: ' + news.length + '\n\n';
+    if (news.length > 0) {
+      message += news.map((n: any, i: number) => `${i + 1}. ${n.title}`).join('\n');
+    } else {
+      message += 'Нет новостей';
+    }
+    const keyboard = {
+      inline_keyboard: [
+        [{ text: '➕ Добавить', callback_data: 'news_add' }, { text: '🗑 Удалить', callback_data: 'news_delete' }],
+        ...news.map((n: any, i: number) => [{ text: `📰 ${i + 1}. ${n.title.substring(0, 30)}...`, callback_data: `news_edit_item_${i}` }]),
+        [{ text: '↩️ Назад', callback_data: 'back' }]
+      ]
+    };
+    bot.sendMessage(chatId, message, { reply_markup: keyboard });
+    setUserState(userId, { mode: 'edit_news', step: 0, tempData: null });
+  });
+}
+
+function startAddNews(userId: number, chatId: number) {
+  setUserState(userId, { mode: 'edit_news', step: 10, tempData: null });
+  bot.sendMessage(chatId, '✍️ Введите заголовок новости:', { reply_markup: { inline_keyboard: [[{ text: '↩️ Назад', callback_data: 'back' }]] } });
+}
+
+function startDeleteNews(userId: number, chatId: number) {
+  const { getNews } = require('./content');
+  getNews().then((news: any[]) => {
+    if (news.length === 0) {
+      bot.sendMessage(chatId, '❌ Нет новостей для удаления.');
+      return;
+    }
+    const keyboard = {
+      inline_keyboard: news.map((n: any, i: number) => [{ text: `🗑 ${i + 1}. ${n.title.substring(0, 35)}...`, callback_data: `news_delete_item_${i}` }]).concat([[{ text: '↩️ Назад', callback_data: 'back' }]])
+    };
+    bot.sendMessage(chatId, '🗑 Выберите новость для удаления:', { reply_markup: keyboard });
+  });
+}
+
+// Обработка фото для новостей
+bot.on('photo', async (msg) => {
+  const chatId = msg.chat.id;
+  const userId = msg.from?.id;
+  if (!userId || !isAdmin(userId)) return;
+  
+  const state = getUserState(userId);
+  if (state.mode === 'edit_news' && state.step === 12) {
+    if (msg.text === 'Без фото' || msg.text === 'без фото') {
+      setUserState(userId, { ...state, step: 12, tempData: { ...state.tempData, images: [] } });
+      const keyboard = { inline_keyboard: [[{ text: '✅ Опубликовать', callback_data: 'news_confirm' }, { text: '❌ Отмена', callback_data: 'back' }]] };
+      bot.sendMessage(chatId, '⚠️ Подтвердите:\n\n📝 ' + state.tempData.title + '\n📄 ' + state.tempData.description + '\n🏷️ ' + state.tempData.tag, { reply_markup: keyboard });
+      return;
+    }
+    
+    if (!msg.photo || msg.photo.length === 0) return;
+    
+    const photo = msg.photo[msg.photo.length - 1];
+    if (!state.tempData) state.tempData = {};
+    if (!state.tempData.images) state.tempData.images = [];
+    
+    if (state.tempData.images.length >= 3) {
+      bot.sendMessage(chatId, '⚠️ Максимум 3 фото. Напишите "✅ Опубликовать" для сохранения.');
+      return;
+    }
+    
+    try {
+      const fileInfo = await bot.getFileLink(photo.file_id);
+      state.tempData.images = [...(state.tempData.images || []), fileInfo.toString()];
+      
+      const count = state.tempData.images.length;
+      bot.sendMessage(chatId, `📷 Фото ${count}/3 принято.${count < 3 ? ' Отправьте ещё или нажмите "Опубликовать".' : ' Максимум достигнут.'}`);
+    } catch (err) {
+      console.error('Error downloading photo:', err);
+    }
+  }
 });
 
 bot.startPolling();
