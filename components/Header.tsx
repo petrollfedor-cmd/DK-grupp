@@ -56,6 +56,7 @@ export default function AppHeader({ onOpenModal }: AppHeaderProps) {
     if (pathname === '/types-works') return 'types';
     if (pathname?.startsWith('/projects')) return 'projects';
     if (pathname === '/about') return 'about';
+    if (pathname === '/news') return 'news';
     if (pathname === '/contacts') return 'contacts';
     return 'main';
   };

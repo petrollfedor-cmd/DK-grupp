@@ -52,6 +52,8 @@ export default function AppBreadcrumbs() {
       currentNav = navItems.find(item => item.key === 'about');
     } else if (pathname === '/contacts') {
       currentNav = navItems.find(item => item.key === 'contacts');
+    } else if (pathname === '/news') {
+      currentNav = navItems.find(item => item.key === 'news');
     }
 
     if (currentNav) {

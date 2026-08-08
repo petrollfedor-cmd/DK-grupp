@@ -20,9 +20,9 @@
     "href": "/about"
   },
   {
-    "key": "presentation",
-    "label": "Скачать презентацию",
-    "href": "/contacts"
+    "key": "news",
+    "label": "Новостная лента",
+    "href": "/news"
   },
   {
     "key": "contacts",
