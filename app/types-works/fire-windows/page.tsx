@@ -123,8 +123,6 @@ export default function FireWindowsPage() {
           }
           .fw-services-grid {
             grid-template-columns: 1fr !important;
-            gap: 16px !important;
-            padding: 0 16px !important;
           }
           .fw-service-card {
             border-radius: 12px !important;
@@ -300,7 +298,7 @@ export default function FireWindowsPage() {
           </div>
           <div className="fw-services-grid" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '24px',
           }}>
             {services.map((service, idx) => (
