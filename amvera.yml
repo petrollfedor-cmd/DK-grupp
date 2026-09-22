@@ -1,0 +1,14 @@
+meta:
+  environment: node
+  toolchain:
+    name: yarn
+    version: 20
+
+build:
+  additionalCommands: yarn build
+  artifacts:
+    "*": /
+
+run:
+  scriptName: start
+  containerPort: 3000
